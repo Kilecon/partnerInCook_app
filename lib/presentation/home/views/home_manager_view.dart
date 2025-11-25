@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
+import 'package:partner_in_cook/routes/explorer_page.dart';
 import 'package:partner_in_cook/widget/customNavBar.component.dart';
+
 import '../controllers/home_manager_controller.dart';
 
 class HomeManagerView extends GetView<HomeManagerController> {
@@ -20,7 +22,9 @@ class HomeManagerView extends GetView<HomeManagerController> {
                 child: IndexedStack(
                   index: controller.currentPageIndex.value,
                   children: [
-                    
+                    ExplorerPage(),
+                    SizedBox(child: Text("CVoucou")),
+                    SizedBox(),
                   ],
                 ),
               ),
