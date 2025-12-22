@@ -35,7 +35,6 @@ class _ExplorerPageState extends State<ExplorerPage> {
     final hasLatest = latestRecipes.isNotEmpty;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Explorer'),
         actions: [
           IconButton(
             onPressed: () {},
@@ -52,30 +51,55 @@ class _ExplorerPageState extends State<ExplorerPage> {
       body: Container(
         color: AppColors.background,
         child: Column(
+          spacing: 5,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SearchAnchor.bar(
-                searchController: _searchCtrl,
-                barHintText: 'Rechercher une recette…',
-                suggestionsBuilder: (context, controller) {
-                  final q = controller.text.toLowerCase();
-                  final items = recipes
-                      .where(
-                        (e) => q.isEmpty || e.title.toLowerCase().contains(q),
-                      )
-                      .take(5)
-                      .toList();
-                  return items.map(
-                    (e) => ListTile(
-                      title: Text(e.title),
-                      onTap: () {
-                        controller.closeView(e.title);
-                        setState(() {});
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                ),
+              ),
+              padding: EdgeInsets.only(left: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Explorer', style: TextStyle(fontSize: 24)),
+                  const Text(
+                    "Découvrez des milliers de recettes",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: AppColors.secondaryOrange,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SearchAnchor.bar(
+                      searchController: _searchCtrl,
+                      barHintText: 'Rechercher une recette…',
+                      suggestionsBuilder: (context, controller) {
+                        final q = controller.text.toLowerCase();
+                        final items = recipes
+                            .where(
+                              (e) =>
+                                  q.isEmpty ||
+                                  e.title.toLowerCase().contains(q),
+                            )
+                            .take(5)
+                            .toList();
+                        return items.map(
+                          (e) => ListTile(
+                            title: Text(e.title),
+                            onTap: () {
+                              controller.closeView(e.title);
+                              setState(() {});
+                            },
+                          ),
+                        );
                       },
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ),
             if (hasLatest) ...[
@@ -103,7 +127,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
               ),
             ),
             Expanded(
-              child: RecipeList(recipes: _filtered, onRecipeTap: () {}),
+              child: RecipeList(recipes: filtered, onRecipeTap: () {}),
             ),
           ],
         ),
