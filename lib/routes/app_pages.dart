@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
+import 'package:partner_in_cook/presentation/home/bindings/home_binding.dart';
+import 'package:partner_in_cook/presentation/home/views/home_manager_view.dart';
 
-import '../presentation/home/bindings/home_binding.dart';
-import '../presentation/home/views/home_manager_view.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -14,6 +15,6 @@ class AppPages {
       name: _Paths.home,
       page: () => const HomeManagerView(),
       binding: HomeBinding(),
-    ),
+    )
   ];
 }
