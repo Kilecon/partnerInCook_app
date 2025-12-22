@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/Recipe.dart';
+import '../model/recipe.dart';
 import 'rating_stars.dart';
 
 class RecipeHorizontalCard extends StatelessWidget {
@@ -29,7 +29,7 @@ class RecipeHorizontalCard extends StatelessWidget {
           AspectRatio(
             aspectRatio: 1 / 1,
             child: Container(
-              child: Image.network(recipe.imageUrl, fit: BoxFit.cover),
+              child: Image.network(recipe.pictureUrl ?? '', fit: BoxFit.cover),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -44,17 +44,17 @@ class RecipeHorizontalCard extends StatelessWidget {
               spacing: 3,
               children: [
                 Text(
-                  recipe.title,
+                  recipe.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.titleSmall,
                 ),
-                RatingStars(rating: recipe.rating),
+                RatingStars(rating: recipe.averageNotation),
                 Row(
                   spacing: 5,
                   children: [
                     const Icon(Icons.schedule, size: 14),
-                    Text('${recipe.minutes} min'),
+                    Text('${recipe.preparationTime ?? 0} min'),
                     const Icon(Icons.thumb_up_alt_outlined, color: Colors.red),
                   ],
                 ),

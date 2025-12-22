@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/model/Recipe.dart';
+import 'package:partner_in_cook/model/recipe.dart';
 import 'package:partner_in_cook/widget/empty_state.dart';
 import 'package:partner_in_cook/widget/recipe_horizontal_card.dart';
 import 'package:partner_in_cook/widget/recipe_large_card.dart';

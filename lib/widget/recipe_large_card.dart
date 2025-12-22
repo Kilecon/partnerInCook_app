@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/Recipe.dart';
+import '../model/recipe.dart';
 import 'rating_stars.dart';
 
 class RecipeLargeCard extends StatelessWidget {
@@ -20,29 +20,29 @@ class RecipeLargeCard extends StatelessWidget {
         leading: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.network(
-            recipe.imageUrl,
+            recipe.pictureUrl ?? '',
             width: 64,
             height: 64,
             fit: BoxFit.cover,
           ),
         ),
-        title: Text(recipe.title, maxLines: 1, overflow: TextOverflow.ellipsis),
+        title: Text(recipe.name, maxLines: 1, overflow: TextOverflow.ellipsis),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 4),
             Row(
               children: [
-                RatingStars(rating: recipe.rating),
+                RatingStars(rating: recipe.averageNotation),
                 const SizedBox(width: 8),
                 const Icon(Icons.schedule, size: 14),
                 const SizedBox(width: 2),
-                Text('${recipe.minutes} min'),
+                Text('${recipe.preparationTime ?? 0} min'),
               ],
             ),
             const SizedBox(height: 4),
             Text(
-              'Réalisé par ${recipe.author.name}',
+              'Réalisé par ${recipe.author.username}',
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
@@ -53,7 +53,7 @@ class RecipeLargeCard extends StatelessWidget {
           children: [
             const Icon(Icons.favorite_border),
             const SizedBox(height: 4),
-            Text('${recipe.likes}'),
+            Text('${recipe.notationsCount}'),
           ],
         ),
       ),
