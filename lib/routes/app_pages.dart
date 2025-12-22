@@ -1,17 +1,19 @@
 import 'package:get/get.dart';
-import 'package:partner_in_cook/presentation/auth/bindings/auth_binding.dart';
-import 'package:partner_in_cook/presentation/auth/views/login_view.dart';
-import 'package:partner_in_cook/presentation/auth/views/register_view.dart';
-import 'package:partner_in_cook/presentation/home/bindings/home_binding.dart';
-import 'package:partner_in_cook/presentation/home/views/home_manager_view.dart';
 
+import '../presentation/splash/bindings/splash_binding.dart';
+import '../presentation/splash/views/splash_view.dart';
+import '../presentation/auth/bindings/auth_binding.dart';
+import '../presentation/auth/views/login_view.dart';
+import '../presentation/auth/views/register_view.dart';
+import '../presentation/home/bindings/home_binding.dart';
+import '../presentation/home/views/home_manager_view.dart';
 
 part 'app_routes.dart';
 
 class AppPages {
   AppPages._();
 
-  static const initial = Routes.home;
+  static const initial = Routes.splash;
 
   static final routes = [
     GetPage(
@@ -19,7 +21,7 @@ class AppPages {
       page: () => const HomeManagerView(),
       binding: HomeBinding(),
     ),
-        GetPage(
+    GetPage(
       name: Routes.login,
       page: () => const LoginView(),
       binding: AuthBinding(),
@@ -28,6 +30,11 @@ class AppPages {
       name: Routes.register,
       page: () => RegisterView(),
       binding: AuthBinding(),
+    ),
+    GetPage(
+      name: _Paths.splash,
+      page: () => const SplashView(),
+      binding: SplashBinding(),
     ),
   ];
 }
