@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/model/recipe.dart';
 
-class ExplorerTitleSection extends StatelessWidget {
-  const ExplorerTitleSection({
+class TitleSection extends StatelessWidget {
+  const TitleSection({
     super.key,
     required this.title,
     required this.subtitle,
@@ -25,7 +25,6 @@ class ExplorerTitleSection extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30)),
       ),
-      padding: const EdgeInsets.only(left: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,7 +34,10 @@ class ExplorerTitleSection extends StatelessWidget {
           ),
           Text(
             subtitle,
-            style: const TextStyle(fontSize: 14, color: AppColors.primaryOrange),
+            style: const TextStyle(
+              fontSize: 14,
+              color: AppColors.primaryOrange,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

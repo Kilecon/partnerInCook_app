@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 
 class EmptyState extends StatelessWidget {
   final String message;
@@ -6,14 +8,27 @@ class EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.primary;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.restaurant_menu, size: 72, color: color),
+          Icon(LucideIcons.chefHat, size: 50, color: AppColors.primaryOrange),
           const SizedBox(height: 12),
-          Text(message, style: Theme.of(context).textTheme.bodyMedium),
+          SizedBox(
+            height: 48, // ≈ 2 lignes à 16px
+            width: 150,
+            child: Text(
+              message,
+              textAlign: TextAlign.center,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: AppColors.black,
+              ),
+            ),
+          ),
         ],
       ),
     );

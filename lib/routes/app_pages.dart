@@ -1,12 +1,18 @@
 import 'package:get/get.dart';
 
-import '../presentation/splash/bindings/splash_binding.dart';
-import '../presentation/splash/views/splash_view.dart';
+import '../presentation/explorer/bindings/explorer_binding.dart';
+import '../presentation/explorer/views/explorer_view.dart';
 import '../presentation/auth/bindings/auth_binding.dart';
 import '../presentation/auth/views/login_view.dart';
 import '../presentation/auth/views/register_view.dart';
 import '../presentation/home/bindings/home_binding.dart';
 import '../presentation/home/views/home_manager_view.dart';
+import '../presentation/profil/bindings/profil_binding.dart';
+import '../presentation/profil/views/profil_view.dart';
+import '../presentation/recipe_details/bindings/recipe_details_binding.dart';
+import '../presentation/recipe_details/views/recipe_details_view.dart';
+import '../presentation/splash/bindings/splash_binding.dart';
+import '../presentation/splash/views/splash_view.dart';
 
 part 'app_routes.dart';
 
@@ -35,6 +41,21 @@ class AppPages {
       name: _Paths.splash,
       page: () => const SplashView(),
       binding: SplashBinding(),
+    ),
+    GetPage(
+      name: _Paths.PROFIL,
+      page: () => const ProfilView(),
+      binding: ProfilBinding(),
+    ),
+    GetPage(
+      name: _Paths.RECIPE_DETAILS,
+      page: () => const RecipeDetailsView(),
+      binding: RecipeDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.EXPLORER,
+      page: () => const ExplorerView(),
+      binding: ExplorerBinding(),
     ),
   ];
 }

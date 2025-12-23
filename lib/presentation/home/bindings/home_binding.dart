@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:partner_in_cook/presentation/explorer/controllers/explorer_controller.dart';
 
 import '../controllers/home_manager_controller.dart';
 
@@ -6,5 +7,6 @@ class HomeBinding extends Bindings {
   @override
   void dependencies() {
     Get.put<HomeManagerController>(HomeManagerController());
+    Get.lazyPut<ExplorerController>(() => ExplorerController());
   }
 }
