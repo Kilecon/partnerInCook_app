@@ -24,6 +24,7 @@ abstract class AppColors {
   static const Color primaryOrange = Color(0xFFFF9009); // Orange
   static const Color lightOrange = Color(0xFFFFE9CE); // Orange clair
   static const Color lightGray = Color(0xFF666666); // Orange foncé
+  static const Color yellowPrimary = Color(0xFFFFC301); // Jaune clair
 
   static const Color infoColorLight = Color(0xFF93C5FD); // Bleu clair
   static const Color successColorLight = Color(0xFF6EE7B7); // Vert clair

@@ -28,7 +28,6 @@ class RecipeSections extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hasLatest = latestRecipes.isNotEmpty;
-    final hasFilteredRecipes = filteredRecipes.isNotEmpty;
 
     // Si c'est pour les dernières nouveautés
     if (hasLatest && tags == null) {

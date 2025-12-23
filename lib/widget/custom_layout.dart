@@ -14,7 +14,13 @@ class CustomLayout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
-      child: Column(spacing: 5, children: children),
+      child: Column(
+        spacing: 5,
+        children: [
+          children[0],
+          if (children.length > 1) Expanded(child: children[1]),
+        ],
+      ),
     );
   }
 }
