@@ -10,17 +10,17 @@ class TitlePage extends StatelessWidget {
     required this.hasSearchBar,
     required this.title,
     required this.subtitle,
-    required this.searchController,
-    required this.recipes,
-    required this.onSearchResultTap,
+    this.searchController,
+    this.recipes,
+    this.onSearchResultTap,
   });
 
   final bool hasSearchBar;
   final String title;
   final String subtitle;
-  final TextEditingController searchController;
-  final List<Recipe> recipes;
-  final VoidCallback onSearchResultTap;
+  final TextEditingController? searchController;
+  final List<Recipe>? recipes;
+  final VoidCallback? onSearchResultTap;
 
   @override
   Widget build(BuildContext context) {
@@ -29,35 +29,40 @@ class TitlePage extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
       ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              subtitle,
-              style: const TextStyle(
-                fontSize: 14,
-                color: AppColors.primaryOrange,
+      child: SizedBox(
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-            ),
-            if (hasSearchBar)
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: CustomSearchBar(
-                backgroundColor: Colors.transparent,
-                searchController: searchController,
-                hintText: 'Rechercher une recette...',
-                prefixIcon: LucideIcons.search,
-                recipes: recipes,
-                onSearchResultTap: onSearchResultTap,
+              Text(
+                subtitle,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: AppColors.primaryOrange,
+                ),
               ),
-            ),
-          ],
+              if (hasSearchBar)
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: CustomSearchBar(
+                    backgroundColor: Colors.transparent,
+                    searchController: searchController!,
+                    hintText: 'Rechercher une recette...',
+                    prefixIcon: LucideIcons.search,
+                    recipes: recipes!,
+                    onSearchResultTap: onSearchResultTap!,
+                  ),
+                )
+              else
+                const SizedBox(height: 15),
+            ],
+          ),
         ),
       ),
     );

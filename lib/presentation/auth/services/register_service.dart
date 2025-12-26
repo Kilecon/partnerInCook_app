@@ -5,26 +5,26 @@ import 'package:partner_in_cook/model/auth.dart';
 import 'package:partner_in_cook/model/user.dart';
 import 'package:partner_in_cook/providers/api_helper.dart';
 import 'package:partner_in_cook/exceptions/exception_handler.dart';
-import 'package:partner_in_cook/services/user_service.dart';
-import 'auth_service.dart';
+import 'package:partner_in_cook/services/auth_service.dart' as service;
+import 'auth_service.dart' as local;
 
-class RegisterService implements AuthService {
-  final Rx<User?> currentUser = Get.find<UserService>().user;
+class RegisterService implements local.AuthService<AuthRegister> {
+  final Rx<User?> currentUser = Get.find<service.AuthService>().user;
   final DioClient _httpClient = DioClient();
 
   @override
-  Future<void> performAuth(User user) async {
+  Future<void> performAuth(AuthRegister registerData) async {
     try {
       // Appel de l'API d'inscription
       final response = await _httpClient.post(
         '/register', // remplace par ton endpoint réel
-        data: json.encode(user.toJsonForSignUp()),
+        data: json.encode(registerData.toJson()),
       );
 
-      final auth = Auth.fromJson(response as Map<String, dynamic>);
+      final auth = AuthRes.fromJson(response as Map<String, dynamic>);
 
       // Mise à jour de l'état utilisateur + token
-      await Get.find<UserService>().setAuth(auth);
+      await Get.find<service.AuthService>().setAuth(auth);
       currentUser.value = auth.user;
     } on DioException catch (e) {
       // Gestion centralisée des erreurs
@@ -37,9 +37,9 @@ class RegisterService implements AuthService {
 // Extension pour préparer les données d'inscription
 extension RegisterUser on User {
   Map<String, dynamic> toJsonForSignUp() => {
-        'username': username,
-        'email': email,
-        'password': password,
-        'pic_url': profilePicture,
-      };
+    'username': username,
+    'email': email,
+    'password': password,
+    'pic_url': profilePicture,
+  };
 }

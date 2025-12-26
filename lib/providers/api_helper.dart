@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:flutter/foundation.dart';
 import 'package:partner_in_cook/exceptions/error_entity.dart';
 import 'package:partner_in_cook/exceptions/exception_handler.dart';
-import 'package:partner_in_cook/services/user_service.dart';
+import 'package:partner_in_cook/services/auth_service.dart';
 
 class DioClient {
   static DioClient? _instance;
@@ -85,8 +85,8 @@ class DioClient {
   }
 
   Map<String, dynamic>? _getAuthorizationHeader() {
-    final userService = Get.find<UserService>();
-    String? accessToken = userService.apiToken.value;
+    final authService = Get.find<AuthService>();
+    String? accessToken = authService.apiToken.value;
     if (accessToken != null) {
       return {'Authorization': 'Bearer $accessToken'};
     }

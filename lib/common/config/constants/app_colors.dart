@@ -20,7 +20,7 @@ abstract class AppColors {
   ); // Bleu pastel très doux
 
   // Couleurs d'état - Versions intermédiaires (entre normal et pastel)
-  static const Color background = Color(0xFFFFFDE9); // Rouge clair
+  static const Color background = Color(0xFFFFFDF9); // Rouge clair
   static const Color primaryOrange = Color(0xFFFF9009); // Orange
   static const Color lightOrange = Color(0xFFFFE9CE); // Orange clair
   static const Color lightGray = Color(0xFF666666); // Orange foncé

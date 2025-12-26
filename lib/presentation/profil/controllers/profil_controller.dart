@@ -1,23 +1,17 @@
 import 'package:get/get.dart';
+import 'package:partner_in_cook/model/user.dart';
+import 'package:partner_in_cook/services/auth_service.dart';
 
 class ProfilController extends GetxController {
-  //TODO: Implement ProfilController
+  User? user;
 
-  final count = 0.obs;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    user = await AuthService.getUser();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void logout() {
+    AuthService.logout();  
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
