@@ -21,8 +21,12 @@ class RecipeList extends StatelessWidget {
         ? EmptyState(message: "Aucune recettes disponibles")
         : ListView.separated(
             separatorBuilder: (BuildContext context, int index) =>
-                SizedBox(height: 10, width: 10),
+                const SizedBox(height: 10, width: 10),
             scrollDirection: axis,
+            shrinkWrap: axis == Axis.vertical,
+            physics: axis == Axis.vertical
+                ? const NeverScrollableScrollPhysics()
+                : null,
             itemBuilder: (BuildContext context, int index) =>
                 axis == Axis.vertical
                 ? RecipeLargeCard(recipe: recipes[index], onTap: onRecipeTap)

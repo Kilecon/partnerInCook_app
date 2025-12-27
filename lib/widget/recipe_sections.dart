@@ -29,10 +29,9 @@ class RecipeSections extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasLatest = latestRecipes.isNotEmpty;
 
-    // Si c'est pour les dernières nouveautés
     if (hasLatest && tags == null) {
       return Column(
-        spacing: 5,
+        mainAxisSize: MainAxisSize.min,
         children: [
           SectionHeader(title: title, onSeeAll: () {}),
           SizedBox(
@@ -47,9 +46,8 @@ class RecipeSections extends StatelessWidget {
       );
     }
 
-    // Si c'est pour les recettes filtrées avec tags
     return Column(
-      spacing: 5,
+      mainAxisSize: MainAxisSize.min,
       children: [
         SectionHeader(title: title),
         if (tags != null && onTagChanged != null)
@@ -58,9 +56,7 @@ class RecipeSections extends StatelessWidget {
             tags: tags!,
             onChanged: onTagChanged!,
           ),
-        Expanded(
-          child: RecipeList(recipes: filteredRecipes, onRecipeTap: onRecipeTap),
-        ),
+        RecipeList(recipes: filteredRecipes, onRecipeTap: onRecipeTap),
       ],
     );
   }

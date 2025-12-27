@@ -4,7 +4,8 @@ import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 
 class EmptyState extends StatelessWidget {
   final String message;
-  const EmptyState({super.key, required this.message});
+  final IconData? icon;
+  const EmptyState({super.key, required this.message, this.icon});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class EmptyState extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(LucideIcons.chefHat, size: 50, color: AppColors.primaryOrange),
+          Icon(icon ?? LucideIcons.chefHat, size: 50, color: AppColors.primaryOrange),
           const SizedBox(height: 12),
           SizedBox(
             height: 48, // ≈ 2 lignes à 16px
