@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 class HomeManagerController extends GetxController {
   var currentPageIndex = 0.obs;
@@ -9,17 +10,17 @@ class HomeManagerController extends GetxController {
     currentPageIndex.value = index;
   }
 
-  List<String> listLabels = ['Accueil', 'Traitements', 'Profil'];
+  List<String> listLabels = ['Explorer', 'Mes recettes', 'Mon frigo'];
 
   List<IconData> listIcon = [
-    Icons.home_outlined,
-    Icons.summarize_outlined,
-    Icons.person_outline,
+    LucideIcons.home,
+    LucideIcons.chefHat,
+    LucideIcons.refrigerator,
   ];
 
   List<IconData> listIconSelected = [
-    Icons.home,
-    Icons.summarize,
-    Icons.person,
+    LucideIcons.home,
+    LucideIcons.chefHat,
+    LucideIcons.refrigerator,
   ];
 }

@@ -36,6 +36,25 @@ dependencies:
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.5.3
   get: ^4.7.2
+  dio: ^5.9.0
+  dio_cache_interceptor: ^4.0.5
+  lucide_icons: ^0.257.0
+  flutter_native_splash: ^2.4.7
+
+
+flutter_native_splash:
+  color: "#FFFDF9"
+  image: assets/logo/logo_w_label.png
+  android_gravity: center
+  ios_content_mode: center
+
+  android_12:
+    image: assets/logo/logo_w_label.png
+    icon_background_color: "#FFFDF9"
+
+  android: true
+  ios: true
+  web: false
 
 dev_dependencies:
   flutter_test:
@@ -60,9 +79,9 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-assets:
-  - assets/*
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - assets/
+    - assets/logo/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

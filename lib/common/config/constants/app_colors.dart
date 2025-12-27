@@ -20,9 +20,14 @@ abstract class AppColors {
   ); // Bleu pastel très doux
 
   // Couleurs d'état - Versions intermédiaires (entre normal et pastel)
-  static const Color background = Color(0xFFFDF7E9); // Rouge clair
-  static const Color primaryOrange = Color(0xFFFFF9009); // Orange
-  static const Color secondaryOrange = Color(0xFFFF9009);
-  static const Color successColorLight = Color(0xFF6EE7B7); // Vert clair
+  static const Color background = Color(0xFFFFFDF9); // Rouge clair
+  static const Color primaryOrange = Color(0xFFFF9009); // Orange
+  static const Color lightOrange = Color(0xFFFFE9CE); // Orange clair
+  static const Color lightGray = Color(0xFF666666); // Orange foncé
+  static const Color yellowPrimary = Color(0xFFFFC301); // Jaune clair
+
   static const Color infoColorLight = Color(0xFF93C5FD); // Bleu clair
+  static const Color successColorLight = Color(0xFF6EE7B7); // Vert clair
+  static const Color warningColorLight = Color(0xFFFCD34D); // Ja
 }
+

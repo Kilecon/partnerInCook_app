@@ -15,18 +15,11 @@ class CustomNavBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 32,
-        vertical: 6,
+        vertical: 4,
       ),
       decoration: BoxDecoration(
         color: AppColors.white,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.black.withAlpha((0.1 * 255).toInt()),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, -1),
-          ),
-        ],
+       
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,19 +33,21 @@ class CustomNavBar extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(6.0),
+                  padding: const EdgeInsets.all(5.0),
                   decoration: controller.currentPageIndex.value == index
                       ? BoxDecoration(
                           shape: BoxShape.circle,
-                          color: AppColors.black,
+                          color: AppColors.lightOrange,
                         )
                       : null,
                   child: Icon(
                     controller.currentPageIndex.value == index
                         ? controller.listIconSelected[index]
                         : controller.listIcon[index],
-                    size: 28,
-                    color:AppColors.white
+                    size: 25,
+                    color: controller.currentPageIndex.value == index
+                        ? AppColors.primaryOrange
+                        : AppColors.black,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -60,7 +55,9 @@ class CustomNavBar extends StatelessWidget {
                   controller.listLabels[index],
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppColors.black,
+                    color: controller.currentPageIndex.value == index
+                        ? AppColors.primaryOrange
+                        : AppColors.lightGray,
                     fontWeight: controller.currentPageIndex.value == index
                         ? FontWeight.w600
                         : FontWeight.w400,

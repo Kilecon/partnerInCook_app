@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="partner_in_cook"
+        android:label="Partner In Cook"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
