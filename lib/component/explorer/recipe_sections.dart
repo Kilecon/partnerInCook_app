@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/model/recipe.dart';
 import 'package:partner_in_cook/model/tag.dart';
-import 'package:partner_in_cook/widget/header.dart';
-import 'package:partner_in_cook/widget/recipe_list.dart';
-import 'package:partner_in_cook/widget/tag_list.dart';
+import 'package:partner_in_cook/component/widgets/header.dart';
+import 'package:partner_in_cook/component/explorer/recipe_list.dart';
+import 'package:partner_in_cook/component/explorer/tag_list.dart';
 
 class RecipeSections extends StatelessWidget {
   const RecipeSections({
@@ -39,7 +39,6 @@ class RecipeSections extends StatelessWidget {
             child: RecipeList(
               recipes: latestRecipes,
               axis: Axis.horizontal,
-              onRecipeTap: onRecipeTap,
             ),
           ),
         ],
@@ -56,7 +55,7 @@ class RecipeSections extends StatelessWidget {
             tags: tags!,
             onChanged: onTagChanged!,
           ),
-        RecipeList(recipes: filteredRecipes, onRecipeTap: onRecipeTap),
+        RecipeList(recipes: filteredRecipes),
       ],
     );
   }

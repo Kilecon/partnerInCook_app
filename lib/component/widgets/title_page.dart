@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/model/recipe.dart';
-import 'package:partner_in_cook/widget/custom_search_bar.dart';
+import 'package:partner_in_cook/component/widgets/custom_search_bar.dart';
 
 class TitlePage extends StatelessWidget {
   const TitlePage({

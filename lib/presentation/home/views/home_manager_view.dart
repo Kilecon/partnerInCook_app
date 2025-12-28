@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/presentation/explorer/views/explorer_view.dart';
 import 'package:partner_in_cook/presentation/fridge/views/fridge_view.dart';
-import 'package:partner_in_cook/widget/customNavBar.component.dart';
+import 'package:partner_in_cook/component/widgets/customNavBar.component.dart';
 
 import '../controllers/home_manager_controller.dart';
 

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:partner_in_cook/model/recipe.dart';
-import 'package:partner_in_cook/widget/empty_state.dart';
-import 'package:partner_in_cook/widget/recipe_horizontal_card.dart';
-import 'package:partner_in_cook/widget/recipe_large_card.dart';
+import 'package:partner_in_cook/component/widgets/empty_state.dart';
+import 'package:partner_in_cook/component/explorer/recipe_horizontal_card.dart';
+import 'package:partner_in_cook/component/explorer/recipe_large_card.dart';
+import 'package:partner_in_cook/routes/app_pages.dart';
 
 class RecipeList extends StatelessWidget {
   final List<Recipe> recipes;
-  final VoidCallback onRecipeTap;
   final Axis axis;
   const RecipeList({
     super.key,
     required this.recipes,
     this.axis = Axis.vertical,
-    required this.onRecipeTap,
   });
 
   @override
@@ -29,10 +30,19 @@ class RecipeList extends StatelessWidget {
                 : null,
             itemBuilder: (BuildContext context, int index) =>
                 axis == Axis.vertical
-                ? RecipeLargeCard(recipe: recipes[index], onTap: onRecipeTap)
+                ? RecipeLargeCard(
+                    recipe: recipes[index],
+                    onTap: () => Get.toNamed(
+                      Routes.recipeDetails,
+                      arguments: recipes[index].id,
+                    ),
+                  )
                 : RecipeHorizontalCard(
                     recipe: recipes[index],
-                    onTap: onRecipeTap,
+                    onTap: () => Get.toNamed(
+                      Routes.recipeDetails,
+                      arguments: recipes[index].id,
+                    ),
                   ),
             itemCount: recipes.length,
           );

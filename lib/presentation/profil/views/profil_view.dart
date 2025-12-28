@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/presentation/profil/controllers/profil_controller.dart';
-import 'package:partner_in_cook/widget/custom_app_bar.dart';
-import 'package:partner_in_cook/widget/custom_layout.dart';
-import 'package:partner_in_cook/widget/title_page.dart';
+import 'package:partner_in_cook/component/widgets/custom_app_bar.dart';
+import 'package:partner_in_cook/component/widgets/custom_layout.dart';
+import 'package:partner_in_cook/component/widgets/title_page.dart';
 
 class ProfilView extends GetView<ProfilController> {
   const ProfilView({super.key});

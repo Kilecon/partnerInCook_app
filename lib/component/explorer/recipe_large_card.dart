@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/recipe.dart';
+import '../../model/recipe.dart';
 import 'rating_stars.dart';
 
 class RecipeLargeCard extends StatelessWidget {
