@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/component/recipe/tag_author.dart';
+import 'package:partner_in_cook/component/widgets/circle_btn.dart' show CircleIconButton;
 import 'package:partner_in_cook/data/fridge_mock.dart';
 
 class RecipeHeader extends StatelessWidget {  // ← Retire le underscore
@@ -48,11 +49,11 @@ class RecipeHeader extends StatelessWidget {  // ← Retire le underscore
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _CircleIconButton(
+                      CircleIconButton(
                         icon: Icons.arrow_back,
                         onTap: () => Navigator.of(context).pop(),
                       ),
-                      _CircleIconButton(
+                      CircleIconButton(
                         icon: Icons.favorite_border,
                         onTap: () {},
                       ),
@@ -66,34 +67,6 @@ class RecipeHeader extends StatelessWidget {  // ← Retire le underscore
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-// _CircleIconButton reste privé (underscore conservé)
-class _CircleIconButton extends StatelessWidget {
-  const _CircleIconButton({
-    required this.icon,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(24),
-      child: Container(
-        width: 36,
-        height: 36,
-        decoration: BoxDecoration(
-          color: Colors.black26,
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Icon(icon, color: Colors.white, size: 20),
       ),
     );
   }

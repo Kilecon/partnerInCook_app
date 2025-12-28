@@ -15,7 +15,7 @@ class LogoTitle extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset('assets/logo/logo.png', width: 125, height: 125),
+          Image.asset('assets/logos/logo.png', width: 125, height: 125),
           const SizedBox(height: 24),
           Text(
             title,

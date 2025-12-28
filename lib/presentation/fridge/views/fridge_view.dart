@@ -35,7 +35,7 @@ class FridgeView extends GetView<FridgeController> {
               Expanded(
                 child: CustomLayout(
                   children: [
-                    FridgeCard(fridge: controller.fridge.value, onTap: () => controller.onFridgeTap(controller.fridge.value)),
+                    FridgeCard(fridge: controller.fridge.value, onTap: () => controller.onFridgeTap(controller.fridge.value.id)),
 
                     PantryList(
                       pantries: controller.pantries,

@@ -5,6 +5,7 @@ import 'package:partner_in_cook/data/pantry_mock.dart';
 import 'package:partner_in_cook/model/fridge.dart';
 import 'package:partner_in_cook/model/pantry.dart';
 import 'package:partner_in_cook/model/tag.dart';
+import 'package:partner_in_cook/routes/app_pages.dart';
 
 class FridgeController extends GetxController {
   var pantries = <Pantry>[].obs;
@@ -25,9 +26,8 @@ class FridgeController extends GetxController {
     print('Pantry tapped: ${pantry.name}');
   }
 
-  void onFridgeTap(Fridge fridge) {
-    // Gérer la sélection du frigo
-    print('Fridge tapped: ${fridge.id}');
+  void onFridgeTap(String id) {
+    Get.toNamed(Routes.fridgeDetails, arguments: id);
   }
 
   void onAddPantryTap() {
