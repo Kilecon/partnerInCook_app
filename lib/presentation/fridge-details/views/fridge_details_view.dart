@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/fridge_header.dart';
 import 'package:partner_in_cook/model/fridge.dart';
 
@@ -28,6 +29,7 @@ class FridgeDetailsView extends GetView<FridgeDetailsController> {
       fallbackId = args;
     }
     return Scaffold(
+      backgroundColor: AppColors.background,
         body: Column(
         children: [
           FridgeHeader(ingredientsCount: 10,), // image + appbar + auteur (sliver)
