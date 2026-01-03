@@ -125,12 +125,13 @@ final List<Ingredient> ingredientsMock = [
   ingCheese,
 ];
 
-/// FridgeIngredient mock (référence ingredientId)
+/// FridgeIngredient mock (avec l'objet ingredient)
 final FridgeIngredient f1i1 = FridgeIngredient(
   id: 'f1i1',
   quantity: 1000,
   fridgeId: 'fridge_1',
   ingredientId: ingFlour.id,
+  ingredient: ingFlour, // ✅ Ajout de l'objet ingredient
 );
 
 final FridgeIngredient f1i2 = FridgeIngredient(
@@ -138,6 +139,7 @@ final FridgeIngredient f1i2 = FridgeIngredient(
   quantity: 500,
   fridgeId: 'fridge_1',
   ingredientId: ingSugar.id,
+  ingredient: ingSugar, // ✅ Ajout de l'objet ingredient
 );
 
 final FridgeIngredient f1i3 = FridgeIngredient(
@@ -145,6 +147,7 @@ final FridgeIngredient f1i3 = FridgeIngredient(
   quantity: 1000,
   fridgeId: 'fridge_1',
   ingredientId: ingMilk.id,
+  ingredient: ingMilk, // ✅ Ajout de l'objet ingredient
 );
 
 final FridgeIngredient f2i1 = FridgeIngredient(
@@ -152,6 +155,7 @@ final FridgeIngredient f2i1 = FridgeIngredient(
   quantity: 6,
   fridgeId: 'fridge_2',
   ingredientId: ingEgg.id,
+  ingredient: ingEgg, // ✅ Ajout de l'objet ingredient
 );
 
 final FridgeIngredient f2i2 = FridgeIngredient(
@@ -159,6 +163,7 @@ final FridgeIngredient f2i2 = FridgeIngredient(
   quantity: 250,
   fridgeId: 'fridge_2',
   ingredientId: ingButter.id,
+  ingredient: ingButter, // ✅ Ajout de l'objet ingredient
 );
 
 final FridgeIngredient f3i1 = FridgeIngredient(
@@ -166,6 +171,7 @@ final FridgeIngredient f3i1 = FridgeIngredient(
   quantity: 3,
   fridgeId: 'fridge_3',
   ingredientId: ingTomato.id,
+  ingredient: ingTomato, // ✅ Ajout de l'objet ingredient
 );
 
 final FridgeIngredient f3i2 = FridgeIngredient(
@@ -173,6 +179,7 @@ final FridgeIngredient f3i2 = FridgeIngredient(
   quantity: 2,
   fridgeId: 'fridge_3',
   ingredientId: ingOnion.id,
+  ingredient: ingOnion, // ✅ Ajout de l'objet ingredient
 );
 
 final FridgeIngredient f3i3 = FridgeIngredient(
@@ -180,6 +187,7 @@ final FridgeIngredient f3i3 = FridgeIngredient(
   quantity: 30,
   fridgeId: 'fridge_3',
   ingredientId: ingCheese.id,
+  ingredient: ingCheese, // ✅ Ajout de l'objet ingredient
 );
 
 final FridgeIngredient f3i4 = FridgeIngredient(
@@ -187,6 +195,7 @@ final FridgeIngredient f3i4 = FridgeIngredient(
   quantity: 10,
   fridgeId: 'fridge_3',
   ingredientId: ingGarlic.id,
+  ingredient: ingGarlic, // ✅ Ajout de l'objet ingredient
 );
 
 /// Fridges mock

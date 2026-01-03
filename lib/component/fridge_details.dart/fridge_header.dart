@@ -81,9 +81,9 @@ class FridgeHeader extends StatelessWidget {
                                       fontWeight: FontWeight.w900,
                                     ),
                                   ),
-                                  const Text(
-                                    'Ingredients',
-                                    style: TextStyle(
+                                  Text(
+                                    ingredientsCount > 1 ? 'Ingredients' : 'Ingredient',
+                                    style: const TextStyle(
                                       color: AppColors.primaryOrange,
                                       fontSize: 26,
                                       fontWeight: FontWeight.w700,
