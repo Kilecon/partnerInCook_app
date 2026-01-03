@@ -6,7 +6,7 @@ import 'package:partner_in_cook/component/fridge/pantry_card.dart';
 
 class PantryList extends StatelessWidget {
   final List<Pantry> pantries;
-  final VoidCallback onPantryTap;
+  final void Function(String) onPantryTap;
   final Axis axis;
   const PantryList({
     super.key,
@@ -20,7 +20,7 @@ class PantryList extends StatelessWidget {
     return pantries.isEmpty
         ? EmptyState(
             icon: LucideIcons.refrigerator,
-            message: "Aucun garde mangé disponibles",
+            message: "Aucun garde mangé disponible",
           )
         : ListView.separated(
             separatorBuilder: (BuildContext context, int index) =>
@@ -31,7 +31,7 @@ class PantryList extends StatelessWidget {
                 ? const NeverScrollableScrollPhysics()
                 : null,
             itemBuilder: (BuildContext context, int index) =>
-                PantryCard(pantry: pantries[index], onTap: onPantryTap),
+                PantryCard(pantry: pantries[index], onTap: () => onPantryTap(pantries[index].id)),
             itemCount: pantries.length,
           );
   }

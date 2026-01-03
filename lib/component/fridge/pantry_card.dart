@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:partner_in_cook/component/widgets/avatars_superimposed.dart';
 import 'package:partner_in_cook/model/pantry.dart';
 import 'package:partner_in_cook/model/fridge.dart';
 
@@ -15,6 +16,7 @@ class PantryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final usersShared = pantry.fridges.map((fridge) => fridge.owner).toList();
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
@@ -22,7 +24,6 @@ class PantryCard extends StatelessWidget {
       ),
       child: ListTile(
         onTap: onTap,
-
         /// Icône Pantry
         leading: Container(
           width: 64,
@@ -67,37 +68,7 @@ class PantryCard extends StatelessWidget {
 
             /// Avatars superposés
             if (pantry.fridges.isNotEmpty)
-              SizedBox(
-                height: 28,
-                child: Stack(
-                  children: [
-                    for (int i = 0;
-                        i < pantry.fridges.take(5).length;
-                        i++)
-                      Positioned(
-                        left: i * 18,
-                        child: _OwnerAvatar(fridge: pantry.fridges[i]),
-                      ),
-
-                    /// +X si plus
-                    if (pantry.fridges.length > 5)
-                      Positioned(
-                        left: 5 * 18,
-                        child: CircleAvatar(
-                          radius: 14,
-                          backgroundColor: Colors.grey.shade300,
-                          child: Text(
-                            '+${pantry.fridges.length - 5}',
-                            style: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              ),
+              AvatarSuperimposed(users: usersShared)
           ],
         ),
 

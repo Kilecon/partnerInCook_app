@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
 
-import '../presentation/fridge-details/bindings/fridge_details_binding.dart';
-import '../presentation/fridge-details/views/fridge_details_view.dart';
+import '../presentation/pantry-details/bindings/pantry_details_binding.dart';
+import '../presentation/pantry-details/views/pantry_details_view.dart';
 import '../presentation/auth/bindings/auth_binding.dart';
 import '../presentation/auth/views/login_view.dart';
 import '../presentation/auth/views/register_view.dart';
 import '../presentation/explorer/bindings/explorer_binding.dart';
 import '../presentation/explorer/views/explorer_view.dart';
+import '../presentation/fridge-details/bindings/fridge_details_binding.dart';
+import '../presentation/fridge-details/views/fridge_details_view.dart';
 import '../presentation/fridge/bindings/fridge_binding.dart';
 import '../presentation/fridge/views/fridge_view.dart';
 import '../presentation/home/bindings/home_binding.dart';
@@ -70,6 +72,11 @@ class AppPages {
       name: _Paths.fridgeDetails,
       page: () => const FridgeDetailsView(),
       binding: FridgeDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.pantryDetails,
+      page: () => const PantryDetailsView(),
+      binding: PantryDetailsBinding(),
     ),
   ];
 }

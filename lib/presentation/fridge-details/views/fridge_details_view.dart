@@ -6,6 +6,7 @@ import 'package:partner_in_cook/component/fridge_details.dart/fridge_header.dart
 import 'package:partner_in_cook/component/fridge_details.dart/ingredient_list.dart';
 import 'package:partner_in_cook/component/widgets/add_btn.dart';
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
+import 'package:partner_in_cook/component/widgets/fridge_description.dart';
 import 'package:partner_in_cook/data/fridge_mock.dart';
 import 'package:partner_in_cook/model/fridge.dart';
 
@@ -17,7 +18,6 @@ class FridgeDetailsView extends GetView<FridgeDetailsController> {
   Widget build(BuildContext context) {
     final dynamic args = Get.arguments;
     Fridge fridge = fridgeMock;
-
     return Scaffold(
       backgroundColor: AppColors.background,
       body: Column(
@@ -25,7 +25,13 @@ class FridgeDetailsView extends GetView<FridgeDetailsController> {
           FridgeHeader(ingredientsCount: fridge.ingredients.length),
           Expanded(
             child: CustomLayout(
+              spacing: 30,
               children: [
+                // FridgeDescription(
+                //   title: "Mon frigo",
+                //   sharedUsers: null,
+                // ),
+                SizedBox(height: 15),
                 IngredientsList(
                   ingredients: fridge.ingredients,
                   isPantry: false,

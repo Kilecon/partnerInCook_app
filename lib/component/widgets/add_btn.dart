@@ -14,9 +14,7 @@ class AddBtn extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: AppColors.background,
-        
+        borderRadius: BorderRadius.circular(20),        
       ),
       child: GestureDetector(
         onTap: onTap,

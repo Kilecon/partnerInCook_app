@@ -20,7 +20,6 @@ class FridgeCard extends StatelessWidget {
       ),
       child: ListTile(
         onTap: onTap,
-
         /// Icône / illustration
         leading: Container(
           width: 64,

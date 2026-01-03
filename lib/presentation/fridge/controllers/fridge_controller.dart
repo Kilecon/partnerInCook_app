@@ -21,9 +21,9 @@ class FridgeController extends GetxController {
     fridge.value = fridgeMock;
   }
 
-  void onPantryTap(Pantry pantry) {
+  void onPantryTap(String id) {
     // Gérer la sélection du garde-manger
-    print('Pantry tapped: ${pantry.name}');
+    Get.toNamed(Routes.pantryDetails, arguments: id);
   }
 
   void onFridgeTap(String id) {

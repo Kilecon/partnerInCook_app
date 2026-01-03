@@ -27,17 +27,15 @@ final Ingredient ingFlour = Ingredient(
   id: 'ing_flour',
   name: 'Farine',
   unit: 'g',
-  quantity: 1000,
   density: null,
   userId: null,
-  iconPictureUrl: null,
+  iconPictureUrl: "https://s3.mizury.fr/partnerincook/ingredient_base.jpg",
 );
 
 final Ingredient ingSugar = Ingredient(
   id: 'ing_sugar',
   name: 'Sucre',
   unit: 'g',
-  quantity: 500,
   density: null,
   userId: null,
   iconPictureUrl: null,
@@ -47,17 +45,15 @@ final Ingredient ingMilk = Ingredient(
   id: 'ing_milk',
   name: 'Lait',
   unit: 'ml',
-  quantity: 200,
   density: null,
   userId: null,
-  iconPictureUrl: null,
+  iconPictureUrl: "https://s3.mizury.fr/partnerincook/ingredient_base.jpg",
 );
 
 final Ingredient ingEgg = Ingredient(
   id: 'ing_egg',
   name: 'Œuf',
   unit: 'pcs',
-  quantity: 12,
   density: null,
   userId: null,
   iconPictureUrl: null,
@@ -67,50 +63,45 @@ final Ingredient ingButter = Ingredient(
   id: 'ing_butter',
   name: 'Beurre',
   unit: 'g',
-  quantity: 250,
   density: null,
   userId: null,
-  iconPictureUrl: null,
+  iconPictureUrl: "https://s3.mizury.fr/partnerincook/ingredient_base.jpg",
 );
 
 final Ingredient ingTomato = Ingredient(
   id: 'ing_tomato',
   name: 'Tomate',
   unit: 'pcs',
-  quantity: 5,
   density: null,
   userId: null,
-  iconPictureUrl: null,
+  iconPictureUrl: "https://s3.mizury.fr/partnerincook/ingredient_base.jpg",
 );
 
 final Ingredient ingOnion = Ingredient(
   id: 'ing_onion',
   name: 'Oignon',
   unit: 'pcs',
-  quantity: 4,
   density: null,
   userId: null,
-  iconPictureUrl: null,
+  iconPictureUrl: "https://s3.mizury.fr/partnerincook/ingredient_base.jpg",
 );
 
 final Ingredient ingGarlic = Ingredient(
   id: 'ing_garlic',
   name: 'Ail',
   unit: 'g',
-  quantity: 50,
   density: null,
   userId: null,
-  iconPictureUrl: null,
+  iconPictureUrl: "https://s3.mizury.fr/partnerincook/ingredient_base.jpg",
 );
 
 final Ingredient ingCheese = Ingredient(
   id: 'ing_cheese',
   name: 'Fromage',
   unit: 'g',
-  quantity: 200,
   density: null,
   userId: null,
-  iconPictureUrl: null,
+  iconPictureUrl: "https://s3.mizury.fr/partnerincook/ingredient_base.jpg",
 );
 
 final List<Ingredient> ingredientsMock = [
@@ -166,6 +157,15 @@ final FridgeIngredient f2i2 = FridgeIngredient(
   ingredient: ingButter, // ✅ Ajout de l'objet ingredient
 );
 
+// Bob a aussi du lait (500ml) - pour tester la fusion
+final FridgeIngredient f2i3 = FridgeIngredient(
+  id: 'f2i3',
+  quantity: 500,
+  fridgeId: 'fridge_2',
+  ingredientId: ingMilk.id,
+  ingredient: ingMilk,
+);
+
 final FridgeIngredient f3i1 = FridgeIngredient(
   id: 'f3i1',
   quantity: 3,
@@ -190,6 +190,24 @@ final FridgeIngredient f3i3 = FridgeIngredient(
   ingredient: ingCheese, // ✅ Ajout de l'objet ingredient
 );
 
+// Clara a aussi des œufs (4) - pour tester la fusion
+final FridgeIngredient f3i5 = FridgeIngredient(
+  id: 'f3i5',
+  quantity: 4,
+  fridgeId: 'fridge_3',
+  ingredientId: ingEgg.id,
+  ingredient: ingEgg,
+);
+
+// Clara a aussi du beurre (100g) - pour tester la fusion
+final FridgeIngredient f3i6 = FridgeIngredient(
+  id: 'f3i6',
+  quantity: 100,
+  fridgeId: 'fridge_3',
+  ingredientId: ingButter.id,
+  ingredient: ingButter,
+);
+
 final FridgeIngredient f3i4 = FridgeIngredient(
   id: 'f3i4',
   quantity: 10,
@@ -208,13 +226,13 @@ final Fridge fridge1 = Fridge(
 final Fridge fridge2 = Fridge(
   id: 'fridge_2',
   owner: userBob,
-  ingredients: [f2i1, f2i2],
+  ingredients: [f2i1, f2i2, f2i3],
 );
 
 final Fridge fridge3 = Fridge(
   id: 'fridge_3',
   owner: userClara,
-  ingredients: [f3i1, f3i2, f3i3, f3i4],
+  ingredients: [f3i1, f3i2, f3i3, f3i4, f3i5, f3i6],
 );
 
 final List<Fridge> fridgesMock = [fridge1, fridge2, fridge3];
