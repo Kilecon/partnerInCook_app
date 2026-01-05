@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-import '../presentation/pantry-details/bindings/pantry_details_binding.dart';
-import '../presentation/pantry-details/views/pantry_details_view.dart';
+import '../presentation/recipe-list-details/bindings/recipe_list_details_binding.dart';
+import '../presentation/recipe-list-details/views/recipe_list_details_view.dart';
 import '../presentation/auth/bindings/auth_binding.dart';
 import '../presentation/auth/views/login_view.dart';
 import '../presentation/auth/views/register_view.dart';
@@ -13,10 +13,14 @@ import '../presentation/fridge/bindings/fridge_binding.dart';
 import '../presentation/fridge/views/fridge_view.dart';
 import '../presentation/home/bindings/home_binding.dart';
 import '../presentation/home/views/home_manager_view.dart';
+import '../presentation/pantry-details/bindings/pantry_details_binding.dart';
+import '../presentation/pantry-details/views/pantry_details_view.dart';
 import '../presentation/profil/bindings/profil_binding.dart';
 import '../presentation/profil/views/profil_view.dart';
-import '../presentation/recipe_details/bindings/recipe_details_binding.dart';
-import '../presentation/recipe_details/views/recipe_details_view.dart';
+import '../presentation/recipe-list/bindings/recipe_list_binding.dart';
+import '../presentation/recipe-list/views/recipe_list_view.dart';
+import '../presentation/recipe-details/bindings/recipe_details_binding.dart';
+import '../presentation/recipe-details/views/recipe_details_view.dart';
 import '../presentation/splash/bindings/splash_binding.dart';
 import '../presentation/splash/views/splash_view.dart';
 
@@ -77,6 +81,16 @@ class AppPages {
       name: _Paths.pantryDetails,
       page: () => const PantryDetailsView(),
       binding: PantryDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.recipeList,
+      page: () => const RecipeListView(),
+      binding: RecipeListBinding(),
+    ),
+    GetPage(
+      name: _Paths.recipeListDetails,
+      page: () => const RecipeListDetailsView(),
+      binding: RecipeListDetailsBinding(),
     ),
   ];
 }

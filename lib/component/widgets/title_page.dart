@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
-import 'package:partner_in_cook/model/recipe.dart';
 import 'package:partner_in_cook/component/widgets/custom_search_bar.dart';
 
 class TitlePage extends StatelessWidget {
@@ -11,7 +10,7 @@ class TitlePage extends StatelessWidget {
     required this.title,
     required this.subtitle,
     this.searchController,
-    this.recipes,
+    this.data,
     this.onSearchResultTap,
   });
 
@@ -19,7 +18,7 @@ class TitlePage extends StatelessWidget {
   final String title;
   final String subtitle;
   final TextEditingController? searchController;
-  final List<Recipe>? recipes;
+  final List<dynamic>? data;
   final VoidCallback? onSearchResultTap;
 
   @override
@@ -27,7 +26,10 @@ class TitlePage extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
       ),
       child: SizedBox(
         width: double.infinity,
@@ -38,7 +40,10 @@ class TitlePage extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 subtitle,
@@ -55,7 +60,7 @@ class TitlePage extends StatelessWidget {
                     searchController: searchController!,
                     hintText: 'Rechercher une recette...',
                     prefixIcon: LucideIcons.search,
-                    recipes: recipes!,
+                    data: data!,
                     onSearchResultTap: onSearchResultTap!,
                   ),
                 )

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
+import 'package:partner_in_cook/data/light_recipe.dart';
 import 'package:partner_in_cook/data/recipe_mock.dart';
 import 'package:partner_in_cook/data/tag_mock.dart';
 import 'package:partner_in_cook/component/widgets/custom_app_bar.dart';
@@ -29,7 +30,7 @@ class ExplorerView extends GetView<ExplorerController> {
                 title: 'Explorer',
                 subtitle: 'Découvrez des milliers de recettes',
                 searchController: controller.searchController,
-                recipes: recipes,
+                data: recipes,
                 onSearchResultTap: controller.onSearch,
               ),
 
@@ -38,7 +39,7 @@ class ExplorerView extends GetView<ExplorerController> {
                   children: [
                     RecipeSections(
                       title: "Dernières nouveautés",
-                      latestRecipes: latestRecipes,
+                      latestRecipes: latestLightRecipes,
                       filteredRecipes: filtered,
                       onRecipeTap: () {},
                     ),

@@ -1,38 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
-import 'package:partner_in_cook/model/pantry.dart';
 import 'package:partner_in_cook/component/widgets/empty_state.dart';
-import 'package:partner_in_cook/component/fridge/pantry_card.dart';
 
-class PantryList extends StatelessWidget {
-  final List<Pantry> pantries;
-  final void Function(String) onPantryTap;
-  final Axis axis;
-  const PantryList({
+class CardList extends StatelessWidget {
+  final List<Widget> cards;
+  final String emptyString;
+  final IconData icon;
+  const CardList({
     super.key,
-    required this.pantries,
-    this.axis = Axis.vertical,
-    required this.onPantryTap,
+    required this.icon,
+    required this.cards,
+    this.emptyString = 'Aucun élément disponible',
   });
 
   @override
   Widget build(BuildContext context) {
-    return pantries.isEmpty
+    return cards.isEmpty
         ? EmptyState(
-            icon: LucideIcons.refrigerator,
-            message: "Aucun garde mangé disponible",
+            icon: icon,
+            message: emptyString,
           )
         : ListView.separated(
             separatorBuilder: (BuildContext context, int index) =>
                 const SizedBox(height: 10, width: 10),
-            scrollDirection: axis,
-            shrinkWrap: axis == Axis.vertical,
-            physics: axis == Axis.vertical
-                ? const NeverScrollableScrollPhysics()
-                : null,
-            itemBuilder: (BuildContext context, int index) =>
-                PantryCard(pantry: pantries[index], onTap: () => onPantryTap(pantries[index].id)),
-            itemCount: pantries.length,
+            scrollDirection: Axis.vertical,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) => cards[index],
+            itemCount: cards.length,
           );
   }
 }

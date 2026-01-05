@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
-import 'package:partner_in_cook/model/recipe.dart';
 
 class CustomSearchBar extends StatefulWidget {
   const CustomSearchBar({
     super.key,
     required this.searchController,
-    required this.recipes,
+    required this.data,
     required this.onSearchResultTap,
     this.prefixIcon = Icons.search,
     this.backgroundColor = const Color(0xFFF5F5F5),
@@ -14,7 +13,7 @@ class CustomSearchBar extends StatefulWidget {
   });
 
   final TextEditingController searchController;
-  final List<Recipe> recipes;
+  final List<dynamic> data;
   final VoidCallback onSearchResultTap;
   final IconData prefixIcon;
   final Color backgroundColor;
@@ -26,7 +25,7 @@ class CustomSearchBar extends StatefulWidget {
 
 class _CustomSearchBarState extends State<CustomSearchBar> {
   late FocusNode _focusNode;
-  List<Recipe> _suggestions = [];
+  List<dynamic> _suggestions = [];
   bool _showSuggestions = false;
 
   @override
@@ -50,7 +49,7 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
         _suggestions = [];
         _showSuggestions = false;
       } else {
-        _suggestions = widget.recipes
+        _suggestions = widget.data
             .where((e) => e.name.toLowerCase().contains(q))
             .take(5)
             .toList();

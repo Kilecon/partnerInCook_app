@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:partner_in_cook/model/light_recipe_list.dart';
 
-import '../../model/recipe.dart';
 import 'rating_stars.dart';
 
 class RecipeHorizontalCard extends StatelessWidget {
-  final Recipe recipe;
+  final LightRecipe recipe;
   final VoidCallback onTap;
   const RecipeHorizontalCard({
     super.key,
@@ -59,7 +59,7 @@ class RecipeHorizontalCard extends StatelessWidget {
                     spacing: 5,
                     children: [
                       const Icon(Icons.schedule, size: 14),
-                      Text('${recipe.preparationTime ?? 0} min'),
+                      Text('${recipe.globalTime ?? 0} min'),
                       const Icon(
                         Icons.thumb_up_alt_outlined,
                         color: Colors.red,

@@ -4,7 +4,7 @@ import 'package:partner_in_cook/model/light_user.dart';
 class OwnerAvatar extends StatelessWidget {
   final LightUser user;
 
-  const OwnerAvatar({required this.user});
+  const OwnerAvatar({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {

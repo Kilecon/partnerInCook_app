@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-
-import '../../model/recipe.dart';
+import 'package:partner_in_cook/model/light_recipe_list.dart';
 import 'rating_stars.dart';
 
 class RecipeLargeCard extends StatelessWidget {
-  final Recipe recipe;
+  final LightRecipe recipe;
   final VoidCallback onTap;
   const RecipeLargeCard({super.key, required this.recipe, required this.onTap});
 
@@ -37,7 +36,7 @@ class RecipeLargeCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 const Icon(Icons.schedule, size: 14),
                 const SizedBox(width: 2),
-                Text('${recipe.preparationTime ?? 0} min'),
+                Text('${recipe.globalTime ?? 0} min'),
               ],
             ),
             const SizedBox(height: 4),

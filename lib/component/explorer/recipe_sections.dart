@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/model/recipe.dart';
+import 'package:partner_in_cook/model/light_recipe_list.dart';
 import 'package:partner_in_cook/model/tag.dart';
 import 'package:partner_in_cook/component/widgets/header.dart';
 import 'package:partner_in_cook/component/explorer/recipe_list.dart';
@@ -18,8 +18,8 @@ class RecipeSections extends StatelessWidget {
   });
 
   final String title;
-  final List<Recipe> latestRecipes;
-  final List<Recipe> filteredRecipes;
+  final List<LightRecipe> latestRecipes;
+  final List<LightRecipe> filteredRecipes;
   final VoidCallback onRecipeTap;
   final List<Tag>? tags;
   final Tag? selectedTag;

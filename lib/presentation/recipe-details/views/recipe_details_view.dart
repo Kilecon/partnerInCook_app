@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/component/recipe_details/ingredient_content.dart';
 import 'package:partner_in_cook/component/recipe_details/recipe_description.dart';
-import 'package:partner_in_cook/component/recipe_details/recipe_header.dart';
+import 'package:partner_in_cook/component/recipe/recipe_header.dart';
 import 'package:partner_in_cook/component/recipe_details/recipe_section.dart';
 import 'package:partner_in_cook/component/recipe_details/utensil_content.dart';
 import 'package:partner_in_cook/component/widgets/layout/custom_layout_body.dart';

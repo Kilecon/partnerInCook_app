@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:partner_in_cook/data/recipe_mock.dart';
+import 'package:partner_in_cook/data/light_recipe.dart';
 import 'package:partner_in_cook/data/tag_mock.dart';
-import 'package:partner_in_cook/model/recipe.dart';
+import 'package:partner_in_cook/model/light_recipe_list.dart';
 import 'package:partner_in_cook/model/tag.dart';
 
 class ExplorerController extends GetxController {
@@ -13,16 +13,16 @@ class ExplorerController extends GetxController {
   final Rx<Tag> selectedTag = tagsMock.first.obs;
 
   /// Recipes source
-  final List<Recipe> _recipes = recipes;
+  final List<LightRecipe> _recipes = recipesLight;
 
   /// Filtered recipes (computed)
-  List<Recipe> get filteredRecipes {
+  List<LightRecipe> get filteredRecipes {
     var result = _recipes;
 
     // Exemple filtre tag (si besoin)
     if (selectedTag.value != tagsMock.first) {
       result = result
-          .where((r) => r.tags.contains(selectedTag.value))
+          .where((r) => r.tags!.contains(selectedTag.value))
           .toList();
     }
 
