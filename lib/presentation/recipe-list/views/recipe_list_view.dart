@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
-import 'package:partner_in_cook/component/fridge/pantry_list.dart';
+import 'package:partner_in_cook/component/fridge/card_list.dart';
 import 'package:partner_in_cook/component/recipe-list/recipe_list_card.dart';
+import 'package:partner_in_cook/component/widgets/add_btn.dart';
 import 'package:partner_in_cook/component/widgets/custom_app_bar.dart';
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
 import 'package:partner_in_cook/component/widgets/title_page.dart';
@@ -54,10 +55,8 @@ class RecipeListView extends GetView<RecipeListController> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => controller.onAddRecipeListTap(),
-        backgroundColor: AppColors.lightOrange,
-        child: const Icon(Icons.add, color: AppColors.primaryOrange),
+      floatingActionButton: AddBtn(
+        onTap: () => controller.onAddRecipeListTap(),
       ),
     );
   }

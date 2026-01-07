@@ -5,7 +5,8 @@ import 'package:partner_in_cook/model/recipe_list.dart';
 
 final List<RecipeList> mockRecipeLists = [
   RecipeList(
-    pictureUrl: 'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+    pictureUrl:
+        'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
     id: '1',
     name: 'Recettes Italiennes',
     description: 'Mes meilleures recettes italiennes à partager en famille',
@@ -13,19 +14,185 @@ final List<RecipeList> mockRecipeLists = [
     author: LightUser(
       id: 'user1',
       username: 'ChefMario',
-      profilePictureUrl: 'https://example.com/profiles/mario.jpg',
+      profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
     ),
     recipes: [
+       LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
+       LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
+       LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
       LightRecipe(
         id: 'recipe1',
         name: 'Pasta Carbonara',
         globalTime: 30,
         isFavorite: true,
-        pictureUrl: 'https://example.com/recipes/carbonara.jpg',
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
         author: LightUser(
           id: 'user1',
           username: 'ChefMario',
-          profilePictureUrl: 'https://example.com/profiles/mario.jpg',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
+       LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
+       LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
+       LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
+       LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
+       LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
+       LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
+      LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
+        ),
+        notationsCount: 125,
+        averageNotation: 4.8,
+      ),
+      LightRecipe(
+        id: 'recipe1',
+        name: 'Pasta Carbonara',
+        globalTime: 30,
+        isFavorite: true,
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
+        author: LightUser(
+          id: 'user1',
+          username: 'ChefMario',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
         ),
         notationsCount: 125,
         averageNotation: 4.8,
@@ -35,11 +202,12 @@ final List<RecipeList> mockRecipeLists = [
         name: 'Tiramisu',
         globalTime: 45,
         isFavorite: true,
-        pictureUrl: 'https://example.com/recipes/tiramisu.jpg',
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
         author: LightUser(
           id: 'user1',
           username: 'ChefMario',
-          profilePictureUrl: 'https://example.com/profiles/mario.jpg',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
         ),
         notationsCount: 98,
         averageNotation: 4.9,
@@ -49,7 +217,8 @@ final List<RecipeList> mockRecipeLists = [
         name: 'Pizza Margherita',
         globalTime: 60,
         isFavorite: false,
-        pictureUrl: 'https://example.com/recipes/pizza.jpg',
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
         author: LightUser(
           id: 'user2',
           username: 'NonnaMaria',
@@ -63,18 +232,19 @@ final List<RecipeList> mockRecipeLists = [
       LightUser(
         id: 'user1',
         username: 'ChefMario',
-        profilePictureUrl: 'https://example.com/profiles/mario.jpg',
+        profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
       ),
       LightUser(
         id: 'user3',
         username: 'Sophie',
-        profilePictureUrl: 'https://example.com/profiles/sophie.jpg',
+        profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
       ),
       LightUser(id: 'user4', username: 'Pierre'),
     ],
   ),
   RecipeList(
-    pictureUrl: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images",
+    pictureUrl:
+        "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images",
     id: '2',
     name: 'Desserts Gourmands',
     description: 'Une collection de desserts pour les grandes occasions',
@@ -82,7 +252,7 @@ final List<RecipeList> mockRecipeLists = [
     author: LightUser(
       id: 'user5',
       username: 'PatissierLucas',
-      profilePictureUrl: 'https://example.com/profiles/lucas.jpg',
+      profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
     ),
     recipes: [
       LightRecipe(
@@ -94,7 +264,7 @@ final List<RecipeList> mockRecipeLists = [
         author: LightUser(
           id: 'user5',
           username: 'PatissierLucas',
-          profilePictureUrl: 'https://example.com/profiles/lucas.jpg',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
         ),
         notationsCount: 67,
         averageNotation: 4.6,
@@ -104,11 +274,12 @@ final List<RecipeList> mockRecipeLists = [
         name: 'Fondant au Chocolat',
         globalTime: 40,
         isFavorite: true,
-        pictureUrl: 'https://example.com/recipes/fondant.jpg',
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
         author: LightUser(
           id: 'user5',
           username: 'PatissierLucas',
-          profilePictureUrl: 'https://example.com/profiles/lucas.jpg',
+          profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
         ),
         notationsCount: 143,
         averageNotation: 4.9,
@@ -118,12 +289,12 @@ final List<RecipeList> mockRecipeLists = [
       LightUser(
         id: 'user5',
         username: 'PatissierLucas',
-        profilePictureUrl: 'https://example.com/profiles/lucas.jpg',
+        profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
       ),
       LightUser(
         id: 'user6',
         username: 'Emma',
-        profilePictureUrl: 'https://example.com/profiles/emma.jpg',
+        profilePictureUrl: 'https://s3.mizury.fr/partnerincook/chef.png',
       ),
     ],
   ),
@@ -138,7 +309,8 @@ final List<RecipeList> mockRecipeLists = [
         name: 'Salade César',
         globalTime: 15,
         isFavorite: false,
-        pictureUrl: 'https://example.com/recipes/caesar.jpg',
+        pictureUrl:
+            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
         author: LightUser(id: 'user7', username: 'QuickCook'),
         notationsCount: 45,
         averageNotation: 4.2,

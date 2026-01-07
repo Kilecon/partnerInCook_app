@@ -1,23 +1,9 @@
 import 'package:get/get.dart';
+import 'package:partner_in_cook/data/recipe_mock.dart';
+import 'package:partner_in_cook/model/recipe.dart';
 
 class RecipeDetailsController extends GetxController {
-  //TODO: Implement RecipeDetailsController
+  
+  Recipe recipe = recipe1;
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

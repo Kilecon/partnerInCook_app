@@ -19,4 +19,35 @@ class RecipeListDetailsController extends GetxController {
     // Logique pour gérer le tap sur une recette
     Get.toNamed(Routes.recipeDetails, arguments: recipeId);
   }
+
+  void onDeleteRecipeList() {
+    // Logique pour supprimer la liste de recettes
+    Get.defaultDialog(
+      title: 'Supprimer la liste',
+      middleText:
+          'Êtes-vous sûr de vouloir supprimer cette liste de recettes ?',
+      textConfirm: 'Supprimer',
+      textCancel: 'Annuler',
+      confirmTextColor: Colors.white,
+      buttonColor: Colors.red,
+      onConfirm: () {
+        Get.back();
+        Get.back(); // Retour à la page précédente
+        Get.snackbar(
+          'Succès',
+          'Liste supprimée avec succès',
+          snackPosition: SnackPosition.BOTTOM,
+        );
+      },
+    );
+  }
+
+  void onEditRecipeList() {
+    // Logique pour modifier la liste de recettes
+    Get.snackbar(
+      'Info',
+      'Édition de la liste à implémenter',
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
 }

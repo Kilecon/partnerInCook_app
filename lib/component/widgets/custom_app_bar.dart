@@ -22,6 +22,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: AppBar(
+        surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
         leading: showBackButton
             ? IconButton(

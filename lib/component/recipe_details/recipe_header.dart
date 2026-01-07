@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/component/recipe/tag_author.dart';
+import 'package:partner_in_cook/component/recipe_details/tag_author.dart';
 import 'package:partner_in_cook/component/widgets/circle_btn.dart';
 import 'package:partner_in_cook/data/fridge_mock.dart';
+import 'package:partner_in_cook/model/light_user.dart';
 
 class RecipeHeader extends StatelessWidget {
-  const RecipeHeader({super.key});
+
+  final LightUser user;
+  final IconData icon;
+  final VoidCallback onTapAction;
+  final String? imageUrl;
+
+  const RecipeHeader({super.key, required this.user, required this.icon, required this.onTapAction, this.imageUrl});
 
   @override
   Widget build(BuildContext context) {
+    var color = Colors.white;
+
     return SliverAppBar(
       pinned: true,
       expandedHeight: 260,
@@ -27,8 +36,9 @@ class RecipeHeader extends StatelessWidget {
                 CircleIconButton(
                   icon: Icons.arrow_back,
                   onTap: () => Navigator.of(context).pop(),
+                  color: color,
                 ),
-                CircleIconButton(icon: Icons.favorite_border, onTap: () {}),
+                CircleIconButton(icon: icon, onTap: onTapAction, color: color),
               ],
             ),
           ),
@@ -54,8 +64,11 @@ class RecipeHeader extends StatelessWidget {
                   bottomLeft: Radius.circular(24 * (1 - scrollRatio)),
                   bottomRight: Radius.circular(24 * (1 - scrollRatio)),
                 ),
-                child: Image.network(
-                  "https://s3.mizury.fr/partnerincook/ingredient_base.jpg",
+                child: imageUrl != null ? Image.network(
+                  imageUrl!,
+                  fit: BoxFit.cover,
+                ) : Image.network(
+                  'https://s3.mizury.fr/partnerincook/ingredient_base.jpg',
                   fit: BoxFit.cover,
                 ),
               ),

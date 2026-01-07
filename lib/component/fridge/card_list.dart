@@ -20,6 +20,7 @@ class CardList extends StatelessWidget {
             message: emptyString,
           )
         : ListView.separated(
+          padding: EdgeInsets.zero,
             separatorBuilder: (BuildContext context, int index) =>
                 const SizedBox(height: 10, width: 10),
             scrollDirection: Axis.vertical,

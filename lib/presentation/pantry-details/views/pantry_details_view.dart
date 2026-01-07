@@ -81,7 +81,7 @@ class PantryDetailsView extends GetView<PantryDetailsController> {
       body: Column(
         children: [
           FridgeHeader(ingredientsCount: ingredientsWithOwner.length),
-                FridgeDescription(title: pantry.name, sharedUsers: members),
+          FridgeDescription(title: pantry.name, sharedUsers: members),
           Expanded(
             child: CustomLayout(
               useSafeArea: true,

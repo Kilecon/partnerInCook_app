@@ -17,12 +17,12 @@ class ExplorerView extends GetView<ExplorerController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.background,
       appBar: const CustomAppBar(showBackButton: false),
       body: Container(
         color: AppColors.background,
         child: Obx(() {
           final filtered = controller.filteredRecipes;
-
           return Column(
             children: [
               TitlePage(

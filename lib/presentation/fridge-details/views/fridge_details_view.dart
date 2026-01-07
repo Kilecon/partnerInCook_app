@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/fridge_header.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/ingredient_list.dart';
+import 'package:partner_in_cook/component/widgets/add_btn.dart';
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
 import 'package:partner_in_cook/data/fridge_mock.dart';
 import 'package:partner_in_cook/model/fridge.dart';
@@ -25,10 +26,6 @@ class FridgeDetailsView extends GetView<FridgeDetailsController> {
             child: CustomLayout(
               spacing: 30,
               children: [
-                // FridgeDescription(
-                //   title: "Mon frigo",
-                //   sharedUsers: null,
-                // ),
                 SizedBox(height: 15),
                 IngredientsList(
                   ingredients: fridge.ingredients,
@@ -39,11 +36,7 @@ class FridgeDetailsView extends GetView<FridgeDetailsController> {
           ),
         ],
       ),
-       floatingActionButton: FloatingActionButton(
-        onPressed: () => {},
-        backgroundColor: AppColors.lightOrange,
-        child: const Icon(Icons.add, color: AppColors.primaryOrange),
-      ),
+      floatingActionButton: AddBtn(onTap: () {}),
     );
   }
 }

@@ -8,7 +8,7 @@ import 'package:partner_in_cook/component/widgets/add_btn.dart';
 import 'package:partner_in_cook/component/widgets/custom_app_bar.dart';
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
 import 'package:partner_in_cook/component/fridge/fridge_card.dart';
-import 'package:partner_in_cook/component/fridge/pantry_list.dart';
+import 'package:partner_in_cook/component/fridge/card_list.dart';
 import 'package:partner_in_cook/component/widgets/title_page.dart';
 
 import '../controllers/fridge_controller.dart';
@@ -66,11 +66,9 @@ class FridgeView extends GetView<FridgeController> {
           );
         }),
       ),
-       floatingActionButton: FloatingActionButton(
-        onPressed: () => controller.onAddPantryTap(),
-        backgroundColor: AppColors.lightOrange,
-        child: const Icon(Icons.add, color: AppColors.primaryOrange),
-      ),
+       floatingActionButton: AddBtn(
+        onTap: () => controller.onAddPantryTap(),
+       )
     );
   }
 }

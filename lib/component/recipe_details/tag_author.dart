@@ -15,7 +15,7 @@ class AuthorTag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.25), // effet "glass"/clair
+        color: Colors.white.withOpacity(0.50), // effet "glass"/clair
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: AppColors.primaryOrange,
@@ -42,7 +42,7 @@ class AuthorTag extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                "Réalisé par",
+                "Créé par",
                 style: TextStyle(
                   fontSize: 11,
                   color: AppColors.lightGray,

@@ -61,6 +61,7 @@ class FridgeHeader extends StatelessWidget {
                               CircleIconButton(
                                 icon: Icons.arrow_back,
                                 onTap: () => Navigator.of(context).pop(),
+                                color: Colors.white,
                               ),
                             ],
                           ),
