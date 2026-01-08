@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
-import 'package:partner_in_cook/widget/logo_title.dart';
-import 'package:partner_in_cook/widget/custom_input.dart';
-import 'package:partner_in_cook/widget/custom_button.dart';
+import 'package:partner_in_cook/component/widgets/logo_title.dart';
+import 'package:partner_in_cook/component/widgets/custom_input.dart';
+import 'package:partner_in_cook/component/widgets/custom_button.dart';
 import '../controllers/login_controller.dart';
 
 class LoginView extends GetView<LoginController> {

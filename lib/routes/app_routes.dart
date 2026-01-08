@@ -11,6 +11,10 @@ abstract class Routes {
   static const recipeDetails = _Paths.recipeDetails;
   static const explorer = _Paths.explorer;
   static const fridge = _Paths.fridge;
+  static const fridgeDetails = _Paths.fridgeDetails;
+  static const pantryDetails = _Paths.pantryDetails;
+  static const recipeList = _Paths.recipeList;
+  static const recipeListDetails = _Paths.recipeListDetails;
 }
 
 abstract class _Paths {
@@ -23,4 +27,8 @@ abstract class _Paths {
   static const recipeDetails = '/recipe-details';
   static const explorer = '/explorer';
   static const fridge = '/fridge';
+  static const fridgeDetails = '/fridge-details';
+  static const pantryDetails = '/pantry-details';
+  static const recipeList = '/recipe-list';
+  static const recipeListDetails = '/recipe-list-details';
 }

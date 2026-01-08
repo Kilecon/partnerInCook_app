@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/presentation/explorer/views/explorer_view.dart';
-import 'package:partner_in_cook/widget/customNavBar.component.dart';
+import 'package:partner_in_cook/presentation/fridge/views/fridge_view.dart';
+import 'package:partner_in_cook/component/widgets/customNavBar.component.dart';
+import 'package:partner_in_cook/presentation/recipe-list/views/recipe_list_view.dart';
 
 import '../controllers/home_manager_controller.dart';
 
@@ -23,8 +25,8 @@ class HomeManagerView extends GetView<HomeManagerController> {
                   index: controller.currentPageIndex.value,
                   children: [
                     const ExplorerView(),
-                    SizedBox(child: Text("CVoucou")),
-                    SizedBox(),
+                    const RecipeListView(),
+                    const FridgeView(),
                   ],
                 ),
               ),
