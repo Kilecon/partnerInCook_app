@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/model/fridge.dart';
+import 'package:partner_in_cook/model/api/fridge.dart';
 
 class FridgeCard extends StatelessWidget {
   final Fridge fridge;

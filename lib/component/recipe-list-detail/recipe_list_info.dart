@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/widgets/avatars_superimposed.dart';
 import 'package:partner_in_cook/component/widgets/info_chip.dart';
-import 'package:partner_in_cook/model/recipe_list.dart';
+import 'package:partner_in_cook/model/api/recipe_list.dart';
 
 class RecipeListInfo extends StatelessWidget {
   final RecipeList recipeList;

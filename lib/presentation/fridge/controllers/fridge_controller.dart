@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/data/fridge_mock.dart';
 import 'package:partner_in_cook/data/pantry_mock.dart';
-import 'package:partner_in_cook/model/fridge.dart';
-import 'package:partner_in_cook/model/pantry.dart';
-import 'package:partner_in_cook/model/tag.dart';
+import 'package:partner_in_cook/model/api/fridge.dart';
+import 'package:partner_in_cook/model/api/pantry.dart';
+import 'package:partner_in_cook/model/api/tag.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 
 class FridgeController extends GetxController {

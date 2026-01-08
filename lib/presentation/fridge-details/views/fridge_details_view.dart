@@ -7,7 +7,7 @@ import 'package:partner_in_cook/component/fridge_details.dart/ingredient_list.da
 import 'package:partner_in_cook/component/widgets/add_btn.dart';
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
 import 'package:partner_in_cook/data/fridge_mock.dart';
-import 'package:partner_in_cook/model/fridge.dart';
+import 'package:partner_in_cook/model/api/fridge.dart';
 
 import '../controllers/fridge_details_controller.dart';
 

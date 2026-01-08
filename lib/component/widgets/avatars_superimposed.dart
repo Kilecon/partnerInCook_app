@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/component/widgets/circle_avatar.dart';
-import 'package:partner_in_cook/model/light_user.dart';
+import 'package:partner_in_cook/model/api/light_user.dart';
 
 class AvatarSuperimposed extends StatelessWidget {
   final List<LightUser> users;

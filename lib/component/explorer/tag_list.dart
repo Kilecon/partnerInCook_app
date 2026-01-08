@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/model/tag.dart';
+import 'package:partner_in_cook/model/api/tag.dart';
 import 'package:partner_in_cook/component/explorer/tag.dart';
 
 class TagList extends StatelessWidget {

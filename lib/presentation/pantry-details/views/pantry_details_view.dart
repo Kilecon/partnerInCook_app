@@ -7,9 +7,9 @@ import 'package:partner_in_cook/component/fridge_details.dart/ingredient_list.da
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
 import 'package:partner_in_cook/component/widgets/fridge_description.dart';
 import 'package:partner_in_cook/data/pantry_mock.dart';
-import 'package:partner_in_cook/model/fridge_ingredient.dart';
-import 'package:partner_in_cook/model/light_user.dart';
-import 'package:partner_in_cook/model/pantry.dart';
+import 'package:partner_in_cook/model/api/fridge_ingredient.dart';
+import 'package:partner_in_cook/model/api/light_user.dart';
+import 'package:partner_in_cook/model/api/pantry.dart';
 
 import '../controllers/pantry_details_controller.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/ingredient_fridge_card.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/ingredient_pantry_card.dart';
-import 'package:partner_in_cook/model/fridge_ingredient.dart';
+import 'package:partner_in_cook/model/api/fridge_ingredient.dart';
 import 'package:partner_in_cook/component/widgets/empty_state.dart';
 
 class IngredientsList extends StatelessWidget {

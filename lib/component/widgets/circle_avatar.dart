@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/model/light_user.dart';
+import 'package:partner_in_cook/model/api/light_user.dart';
 
 class OwnerAvatar extends StatelessWidget {
   final LightUser user;

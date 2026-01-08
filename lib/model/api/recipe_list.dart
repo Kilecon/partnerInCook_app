@@ -1,6 +1,6 @@
 import 'package:partner_in_cook/common/config/constants/state_enum.dart';
-import 'package:partner_in_cook/model/light_recipe_list.dart';
-import 'package:partner_in_cook/model/light_user.dart';
+import 'package:partner_in_cook/model/api/light_recipe_list.dart';
+import 'package:partner_in_cook/model/api/light_user.dart';
 
 class RecipeList {
   final String id;

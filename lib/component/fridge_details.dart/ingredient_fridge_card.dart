@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
-import 'package:partner_in_cook/model/fridge_ingredient.dart';
+import 'package:partner_in_cook/model/api/fridge_ingredient.dart';
 
 class IngredientFridgeCard extends StatefulWidget {
   final FridgeIngredient fridgeIngredient;

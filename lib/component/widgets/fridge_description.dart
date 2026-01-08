@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/widgets/avatars_superimposed.dart';
-import 'package:partner_in_cook/model/light_user.dart';
+import 'package:partner_in_cook/model/api/light_user.dart';
 
 class FridgeDescription extends StatelessWidget {
   final String title;

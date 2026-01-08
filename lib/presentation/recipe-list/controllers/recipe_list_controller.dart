@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/data/recipe_list_mock.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
-import 'package:partner_in_cook/model/recipe_list.dart';
+import 'package:partner_in_cook/model/api/recipe_list.dart';
 
 class RecipeListController extends GetxController {
   var recipeList = <RecipeList>[].obs;
@@ -21,6 +21,6 @@ class RecipeListController extends GetxController {
 
   void onAddRecipeListTap() {
     // Gérer l'ajout d'une nouvelle liste de recettes
-    print('Add Recipe List tapped');
+    Get.toNamed(Routes.createRecipe);
   }
 }

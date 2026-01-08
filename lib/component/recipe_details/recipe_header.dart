@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:partner_in_cook/component/recipe_details/tag_author.dart';
 import 'package:partner_in_cook/component/widgets/circle_btn.dart';
 import 'package:partner_in_cook/data/fridge_mock.dart';
-import 'package:partner_in_cook/model/light_user.dart';
+import 'package:partner_in_cook/model/api/light_user.dart';
 
 class RecipeHeader extends StatelessWidget {
 

@@ -1,5 +1,5 @@
-import 'package:partner_in_cook/model/fridge_ingredient.dart';
-import 'package:partner_in_cook/model/light_user.dart';
+import 'package:partner_in_cook/model/api/fridge_ingredient.dart';
+import 'package:partner_in_cook/model/api/light_user.dart';
 
 class Fridge {
   final String id;

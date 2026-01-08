@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/data/recipe_list_mock.dart';
-import 'package:partner_in_cook/model/recipe_list.dart';
+import 'package:partner_in_cook/model/api/recipe_list.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 
 class RecipeListDetailsController extends GetxController {

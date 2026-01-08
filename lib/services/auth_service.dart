@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:partner_in_cook/model/auth.dart';
-import 'package:partner_in_cook/model/user.dart';
+import 'package:partner_in_cook/model/api/auth.dart';
+import 'package:partner_in_cook/model/api/user.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

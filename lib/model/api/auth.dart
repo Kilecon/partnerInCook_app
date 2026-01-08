@@ -1,4 +1,4 @@
-import 'package:partner_in_cook/model/user.dart';
+import 'package:partner_in_cook/model/api/user.dart';
 
 class AuthRes {
   final User user;

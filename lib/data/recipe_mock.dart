@@ -1,10 +1,10 @@
 import 'package:partner_in_cook/common/config/constants/state_enum.dart';
-import 'package:partner_in_cook/model/light_user.dart';
-import 'package:partner_in_cook/model/recipe.dart';
-import 'package:partner_in_cook/model/tag.dart';
-import 'package:partner_in_cook/model/step.dart';
-import 'package:partner_in_cook/model/recipe_ingredient.dart';
-import 'package:partner_in_cook/model/utensil.dart';
+import 'package:partner_in_cook/model/api/light_user.dart';
+import 'package:partner_in_cook/model/api/recipe.dart';
+import 'package:partner_in_cook/model/api/tag.dart';
+import 'package:partner_in_cook/model/api/step.dart';
+import 'package:partner_in_cook/model/api/recipe_ingredient.dart';
+import 'package:partner_in_cook/model/api/utensil.dart';
 
 final author1 = LightUser(
   id: "1234",

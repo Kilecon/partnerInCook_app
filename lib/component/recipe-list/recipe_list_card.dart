@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:partner_in_cook/model/recipe_list.dart';
+import 'package:partner_in_cook/model/api/recipe_list.dart';
 import 'package:partner_in_cook/component/widgets/avatars_superimposed.dart';
 
 class RecipeListCard extends StatelessWidget {
