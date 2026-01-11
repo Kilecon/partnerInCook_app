@@ -60,6 +60,7 @@ class LoginView extends GetView<LoginController> {
                                 children: [
                                   // Email
                                   CustomInput(
+                                    keyboardType: TextInputType.emailAddress,
                                     title: "Email",
                                     prefixIcon: Icons.email,
                                     hintText: "exemple@email.com",
@@ -79,6 +80,7 @@ class LoginView extends GetView<LoginController> {
 
                                   // Password
                                   CustomInput(
+                                    keyboardType: TextInputType.text,
                                     title: "Mot de passe",
                                     isPassword: true,
                                     prefixIcon: Icons.lock,

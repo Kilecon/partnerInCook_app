@@ -10,7 +10,7 @@ class ExplorerController extends GetxController {
   final SearchController searchController = SearchController();
 
   /// Selected tag
-  final Rx<Tag> selectedTag = tagsMock.first.obs;
+  final RxList<Tag> selectedTag = <Tag>[tagsMock.first].obs;
 
   /// Recipes source
   final List<LightRecipe> _recipes = recipesLight;
@@ -37,7 +37,7 @@ class ExplorerController extends GetxController {
   }
 
   void onTagChanged(Tag tag) {
-    selectedTag.value = tag;
+    selectedTag.value = [tag];
   }
 
   void onSearch() {

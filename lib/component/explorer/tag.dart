@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 
 class CustomTag extends StatelessWidget {
   final bool isSelect;
   final String name;
   final VoidCallback onClick;
+  final Color color;
   const CustomTag({
     super.key,
     required this.isSelect,
     required this.name,
     required this.onClick,
+    required this.color
   });
 
   @override
@@ -19,14 +20,14 @@ class CustomTag extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         decoration: BoxDecoration(
-          color: isSelect ? AppColors.primaryOrange : Colors.white,
-          border: Border.all(color: AppColors.primaryOrange, width: 2),
+          color: isSelect ? color : Colors.white,
+          border: Border.all(color: color, width: 2),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
           name,
           style: TextStyle(
-            color: isSelect ? Colors.white : AppColors.primaryOrange,
+            color: isSelect ? Colors.white : color,
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),

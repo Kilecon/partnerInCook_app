@@ -22,7 +22,7 @@ class RecipeSections extends StatelessWidget {
   final List<LightRecipe> filteredRecipes;
   final VoidCallback onRecipeTap;
   final List<Tag>? tags;
-  final Tag? selectedTag;
+  final List<Tag>? selectedTag;
   final ValueChanged<Tag>? onTagChanged;
 
   @override
@@ -51,7 +51,7 @@ class RecipeSections extends StatelessWidget {
         SectionHeader(title: title),
         if (tags != null && onTagChanged != null)
           TagList(
-            selected: selectedTag ?? tags!.first,
+            selected: selectedTag ?? [tags!.first],
             tags: tags!,
             onChanged: onTagChanged!,
           ),

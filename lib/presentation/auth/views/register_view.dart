@@ -57,6 +57,7 @@ class RegisterView extends GetView<RegisterController> {
                               children: [
                                 // Username
                                 CustomInput(
+                                  keyboardType: TextInputType.text,
                                   title: "Nom d'utilisateur",
                                   prefixIcon: Icons.person,
                                   hintText: "Votre pseudo",
@@ -75,6 +76,7 @@ class RegisterView extends GetView<RegisterController> {
 
                                 // Email
                                 CustomInput(
+                                  keyboardType: TextInputType.emailAddress,
                                   title: "Email",
                                   prefixIcon: Icons.email,
                                   hintText: "exemple@email.com",
@@ -94,6 +96,7 @@ class RegisterView extends GetView<RegisterController> {
                                 // Password
                                 Obx(
                                   () => CustomInput(
+                                    keyboardType: TextInputType.text,
                                     title: "Mot de passe",
                                     isPassword: controller.hidePassword.value,
                                     prefixIcon: Icons.lock,
@@ -115,6 +118,7 @@ class RegisterView extends GetView<RegisterController> {
                                 // Confirm password
                                 Obx(
                                   () => CustomInput(
+                                    keyboardType: TextInputType.text,
                                     title: "Confirmer le mot de passe",
                                     isPassword:
                                         controller.hideConfirmPassword.value,

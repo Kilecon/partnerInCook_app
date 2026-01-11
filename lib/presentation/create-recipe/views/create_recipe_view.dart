@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/create_recipe/footer.dart';
-import 'package:partner_in_cook/component/create_recipe/step_main.dart';
+import 'package:partner_in_cook/component/create_recipe/step/ingredient/step_ingredient.dart';
+import 'package:partner_in_cook/component/create_recipe/step/main/step_main.dart';
 import 'package:partner_in_cook/component/widgets/back_header.dart';
 import 'package:partner_in_cook/component/widgets/layout/custom_layout_body.dart';
 import 'package:partner_in_cook/presentation/create-recipe/controllers/create_recipe_controller.dart';
@@ -13,7 +13,7 @@ class CreateRecipeView extends GetView<CreateRecipeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           CreateRecipeHeader(
@@ -26,8 +26,10 @@ class CreateRecipeView extends GetView<CreateRecipeController> {
               children: [
                 Obx(() {
                   switch (controller.currentStep.value) {
-                    case CreateRecipeStep.mainInfo:
+                    case CreateRecipeStepPage.mainInfo:
                       return const StepMainInfo();
+                    case CreateRecipeStepPage.ingredients:
+                      return const StepIngredients();
                     default:
                       return const SizedBox();
                   }
@@ -39,7 +41,7 @@ class CreateRecipeView extends GetView<CreateRecipeController> {
           Obx(
             () => CreateRecipeFooter(
               currentStep: controller.currentStep.value.index,
-              totalSteps: CreateRecipeStep.values.length,
+              totalSteps: CreateRecipeStepPage.values.length,
               onNext: controller.next,
             ),
           ),

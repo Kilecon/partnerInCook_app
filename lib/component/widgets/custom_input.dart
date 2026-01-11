@@ -15,7 +15,8 @@ class CustomInput extends StatefulWidget {
     this.controller,
     this.onChanged,
     this.initialValue,
-    this.enabled = true,
+    this.enabled = true, 
+    required this.keyboardType,
   });
 
   final String title;
@@ -30,6 +31,7 @@ class CustomInput extends StatefulWidget {
   final ValueChanged<String>? onChanged;
   final String? initialValue;
   final bool enabled;
+  final TextInputType keyboardType;
 
   @override
   State<CustomInput> createState() => _CustomInputState();
@@ -67,6 +69,7 @@ class _CustomInputState extends State<CustomInput> {
         ),
         const SizedBox(height: 6),
         TextFormField(
+          keyboardType: widget.keyboardType,
           controller: widget.controller,
           initialValue: widget.controller == null ? widget.initialValue : null,
           enabled: widget.enabled,
