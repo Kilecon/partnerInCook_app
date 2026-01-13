@@ -17,7 +17,7 @@ class AvatarSuperimposed extends StatelessWidget {
           for (int i = 0; i < users.take(5).length; i++)
             Positioned(
               left: i * 18,
-              child: OwnerAvatar(user: users[i]),
+              child: CircleAvatarCustom(name: users[i].username, url: users[i].profilePictureUrl),
             ),
           if (users.length > 5)
             Positioned(

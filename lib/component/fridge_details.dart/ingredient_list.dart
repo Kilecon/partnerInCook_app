@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:partner_in_cook/component/fridge_details.dart/ingredient_fridge_card.dart';
+import 'package:partner_in_cook/component/widgets/swipe_card.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/ingredient_pantry_card.dart';
 import 'package:partner_in_cook/model/api/fridge_ingredient.dart';
 import 'package:partner_in_cook/component/widgets/empty_state.dart';
@@ -44,9 +44,13 @@ class IngredientsList extends StatelessWidget {
                     onTap: () {},
                   );
                 } else {
-                  return IngredientFridgeCard(
-                    fridgeIngredient: ingredient as FridgeIngredient,
+                  return SwipeCard(
                     onTap: () {},
+                    onDelete: () => {},
+                    onEdit: () => {},
+                    name: ingredient.ingredient!.name,
+                    unit: ingredient.ingredient!.unit,
+                    quantity: ingredient.quantity,
                   );
                 }
               },

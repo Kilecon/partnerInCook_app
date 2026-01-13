@@ -8,31 +8,54 @@ import 'package:partner_in_cook/model/form/create_recipe_ingredient_form.dart';
 import 'package:partner_in_cook/services/ingredient_service.dart';
 import 'package:partner_in_cook/model/form/field_error.dart';
 import 'package:partner_in_cook/component/widgets/errors_modal.dart';
+import 'package:partner_in_cook/services/utensil_service.dart';
 
-enum CreateRecipeStepPage { mainInfo, ingredients, steps, utensils, tagsImage }
+enum CreateRecipeStepPage { mainInfo, ingredients, utensils, steps }
 
 class CreateRecipeController extends GetxController {
-  final _ingredientService = IngredientService();
-  // ----------------------------
+  final IngredientService _ingredientService = IngredientService();
+  final UtensilService _utensilService = UtensilService();
+
+  // ============================
   // STEP
-  // ----------------------------
+  // ============================
   final currentStep = CreateRecipeStepPage.mainInfo.obs;
 
-  // ----------------------------
+  // ============================
   // FORM
-  // ----------------------------
+  // ============================
   final form = CreateRecipeForm().obs;
 
-  // ----------------------------
-  // ERRORS (ZOD-LIKE)
-  // key = fieldName
-  // ----------------------------
+  // ============================
+  // ERRORS
+  // ============================
   final errors = <String, String>{}.obs;
 
-  // ----------------------------
+  // ============================
   // API
-  // ----------------------------
+  // ============================
   String? recipeId;
+
+  // ============================
+  // INGREDIENT MODAL STATE
+  // ============================
+  final Rxn<Ingredient> selectedIngredient = Rxn<Ingredient>();
+  final quantityController = TextEditingController();
+  int? editingIngredientIndex;
+
+  // ============================
+  // UTENSIL MODAL STATE
+  // ============================
+  final Rxn<Utensil> selectedUtensil = Rxn<Utensil>();
+  final utensilQuantityController = TextEditingController();
+  int? editingUtensilIndex;
+
+  // ============================
+  // STEPS (modal state + helpers)
+  // ============================
+  final stepDescriptionController = TextEditingController();
+  final Rxn<Step> selectedStep = Rxn<Step>();
+  int? editingStepIndex;
 
   // ============================
   // STEP NAVIGATION
@@ -40,10 +63,15 @@ class CreateRecipeController extends GetxController {
 
   Future<void> next() async {
     if (!validate()) {
-      // afficher la modal d'erreurs (similaire au design de IngredientModal)
-      final errs = errors.entries.map((e) => FieldError(e.key, e.value)).toList();
+      final errs = errors.entries
+          .map((e) => FieldError(e.key, e.value))
+          .toList();
       Get.dialog(ErrorsModal(errors: errs));
       return;
+    }
+
+    if (currentStep.value.index == CreateRecipeStepPage.mainInfo.index) {
+      await createRecipe();
     }
 
     if (currentStep.value.index < CreateRecipeStepPage.values.length - 1) {
@@ -63,7 +91,7 @@ class CreateRecipeController extends GetxController {
   }
 
   // ============================
-  // VALIDATION (STEP BASED)
+  // VALIDATION
   // ============================
 
   bool validate() {
@@ -85,18 +113,15 @@ class CreateRecipeController extends GetxController {
       case CreateRecipeStepPage.utensils:
         _validateUtensils();
         break;
-
-      case CreateRecipeStepPage.tagsImage:
-        _validateTagsAndImage();
-        break;
     }
 
     return errors.isEmpty;
   }
 
-  // ----------------------------
+  // ============================
   // MAIN INFO
-  // ----------------------------
+  // ============================
+
   void _validateMainInfo() {
     if (form.value.name.trim().isEmpty) {
       errors['name'] = 'Nom requis';
@@ -109,15 +134,13 @@ class CreateRecipeController extends GetxController {
     if (form.value.preparationTime <= 0 &&
         form.value.cookTime <= 0 &&
         form.value.restTime <= 0) {
-      errors['duration'] = 'Durées requises';
+      errors['duration'] = 'Ajoute au moins une durée';
     }
   }
 
-  // ----------------------------
+  // ============================
   // INGREDIENTS
-  // ----------------------------
-  final Rxn<Ingredient> selectedIngredient = Rxn<Ingredient>();
-  final quantityController = TextEditingController();
+  // ============================
 
   void _validateIngredients() {
     if (form.value.ingredients.isEmpty) {
@@ -125,35 +148,49 @@ class CreateRecipeController extends GetxController {
     }
   }
 
-  Future<List<Ingredient>> searchIngredients(String query) async {
-    return await _ingredientService.searchIngredients(query);
+  Future<List<Ingredient>> searchIngredients(String query) {
+    return _ingredientService.searchIngredients(query);
   }
 
-  void resetIngredientModal() {
+  /// Ouverture modal en ajout
+  void openAddIngredientModal() {
+    editingIngredientIndex = null;
     selectedIngredient.value = null;
     quantityController.clear();
   }
 
-  void validateIngredient() {
-    final ingredient = selectedIngredient.value;
-    if (ingredient == null) return;
-
-    final quantity = double.tryParse(quantityController.text);
-    if (quantity == null || quantity <= 0) return;
-
-    addIngredient(
-      CreateRecipeIngredient(ingredient: ingredient, quantity: quantity),
-    );
-
-    // Reset
-    resetIngredientModal();
-    Get.back();
+  /// Ouverture modal en édition
+  void openEditIngredientModal(int index) {
+    final ing = form.value.ingredients[index];
+    editingIngredientIndex = index;
+    selectedIngredient.value = ing.ingredient;
+    quantityController.text = ing.quantity.toString();
   }
 
-  void addIngredient(CreateRecipeIngredient ingredient) {
+  /// Validation modal (add OU edit)
+  void validateIngredient() {
+    final ingredient = selectedIngredient.value;
+    final quantity = double.tryParse(quantityController.text);
+
+    if (ingredient == null || quantity == null || quantity <= 0) {
+      return;
+    }
+
     form.update((f) {
-      f!.ingredients.add(ingredient);
+      if (editingIngredientIndex != null) {
+        f!.ingredients[editingIngredientIndex!] = CreateRecipeIngredient(
+          ingredient: ingredient,
+          quantity: quantity,
+        );
+      } else {
+        f!.ingredients.add(
+          CreateRecipeIngredient(ingredient: ingredient, quantity: quantity),
+        );
+      }
     });
+
+    _resetIngredientModal();
+    Get.back();
   }
 
   void removeIngredient(int index) {
@@ -162,9 +199,16 @@ class CreateRecipeController extends GetxController {
     });
   }
 
-  // ----------------------------
+  void _resetIngredientModal() {
+    editingIngredientIndex = null;
+    selectedIngredient.value = null;
+    quantityController.clear();
+  }
+
+  // ============================
   // STEPS
-  // ----------------------------
+  // ============================
+
   void _validateSteps() {
     if (form.value.steps.isEmpty) {
       errors['steps'] = 'Ajoute au moins une étape';
@@ -178,25 +222,123 @@ class CreateRecipeController extends GetxController {
     }
   }
 
-  void addStep(Step step) {
+  void openAddStepModal() {
+    editingStepIndex = null;
+    selectedStep.value = null;
+    stepDescriptionController.text = '';
+  }
+
+  void openEditStepModal(int index) {
+    final s = form.value.steps[index];
+    editingStepIndex = index;
+    selectedStep.value = s;
+    stepDescriptionController.text = s.description;
+  }
+
+  void validateStep() {
+    final desc = stepDescriptionController.text.trim();
+    if (desc.isEmpty) return;
     form.update((f) {
-      f!.steps.add(step);
+      final current = f!.steps;
+      if (editingStepIndex != null) {
+        final old = current[editingStepIndex!];
+        current[editingStepIndex!] = Step(
+          id: old.id,
+          description: desc,
+          order: editingStepIndex! + 1,
+          recipeId: old.recipeId,
+        );
+      } else {
+        final newStep = Step(
+          id: DateTime.now().millisecondsSinceEpoch.toString(),
+          description: desc,
+          order: current.length + 1,
+          recipeId: recipeId ?? '',
+        );
+        current.add(newStep);
+      }
+      // normalize orders
+      for (var i = 0; i < current.length; i++) {
+        final s = current[i];
+        current[i] = Step(
+          id: s.id,
+          description: s.description,
+          order: i + 1,
+          recipeId: s.recipeId,
+        );
+      }
     });
+    _resetStepModal();
+    Get.back();
   }
 
   void removeStep(int index) {
     form.update((f) {
-      f!.steps.removeAt(index);
+      final current = f!.steps;
+      current.removeAt(index);
+      for (var i = 0; i < current.length; i++) {
+        final s = current[i];
+        current[i] = Step(
+          id: s.id,
+          description: s.description,
+          order: i + 1,
+          recipeId: s.recipeId,
+        );
+      }
     });
   }
 
-  // ----------------------------
+  void reorderSteps(int oldIndex, int newIndex) {
+    // Reorder list to reflect UI change
+    form.update((f) {
+      final list = List<Step>.from(f!.steps);
+      if (newIndex > oldIndex) newIndex -= 1;
+      final moved = list.removeAt(oldIndex);
+      list.insert(newIndex, moved);
+      for (var i = 0; i < list.length; i++) {
+        final s = list[i];
+        list[i] = Step(
+          id: s.id,
+          description: s.description,
+          order: i + 1,
+          recipeId: s.recipeId,
+        );
+      }
+      f.steps = list;
+    });
+  }
+
+  void _resetStepModal() {
+    editingStepIndex = null;
+    selectedStep.value = null;
+    stepDescriptionController.clear();
+  }
+
+  // ============================
   // UTENSILS
-  // ----------------------------
+  // ============================
+  /// Ouverture modal en ajout
+  void openAddUtensilModal() {
+    editingUtensilIndex = null;
+    selectedUtensil.value = null;
+    utensilQuantityController.clear();
+  }
+
+  /// Ouverture modal en édition
+  void openEditUtensilModal(int index) {
+    final ut = form.value.utensils[index];
+    editingUtensilIndex = index;
+    selectedUtensil.value = ut;
+  }
+
   void _validateUtensils() {
     if (form.value.utensils.isEmpty) {
       errors['utensils'] = 'Ajoute au moins un ustensile';
     }
+  }
+
+  Future<List<Utensil>> searchUtensils(String query) {
+    return _utensilService.searchUtensils(query);
   }
 
   void addUtensil(Utensil utensil) {
@@ -211,9 +353,33 @@ class CreateRecipeController extends GetxController {
     });
   }
 
-  // ----------------------------
+  /// Validation modal (add OU edit) pour ustensiles
+  void validateUtensil() {
+    final utensil = selectedUtensil.value;
+    if (utensil == null) return;
+
+    form.update((f) {
+      if (editingUtensilIndex != null) {
+        f!.utensils[editingUtensilIndex!] = utensil;
+      } else {
+        f!.utensils.add(utensil);
+      }
+    });
+
+    _resetUtensilModal();
+    Get.back();
+  }
+
+  void _resetUtensilModal() {
+    editingUtensilIndex = null;
+    selectedUtensil.value = null;
+    utensilQuantityController.clear();
+  }
+
+  // ============================
   // TAGS & IMAGE
-  // ----------------------------
+  // ============================
+
   void _validateTagsAndImage() {
     if (form.value.tags.isEmpty) {
       errors['tags'] = 'Ajoute au moins un tag';
@@ -236,6 +402,8 @@ class CreateRecipeController extends GetxController {
   @override
   void onClose() {
     quantityController.dispose();
+    utensilQuantityController.dispose();
+    stepDescriptionController.dispose();
     super.onClose();
   }
 }

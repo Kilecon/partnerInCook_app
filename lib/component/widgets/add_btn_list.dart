@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 
-class AddBtn extends StatelessWidget {
+class AddBtnList extends StatelessWidget {
   final VoidCallback onTap;
 
-  const AddBtn({
+  const AddBtnList({
     super.key,
     required this.onTap,
   });

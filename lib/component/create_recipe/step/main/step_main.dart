@@ -42,7 +42,7 @@ class StepMainInfo extends GetView<CreateRecipeController> {
             onChanged: (v) => controller.form.value.name = v,
             validator: (_) => errors['name'],
           ),
-          
+
           CustomInput(
             keyboardType: TextInputType.text,
             title: 'Description',
@@ -71,9 +71,12 @@ class StepMainInfo extends GetView<CreateRecipeController> {
             preparation: controller.form.value.preparationTime,
             cook: controller.form.value.cookTime,
             rest: controller.form.value.restTime,
-            onPrepTap: () {},
-            onCookTap: () {},
-            onRestTap: () {},
+            onPrepTap: (val) =>
+                controller.form.update((f) => f!.preparationTime = val),
+            onCookTap: (val) =>
+                controller.form.update((f) => f!.cookTime = val),
+            onRestTap: (val) =>
+                controller.form.update((f) => f!.restTime = val),
           ),
         ],
       );
