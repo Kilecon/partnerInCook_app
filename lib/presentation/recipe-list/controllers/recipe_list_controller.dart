@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lucide_icons/lucide_icons.dart';
+import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/data/recipe_list_mock.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 import 'package:partner_in_cook/model/api/recipe_list.dart';
@@ -38,7 +40,7 @@ class RecipeListController extends GetxController {
           child: Wrap(
             children: [
               ListTile(
-                leading: const Icon(Icons.restaurant_menu),
+                leading: const Icon(LucideIcons.utensilsCrossed, color: AppColors.primaryOrange,),
                 title: const Text('Créer une recette'),
                 onTap: () {
                   Get.back();
@@ -46,7 +48,7 @@ class RecipeListController extends GetxController {
                 },
               ),
               ListTile(
-                leading: const Icon(Icons.playlist_add),
+                leading: const Icon(LucideIcons.listPlus, color: AppColors.primaryOrange,),
                 title: const Text('Créer une liste de recettes'),
                 onTap: () {
                   Get.back();

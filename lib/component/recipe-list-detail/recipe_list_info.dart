@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/widgets/avatars_superimposed.dart';
 import 'package:partner_in_cook/component/widgets/info_chip.dart';
@@ -36,7 +37,7 @@ class RecipeListInfo extends StatelessWidget {
               if (onEdit != null)
                 ListTile(
                   leading: const Icon(
-                    Icons.edit,
+                    LucideIcons.pencil,
                     color: AppColors.primaryOrange,
                   ),
                   title: const Text('Modifier'),
@@ -47,7 +48,7 @@ class RecipeListInfo extends StatelessWidget {
                 ),
               if (onDelete != null)
                 ListTile(
-                  leading: const Icon(Icons.delete, color: Colors.red),
+                  leading: const Icon(LucideIcons.trash2, color: Colors.red),
                   title: const Text('Supprimer'),
                   onTap: () {
                     Navigator.pop(context);
