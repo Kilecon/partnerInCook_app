@@ -16,6 +16,7 @@ abstract class Routes {
   static const recipeList = _Paths.recipeList;
   static const recipeListDetails = _Paths.recipeListDetails;
   static const createRecipe = _Paths.createRecipe;
+  static const createRecipeList = _Paths.createRecipeList;
 }
 
 abstract class _Paths {
@@ -33,4 +34,5 @@ abstract class _Paths {
   static const recipeList = '/recipe-list';
   static const recipeListDetails = '/recipe-list-details';
   static const createRecipe = '/create-recipe';
+  static const createRecipeList = '/create-recipe-list';
 }

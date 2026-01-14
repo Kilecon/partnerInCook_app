@@ -1,4 +1,4 @@
-import 'package:partner_in_cook/common/config/constants/state_enum.dart';
+import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
 import 'package:partner_in_cook/model/api/step.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
 import 'package:partner_in_cook/model/api/utensil.dart';
@@ -9,7 +9,7 @@ class Recipe {
   final String id;
   final String name;
   final String? description;
-  final State state;
+  final VisibilityStateEnum visibilityState;
   final int? preparationTime;
   final int? restTime;
   final int? cookTime;
@@ -28,7 +28,7 @@ class Recipe {
     required this.id,
     required this.name,
     this.description,
-    required this.state,
+    required this.visibilityState,
     this.preparationTime,
     this.restTime,
     this.cookTime,
@@ -49,7 +49,7 @@ class Recipe {
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String?,
-      state: stateFromJson(json['state'] as String),
+      visibilityState: visibilityStateFromJson(json['state'] as String),
       preparationTime: json['preparation_time'] as int?,
       restTime: json['rest_time'] as int?,
       cookTime: json['cook_time'] as int?,
@@ -79,7 +79,7 @@ class Recipe {
       'id': id,
       'name': name,
       'description': description,
-      'state': stateToJson(state),
+      'state': visibilityStateToJson(visibilityState),
       'preparation_time': preparationTime,
       'rest_time': restTime,
       'cook_time': cookTime,

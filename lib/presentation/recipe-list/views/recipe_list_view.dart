@@ -55,9 +55,7 @@ class RecipeListView extends GetView<RecipeListController> {
           ],
         ),
       ),
-      floatingActionButton: AddBtn(
-        onTap: () => controller.onAddRecipeListTap(),
-      ),
+      floatingActionButton: AddBtn(onTap: () => controller.showCreateOptions()),
     );
   }
 }

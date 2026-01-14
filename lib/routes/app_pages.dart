@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:partner_in_cook/presentation/create-recipe-list/bindings/create_recipe_list_binding.dart';
+import 'package:partner_in_cook/presentation/create-recipe-list/views/create_recipe_list_view.dart';
 
 import '../presentation/create-recipe/bindings/create_recipe_binding.dart';
 import '../presentation/create-recipe/views/create_recipe_view.dart';
@@ -98,6 +100,11 @@ class AppPages {
       name: _Paths.createRecipe,
       page: () => const CreateRecipeView(),
       binding: CreateRecipeBinding(),
+    ),
+    GetPage(
+      name: _Paths.createRecipeList,
+      page: () => const CreateRecipeListView(),
+      binding: CreateRecipeListBinding(),
     ),
   ];
 }

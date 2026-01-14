@@ -1,4 +1,4 @@
-import 'package:partner_in_cook/common/config/constants/state_enum.dart';
+import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
 import 'package:partner_in_cook/model/api/light_recipe_list.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 import 'package:partner_in_cook/model/api/recipe_list.dart';
@@ -10,7 +10,7 @@ final List<RecipeList> mockRecipeLists = [
     id: '1',
     name: 'Recettes Italiennes',
     description: 'Mes meilleures recettes italiennes à partager en famille',
-    state: State.publicState,
+    visibilityState: VisibilityStateEnum.publicState,
     author: LightUser(
       id: 'user1',
       username: 'ChefMario',
@@ -248,7 +248,7 @@ final List<RecipeList> mockRecipeLists = [
     id: '2',
     name: 'Desserts Gourmands',
     description: 'Une collection de desserts pour les grandes occasions',
-    state: State.privateState,
+    visibilityState: VisibilityStateEnum.privateState,
     author: LightUser(
       id: 'user5',
       username: 'PatissierLucas',
@@ -301,7 +301,7 @@ final List<RecipeList> mockRecipeLists = [
   RecipeList(
     id: '3',
     name: 'Cuisine Rapide',
-    state: State.publicState,
+    visibilityState: VisibilityStateEnum.publicState,
     author: LightUser(id: 'user7', username: 'QuickCook'),
     recipes: [
       LightRecipe(
@@ -331,7 +331,7 @@ final List<RecipeList> mockRecipeLists = [
     id: '4',
     name: 'Cuisine du Monde',
     description: 'Un voyage culinaire à travers les continents',
-    state: State.publicState,
+    visibilityState: VisibilityStateEnum.publicState,
     author: LightUser(
       id: 'user8',
       username: 'GlobalChef',

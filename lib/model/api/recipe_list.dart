@@ -1,4 +1,4 @@
-import 'package:partner_in_cook/common/config/constants/state_enum.dart';
+import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
 import 'package:partner_in_cook/model/api/light_recipe_list.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 
@@ -6,7 +6,7 @@ class RecipeList {
   final String id;
   final String name;
   final String? description;
-  final State state;
+  final VisibilityStateEnum visibilityState;
   final LightUser author;
   final List<LightRecipe> recipes;
   final List<LightUser> members;
@@ -16,7 +16,7 @@ class RecipeList {
     required this.id,
     required this.name,
     this.description,
-    required this.state,
+    required this.visibilityState,
     required this.author,
     required this.recipes,
     required this.members,
@@ -28,7 +28,7 @@ class RecipeList {
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String?,
-      state: stateFromJson(json['state'] as String),
+      visibilityState: visibilityStateFromJson(json['state'] as String),
       author: LightUser.fromJson(json['author']),
       recipes: (json['recipes'] as List<dynamic>)
           .map((e) => LightRecipe.fromJson(e))
@@ -45,7 +45,7 @@ class RecipeList {
       'id': id,
       'name': name,
       'description': description,
-      'state': stateToJson(state),
+      'state': visibilityStateToJson(visibilityState),
       'author': author.toJson(),
       'recipes': recipes.map((e) => e.toJson()).toList(),
       'members': members.map((e) => e.toJson()).toList(),
