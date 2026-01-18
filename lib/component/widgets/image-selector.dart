@@ -8,6 +8,7 @@ class ImageSelector extends StatefulWidget {
   final String title;
   final double width;
   final double height;
+  final double borderWidth;
   final Color borderColor;
   final Color iconColor;
   final Color backgroundColor;
@@ -19,6 +20,7 @@ class ImageSelector extends StatefulWidget {
     required this.onImageSelect,
     this.width = 350,
     this.height = 180,
+    this.borderWidth = 2,
     this.borderColor = AppColors.yellowPrimary,
     this.iconColor = AppColors.yellowPrimary,
     this.backgroundColor = AppColors.background,
@@ -53,7 +55,7 @@ class _ImageSelectorState extends State<ImageSelector> {
         height: widget.height,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(30),
-          border: Border.all(color: widget.borderColor, width: 3),
+          border: Border.all(color: widget.borderColor, width: widget.borderWidth),
           color: widget.backgroundColor,
         ),
         clipBehavior: Clip.antiAlias,

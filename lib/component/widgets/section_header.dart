@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 
-class SectionHeader extends StatelessWidget {
+class CustomTitle extends StatelessWidget {
   final String title;
   final VoidCallback? onSeeAll;
-  const SectionHeader({super.key, required this.title, this.onSeeAll});
+  final double padding;
+  const CustomTitle({
+    super.key,
+    required this.title,
+    this.onSeeAll,
+    this.padding = 8,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: EdgeInsets.symmetric(vertical: padding),
       child: Row(
         children: [
           Expanded(

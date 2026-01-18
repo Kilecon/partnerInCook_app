@@ -44,6 +44,7 @@ class DurationsSelector extends StatelessWidget {
           scrollDirection: Axis.horizontal,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
+            spacing: 8,
             children: [
               _DurationChip(
                 color: AppColors.yellowPrimary,
@@ -146,6 +147,7 @@ class _DurationChip extends StatelessWidget {
                       style: TextStyle(color: AppColors.black),
                       decoration: InputDecoration(
                         hintText: 'Durée en minutes',
+                        labelText: 'Temps de $label (min)',
                         hintStyle: TextStyle(
                           color: AppColors.black.withOpacity(0.45),
                         ),

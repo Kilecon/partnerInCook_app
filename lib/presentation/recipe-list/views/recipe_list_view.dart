@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/fridge/card_list.dart';
+import 'package:partner_in_cook/component/recipe-list/image_cover_card.dart';
 import 'package:partner_in_cook/component/recipe-list/recipe_list_card.dart';
 import 'package:partner_in_cook/component/widgets/add_btn.dart';
 import 'package:partner_in_cook/component/widgets/custom_app_bar.dart';
@@ -17,7 +18,20 @@ class RecipeListView extends GetView<RecipeListController> {
   Widget build(BuildContext context) {
     List<Widget> cards = [];
 
+    cards.add(ImageCoverCard(
+      title: 'Mes recettes',
+      imageUrl: "assets/images/favorites_banner.png",
+      onTap: () => print("recettes"),
+    ));
+
     for (var recipeList in controller.recipeList) {
+      if (recipeList.isFavorite) {
+        cards.add(ImageCoverCard(
+          title: 'Favoris',
+          imageUrl: "assets/images/favorites_banner.png",
+          onTap: () => controller.onRecipeListTap(recipeList.id),
+        ));
+      }
       cards.add(
         RecipeListCard(
           recipeList: recipeList,
@@ -27,7 +41,7 @@ class RecipeListView extends GetView<RecipeListController> {
     }
 
     return Scaffold(
-      appBar: const CustomAppBar(showBackButton: false),
+      appBar: const CustomAppBar(),
       body: Container(
         color: AppColors.background,
         child: Column(

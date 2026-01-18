@@ -11,6 +11,7 @@ class RecipeList {
   final List<LightRecipe> recipes;
   final List<LightUser> members;
   final String? pictureUrl;
+  final bool isFavorite;
 
   RecipeList({
     required this.id,
@@ -21,6 +22,7 @@ class RecipeList {
     required this.recipes,
     required this.members,
     this.pictureUrl,
+    required this.isFavorite,
   });
 
   factory RecipeList.fromJson(Map<String, dynamic> json) {
@@ -37,6 +39,7 @@ class RecipeList {
           .map((e) => LightUser.fromJson(e))
           .toList(),
       pictureUrl: json['pic_url'] as String?,
+      isFavorite: json['is_favorite'] as bool? ?? false,
     );
   }
 
@@ -50,6 +53,7 @@ class RecipeList {
       'recipes': recipes.map((e) => e.toJson()).toList(),
       'members': members.map((e) => e.toJson()).toList(),
       'pic_url': pictureUrl,
+      'is_favorite': isFavorite,
     };
   }
 }

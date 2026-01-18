@@ -5,6 +5,7 @@ import 'package:partner_in_cook/model/api/recipe_list.dart';
 
 final List<RecipeList> mockRecipeLists = [
   RecipeList(
+    isFavorite: false,
     pictureUrl:
         'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images',
     id: '1',
@@ -243,6 +244,7 @@ final List<RecipeList> mockRecipeLists = [
     ],
   ),
   RecipeList(
+    isFavorite: false,
     pictureUrl:
         "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse1.mm.bing.net%2Fth%2Fid%2FOIP.S83BviAlhkAMjT0W6BLdogHaE8%3Fpid%3DApi&f=1&ipt=64aa6ffea2f555fee2b9aae3336fe177a8dff739ee6d8c794d34bd76af59aab4&ipo=images",
     id: '2',
@@ -299,6 +301,7 @@ final List<RecipeList> mockRecipeLists = [
     ],
   ),
   RecipeList(
+    isFavorite: false,
     id: '3',
     name: 'Cuisine Rapide',
     visibilityState: VisibilityStateEnum.publicState,
@@ -328,6 +331,7 @@ final List<RecipeList> mockRecipeLists = [
     members: [LightUser(id: 'user7', username: 'QuickCook')],
   ),
   RecipeList(
+    isFavorite: true,
     id: '4',
     name: 'Cuisine du Monde',
     description: 'Un voyage culinaire à travers les continents',

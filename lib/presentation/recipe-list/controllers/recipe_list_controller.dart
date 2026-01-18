@@ -14,7 +14,9 @@ class RecipeListController extends GetxController {
   void onInit() {
     super.onInit();
     // Initialisation des données de test
-    recipeList.value = mockRecipeLists;
+    final sortedList = List<RecipeList>.from(mockRecipeLists);
+    sortedList.sort((a, b) => (b.isFavorite ? 1 : 0).compareTo(a.isFavorite ? 1 : 0));
+    recipeList.value = sortedList;
   }
 
   void onRecipeListTap(String id) {

@@ -18,7 +18,7 @@ class ExplorerView extends GetView<ExplorerController> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const CustomAppBar(showBackButton: false),
+      appBar: const CustomAppBar(),
       body: Container(
         color: AppColors.background,
         child: Obx(() {

@@ -41,6 +41,7 @@ dependencies:
   lucide_icons: ^0.257.0
   flutter_native_splash: ^2.4.7
   image_picker: ^1.2.1
+  pretty_qr_code: ^3.5.0
 
 
 flutter_native_splash:

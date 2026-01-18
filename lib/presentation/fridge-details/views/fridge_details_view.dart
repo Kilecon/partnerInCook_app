@@ -5,7 +5,6 @@ import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/fridge_header.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/ingredient_list.dart';
 import 'package:partner_in_cook/component/widgets/add_btn.dart';
-import 'package:partner_in_cook/component/widgets/add_btn_list.dart';
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
 import 'package:partner_in_cook/data/fridge_mock.dart';
 import 'package:partner_in_cook/model/api/fridge.dart';

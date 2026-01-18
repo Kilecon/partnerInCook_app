@@ -80,7 +80,7 @@ class PantryDetailsView extends GetView<PantryDetailsController> {
       backgroundColor: AppColors.background,
       body: Column(
         children: [
-          FridgeHeader(ingredientsCount: ingredientsWithOwner.length),
+          FridgeHeader(ingredientsCount: ingredientsWithOwner.length, onShareTap: () => controller.onShareTap(context)),
           FridgeDescription(title: pantry.name, sharedUsers: members),
           Expanded(
             child: CustomLayout(

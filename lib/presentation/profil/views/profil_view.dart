@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
+import 'package:partner_in_cook/component/recipe-list/image_cover_card.dart';
+import 'package:partner_in_cook/component/widgets/back_header.dart';
+import 'package:partner_in_cook/component/widgets/circle_avatar.dart';
+import 'package:partner_in_cook/component/widgets/custom_button.dart';
+import 'package:partner_in_cook/component/widgets/section_header.dart';
 import 'package:partner_in_cook/presentation/profil/controllers/profil_controller.dart';
-import 'package:partner_in_cook/component/widgets/custom_app_bar.dart';
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
-import 'package:partner_in_cook/component/widgets/title_page.dart';
 
 class ProfilView extends GetView<ProfilController> {
   const ProfilView({super.key});
@@ -12,35 +16,235 @@ class ProfilView extends GetView<ProfilController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(showBackButton: false),
       body: Container(
         color: AppColors.background,
         child: Column(
           children: [
-            TitlePage(
-              hasSearchBar: false,
-              title: 'Profil',
-              subtitle: 'Gérez votre profil et vos préférences',
-            ),
+            BackHeader(title: 'Profil', onBack: Get.back),
 
             Expanded(
               child: CustomLayout(
+                spacing: 8,
                 children: [
-                  SizedBox(
-                    width: double.infinity,
+                  // Header utilisateur (séparé en petits Obx pour éviter les erreurs de type)
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 12,
+                      horizontal: 8,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        Text(controller.user?.username ?? 'No user'),
-                        Text(controller.user?.email ?? 'No email'),
-                        TextButton(
-                          onPressed: () => controller.logout(),
-                          child: const Text('Se déconnecter'),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                CircleAvatarCustom(
+                                  name: controller.user.value?.username ?? 'U',
+                                  url: controller.user.value?.profilePicture,
+                                  radius: 30,
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Obx(
+                                        () => Text(
+                                          controller.user.value?.username ??
+                                              'Utilisateur',
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Obx(
+                                        () => Text(
+                                          controller.user.value?.email ?? '',
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(LucideIcons.pencil),
+                                  onPressed: () => (),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 16),
+
+                        // Stats
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  children: [
+                                    const Icon(
+                                      Icons.book,
+                                      size: 20,
+                                      color: Colors.orange,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Obx(
+                                      () => Text(
+                                        controller.recipesCount.value
+                                            .toString(),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    const Text(
+                                      'Recettes',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  children: [
+                                    const Icon(
+                                      Icons.list_alt,
+                                      size: 20,
+                                      color: Colors.orange,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Obx(
+                                      () => Text(
+                                        controller.recipeListsCount.value
+                                            .toString(),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    const Text(
+                                      'Listes',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Column(
+                                  children: [
+                                    const Icon(
+                                      Icons.favorite,
+                                      size: 20,
+                                      color: Colors.orange,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Obx(
+                                      () => Text(
+                                        controller.favoritesCount.value
+                                            .toString(),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 4),
+                                    const Text(
+                                      'Favoris',
+                                      style: TextStyle(
+                                        color: Colors.grey,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
+
+                  const SizedBox(height: 12),
+
+                  CustomTitle(title: 'Quick links', padding: 0),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ImageCoverCard(
+                          title: 'Mes recettes',
+                          imageUrl: "assets/images/recipes_banner.png",
+                          onTap: () {},
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: ImageCoverCard(
+                          title: 'Mes favoris',
+                          imageUrl: "assets/images/favorites_banner.png",
+                          onTap: () {},
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
+              ),
+            ),
+            SafeArea(
+              top: false,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomButton(
+                      name: 'Deconnexion',
+                      onClick: controller.logout,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

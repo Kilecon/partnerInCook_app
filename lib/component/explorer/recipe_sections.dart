@@ -33,13 +33,10 @@ class RecipeSections extends StatelessWidget {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SectionHeader(title: title, onSeeAll: () {}),
+          CustomTitle(title: title, onSeeAll: () {}),
           SizedBox(
             height: 200,
-            child: RecipeList(
-              recipes: latestRecipes,
-              axis: Axis.horizontal,
-            ),
+            child: RecipeList(recipes: latestRecipes, axis: Axis.horizontal),
           ),
         ],
       );
@@ -48,7 +45,7 @@ class RecipeSections extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        SectionHeader(title: title),
+        CustomTitle(title: title),
         if (tags != null && onTagChanged != null)
           TagList(
             selected: selectedTag ?? [tags!.first],

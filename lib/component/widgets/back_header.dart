@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 
-class CreateRecipeHeader extends StatelessWidget {
+class BackHeader extends StatelessWidget {
   final String title;
   final VoidCallback onBack;
 
-  const CreateRecipeHeader({
-    super.key,
-    required this.title,
-    required this.onBack,
-  });
+  const BackHeader({super.key, required this.title, required this.onBack});
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +14,7 @@ class CreateRecipeHeader extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            IconButton(
-              icon: const Icon(Icons.arrow_back),
-              onPressed: onBack,
-            ),
+            IconButton(icon: const Icon(Icons.arrow_back), onPressed: onBack),
             Expanded(
               child: Text(
                 title,

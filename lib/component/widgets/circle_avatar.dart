@@ -4,8 +4,9 @@ import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 class CircleAvatarCustom extends StatelessWidget {
   final String name;
   final String? url;
+  final double radius;
 
-  const CircleAvatarCustom({super.key, required this.name, this.url});
+  const CircleAvatarCustom({super.key, required this.name, this.url, this.radius = 12});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,7 @@ class CircleAvatarCustom extends StatelessWidget {
     return CircleAvatar(
       backgroundColor: AppColors.lightOrange,
       foregroundColor: AppColors.primaryOrange,
-      radius: 12,
+      radius: radius,
       backgroundImage:
           url != null &&
               url!.isNotEmpty
@@ -26,7 +27,7 @@ class CircleAvatarCustom extends StatelessWidget {
               name.isNotEmpty
                   ? name[0].toUpperCase()
                   : '?',
-              style: const TextStyle(fontSize: 12),
+              style: TextStyle(fontSize: radius),
             )
           : null,
     );
