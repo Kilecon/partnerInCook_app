@@ -1,12 +1,16 @@
 import 'package:get/get.dart';
-import 'package:partner_in_cook/presentation/create-recipe-list/bindings/create_recipe_list_binding.dart';
-import 'package:partner_in_cook/presentation/create-recipe-list/views/create_recipe_list_view.dart';
+import 'package:partner_in_cook/presentation/pantry-join/bindings/pantry_join_binding.dart';
+import 'package:partner_in_cook/presentation/pantry-join/views/pantry_list_join_view.dart';
+import 'package:partner_in_cook/presentation/recipe-list-join/bindings/recipe_list_join_binding.dart';
+import 'package:partner_in_cook/presentation/recipe-list-join/views/recipe_list_join_view.dart';
 
-import '../presentation/create-recipe/bindings/create_recipe_binding.dart';
-import '../presentation/create-recipe/views/create_recipe_view.dart';
 import '../presentation/auth/bindings/auth_binding.dart';
 import '../presentation/auth/views/login_view.dart';
 import '../presentation/auth/views/register_view.dart';
+import '../presentation/create-recipe-list/bindings/create_recipe_list_binding.dart';
+import '../presentation/create-recipe-list/views/create_recipe_list_view.dart';
+import '../presentation/create-recipe/bindings/create_recipe_binding.dart';
+import '../presentation/create-recipe/views/create_recipe_view.dart';
 import '../presentation/explorer/bindings/explorer_binding.dart';
 import '../presentation/explorer/views/explorer_view.dart';
 import '../presentation/fridge-details/bindings/fridge_details_binding.dart';
@@ -105,6 +109,16 @@ class AppPages {
       name: _Paths.createRecipeList,
       page: () => const CreateRecipeListView(),
       binding: CreateRecipeListBinding(),
+    ),
+    GetPage(
+      name: _Paths.recipeListJoin,
+      page: () => const RecipeListJoinView(),
+      binding: RecipeListJoinBinding(),
+    ),
+    GetPage(
+      name: _Paths.pantryJoin,
+      page: () => const PantryJoinView(),
+      binding: PantryJoinBinding(),
     ),
   ];
 }

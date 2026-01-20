@@ -20,8 +20,8 @@ class RecipeListView extends GetView<RecipeListController> {
 
     cards.add(ImageCoverCard(
       title: 'Mes recettes',
-      imageUrl: "assets/images/favorites_banner.png",
-      onTap: () => print("recettes"),
+      imageUrl: "assets/images/my_recipes_banner.png",
+      onTap: () => controller.onMyRecipesTap(),
     ));
 
     for (var recipeList in controller.recipeList) {

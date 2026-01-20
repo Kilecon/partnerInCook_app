@@ -3,18 +3,20 @@ import 'package:partner_in_cook/model/api/user.dart';
 class AuthRes {
   final User user;
   final String token;
+  final String refreshToken;
 
-  AuthRes({required this.user, required this.token});
+  AuthRes({required this.user, required this.token, required this.refreshToken});
 
   factory AuthRes.fromJson(Map<String, dynamic> json) {
     return AuthRes(
       user: User.fromJson(json['user'] as Map<String, dynamic>),
       token: json['token'] as String,
+      refreshToken: json['refreshToken'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'user': user.toJson(), 'token': token};
+    return {'user': user.toJson(), 'token': token, 'refreshToken': refreshToken};
   }
 }
 

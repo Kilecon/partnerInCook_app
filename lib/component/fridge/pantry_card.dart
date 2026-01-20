@@ -32,10 +32,14 @@ class PantryCard extends StatelessWidget {
             color: Colors.orange.withOpacity(0.15),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Icon(
-            LucideIcons.box,
-            size: 32,
-            color: Colors.orange,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(
+              "assets/images/pantry_pic.png",
+              fit: BoxFit.cover,
+              width: 64,
+              height: 64,
+            ),
           ),
         ),
 

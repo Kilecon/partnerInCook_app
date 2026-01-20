@@ -5,11 +5,7 @@ class FridgeCard extends StatelessWidget {
   final Fridge fridge;
   final VoidCallback onTap;
 
-  const FridgeCard({
-    super.key,
-    required this.fridge,
-    required this.onTap,
-  });
+  const FridgeCard({super.key, required this.fridge, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +16,7 @@ class FridgeCard extends StatelessWidget {
       ),
       child: ListTile(
         onTap: onTap,
+
         /// Icône / illustration
         leading: Container(
           width: 64,
@@ -28,10 +25,14 @@ class FridgeCard extends StatelessWidget {
             color: Colors.orange.withOpacity(0.15),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Icon(
-            Icons.kitchen_rounded,
-            size: 36,
-            color: Colors.orange,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(
+              "assets/images/fridge_pic.png",
+              fit: BoxFit.cover,
+              width: 64,
+              height: 64,
+            ),
           ),
         ),
 
@@ -57,10 +58,9 @@ class FridgeCard extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   '${fridge.ingredients.length} ingrédients',
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall
-                      ?.copyWith(color: Colors.grey[700]),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.copyWith(color: Colors.grey[700]),
                 ),
               ],
             ),
@@ -77,12 +77,7 @@ class FridgeCard extends StatelessWidget {
         /// Action / indicateur
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.chevron_right,
-              color: Colors.grey,
-            ),
-          ],
+          children: [const Icon(Icons.chevron_right, color: Colors.grey)],
         ),
       ),
     );

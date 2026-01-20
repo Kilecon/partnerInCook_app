@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:partner_in_cook/model/api/user.dart';
-import 'package:partner_in_cook/services/auth_service.dart';
+import 'package:partner_in_cook/core/auth/auth_service.dart';
 
 class ProfilController extends GetxController {
   // Utilisateur réactif

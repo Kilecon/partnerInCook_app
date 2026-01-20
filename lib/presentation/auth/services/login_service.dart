@@ -1,43 +1,39 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:partner_in_cook/core/network/api_client.dart';
+import 'package:partner_in_cook/core/auth/auth_service.dart';
+import 'package:partner_in_cook/exceptions/api_exception.dart';
 import 'package:partner_in_cook/exceptions/exception_handler.dart';
 import 'package:partner_in_cook/model/api/auth.dart';
 import 'package:partner_in_cook/model/api/user.dart';
-import 'package:partner_in_cook/providers/api_helper.dart';
-import 'package:partner_in_cook/services/auth_service.dart' as service;
-import 'auth_service.dart' as local;
 
-class LoginService implements local.AuthService<AuthLogin> {
-  final Rx<User?> currentUser = Get.find<service.AuthService>().user;
-  final DioClient _httpClient = DioClient();
+class LoginService {
+  final AuthService _authService = Get.find<AuthService>();
+  final ApiClient _httpClient = ApiClient();
 
-  @override
+  /// Effectue la connexion
   Future<void> performAuth(AuthLogin loginData) async {
     try {
-      // On envoie la requête de login
       final response = await _httpClient.post(
-        '/login', // remplace par ton endpoint réel
+        '/login',
         data: json.encode(loginData.toJson()),
       );
 
-      final auth = AuthRes.fromJson(response as Map<String, dynamic>);
+      final data = response.data as Map<String, dynamic>;
+      final user = User.fromJson(data['user'] as Map<String, dynamic>);
+      final token = data['access_token'] as String;
+      final refresh = data['refresh_token'] as String;
 
-      // Mise à jour de l'état utilisateur + token
-      await Get.find<service.AuthService>().setAuth(auth);
-      currentUser.value = auth.user;
+      final auth = AuthRes(user: user, token: token, refreshToken: refresh);
+
+      await _authService.setAuth(auth);
+
     } on DioException catch (e) {
-      // Gestion centralisée des erreurs
       final error = handleDioException(e);
-      throw Exception(error.message);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
     }
   }
-}
-
-// Extension pour préparer les données de connexion
-extension LoginUser on User {
-  Map<String, dynamic> toJsonForSignIn() => {
-    'email': email,
-    'password': password,
-  };
 }

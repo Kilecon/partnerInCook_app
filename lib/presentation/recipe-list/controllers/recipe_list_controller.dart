@@ -23,6 +23,11 @@ class RecipeListController extends GetxController {
     Get.toNamed(Routes.recipeListDetails, arguments: id);
   }
 
+  void onMyRecipesTap() {
+    // Gérer la navigation vers "Mes recettes"
+    Get.toNamed(Routes.recipeDetails, arguments: 'my_recipes');
+  }
+
   void onAddRecipeListTap() {
     // Gérer l'ajout d'une nouvelle liste de recettes
     Get.toNamed(Routes.createRecipe);

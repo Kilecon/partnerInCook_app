@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_version.dart';
 import 'package:partner_in_cook/model/api/auth.dart';
 import 'package:partner_in_cook/model/api/user.dart';
-import 'package:partner_in_cook/services/auth_service.dart';
+import 'package:partner_in_cook/core/auth/auth_service.dart';
 
 class SplashController extends GetxController {
   final version = versionNumber;
@@ -21,7 +21,7 @@ class SplashController extends GetxController {
         email: 'test@example.com',
         profilePicture: 'https://s3.mizury.fr/partnerincook/chef.png',
       );
-      final dummyAuth = AuthRes(user: dummyUser, token: 'dummy-token');
+      final dummyAuth = AuthRes(user: dummyUser, token: 'dummy-token', refreshToken: 'dummy-refresh-token');
       await authService.setAuth(dummyAuth);
     }
 
