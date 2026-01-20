@@ -1,45 +1,54 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:partner_in_cook/common/config/constants/app_colors.dart';
-import 'package:partner_in_cook/component/widgets/app_dialog.dart';
+import 'package:partner_in_cook/component/pantry_details/pantry_share_dialog.dart';
+import 'package:partner_in_cook/model/api/pantry.dart';
+import 'package:partner_in_cook/services/pantry_service.dart';
+import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class PantryDetailsController extends GetxController {
+  final pantryApi = Get.find<PantryService>();
 
-  Future<Map<String, String>?> onShareTap(BuildContext context) {
+  late final String pantryId;
+  late Pantry? pantry;
 
-    return showDialog<Map<String, String>>(
-      context: context,
-      builder: (ctx) {
-        return AppDialog(
-          title: 'Partager mon garde-manger',
-          footer: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextButton(
-                style: TextButton.styleFrom(foregroundColor: AppColors.black),
-                onPressed: () => Navigator.of(ctx).pop(),
-                child: const Text('Annuler'),
-              ),
-              const SizedBox(width: 8),
-              TextButton(
-                style: TextButton.styleFrom(
-                  foregroundColor: AppColors.primaryOrange,
-                ),
-                onPressed: () {
-                  
-                },
-                child: const Text('Partager'),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            spacing: 20,
-            children: [
-            ],
-          ),
-        );
-      },
-    );
+  QrImage? qrImage;
+  String? fullInvitationLink;
+  RxBool isLoading = true.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    pantryId = Get.arguments['id']!;
+    _loadPantry();
+  }
+
+  Future<void> _loadPantry() async {
+    try {
+      pantry = await pantryApi.getById(pantryId);
+      _generateQrCode();
+    } catch (e) {
+      pantry = null;
+      fullInvitationLink = null;
+      Get.snackbar(
+        'Erreur',
+        'Impossible de charger le garde-manger.\nVérifiez votre connexion.',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+    } finally {
+      isLoading.value = false;
+      update();
+    }
+  }
+
+  void _generateQrCode() {
+    fullInvitationLink = 'partnerincook://pantry/join/$pantryId';
+
+    final qrCode = QrCode(5, QrErrorCorrectLevel.H)
+      ..addData(fullInvitationLink!);
+
+    qrImage = QrImage(qrCode);
+  }
+
+  void onShareTap() {
+    Get.dialog(const PantryShareDialog());
   }
 }

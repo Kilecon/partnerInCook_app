@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/fridge_header.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/ingredient_list.dart';
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
 import 'package:partner_in_cook/component/widgets/fridge_description.dart';
-import 'package:partner_in_cook/data/pantry_mock.dart';
 import 'package:partner_in_cook/model/api/fridge_ingredient.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 import 'package:partner_in_cook/model/api/pantry.dart';
@@ -19,17 +17,13 @@ class PantryDetailsView extends GetView<PantryDetailsController> {
   List<FridgeIngredientWOwner> convertPantryToIngredientsWithOwner(
     Pantry pantry,
   ) {
-    // Map pour regrouper les ingrédients par ingredientId
     final Map<String, FridgeIngredientWOwner> mergedIngredients = {};
 
-    // Parcourir tous les fridges
     for (var fridge in pantry.fridges) {
-      // Pour chaque ingrédient du frigo
       for (var ingredient in fridge.ingredients) {
         final ingredientId = ingredient.ingredientId;
 
         if (mergedIngredients.containsKey(ingredientId)) {
-          // Fusionner avec l'ingrédient existant
           final existing = mergedIngredients[ingredientId]!;
           mergedIngredients[ingredientId] = FridgeIngredientWOwner(
             id: existing.id,
@@ -40,7 +34,6 @@ class PantryDetailsView extends GetView<PantryDetailsController> {
             owners: [...existing.owners, fridge.owner],
           );
         } else {
-          // Créer un nouvel ingrédient
           mergedIngredients[ingredientId] = FridgeIngredientWOwner(
             id: ingredient.id,
             quantity: ingredient.quantity,
@@ -53,10 +46,8 @@ class PantryDetailsView extends GetView<PantryDetailsController> {
       }
     }
 
-    // Convertir la map en liste et trier par ordre alphabétique
-    final List<FridgeIngredientWOwner> ingredientsWithOwner = mergedIngredients
-        .values
-        .toList();
+    final List<FridgeIngredientWOwner> ingredientsWithOwner =
+        mergedIngredients.values.toList();
 
     ingredientsWithOwner.sort((a, b) {
       final nameA = a.ingredient?.name ?? '';
@@ -69,37 +60,60 @@ class PantryDetailsView extends GetView<PantryDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    Pantry pantry = pantryMock;
-    final List<LightUser> members = pantry.fridges
-        .map((fridge) => fridge.owner)
-        .toList();
-    final List<FridgeIngredientWOwner> ingredientsWithOwner =
-        convertPantryToIngredientsWithOwner(pantry);
+    return GetBuilder<PantryDetailsController>(
+      builder: (controller) {
+        // Loader pendant l'appel API
+        if (controller.isLoading.value) {
+          return const Scaffold(
+            body: Center(child: CircularProgressIndicator()),
+          );
+        }
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: Column(
-        children: [
-          FridgeHeader(ingredientsCount: ingredientsWithOwner.length, onShareTap: () => controller.onShareTap(context)),
-          FridgeDescription(title: pantry.name, sharedUsers: members),
-          Expanded(
-            child: CustomLayout(
-              useSafeArea: true,
-              safeAreaTop: false,
-              safeAreaBottom: true,
-              verticalPadding: 0,
-              spacing: 30,
-              children: [
-                // Utilisez ingredientsWithOwner ici au lieu de pantry.ingredients
-                IngredientsList(
-                  ingredients: ingredientsWithOwner,
-                  isPantry: true,
-                ),
-              ],
+        // Message d'erreur si échec API
+        if (controller.pantry == null) {
+          return const Scaffold(
+            body: Center(
+              child: Text(
+                'Impossible de charger le garde-manger.\nVérifiez votre connexion.',
+                textAlign: TextAlign.center,
+              ),
             ),
+          );
+        }
+
+        final pantry = controller.pantry!;
+        final members = pantry.fridges.map((f) => f.owner).toList();
+        final ingredientsWithOwner =
+            convertPantryToIngredientsWithOwner(pantry);
+
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          body: Column(
+            children: [
+              FridgeHeader(
+                ingredientsCount: ingredientsWithOwner.length,
+                onShareTap: () => controller.onShareTap(),
+              ),
+              FridgeDescription(title: pantry.name, sharedUsers: members),
+              Expanded(
+                child: CustomLayout(
+                  useSafeArea: true,
+                  safeAreaTop: false,
+                  safeAreaBottom: true,
+                  verticalPadding: 0,
+                  spacing: 30,
+                  children: [
+                    IngredientsList(
+                      ingredients: ingredientsWithOwner,
+                      isPantry: true,
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

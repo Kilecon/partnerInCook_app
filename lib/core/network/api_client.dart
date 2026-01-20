@@ -13,7 +13,7 @@ class ApiClient {
 
   ApiClient._internal() {
     final BaseOptions options = BaseOptions(
-      baseUrl: 'https://api_url/',
+      baseUrl: 'https://partnerincook-api.mizury.fr/',
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 30),
       contentType: 'application/json; charset=utf-8',

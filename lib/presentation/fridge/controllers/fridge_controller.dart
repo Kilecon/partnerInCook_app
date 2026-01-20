@@ -27,11 +27,11 @@ class FridgeController extends GetxController {
 
   void onPantryTap(String id) {
     // Gérer la sélection du garde-manger
-    Get.toNamed(Routes.pantryDetails, arguments: id);
+    Get.toNamed(Routes.pantryDetails, arguments: {'id': id});
   }
 
   void onFridgeTap(String id) {
-    Get.toNamed(Routes.fridgeDetails, arguments: id);
+    Get.toNamed(Routes.fridgeDetails, arguments: {'id': id});
   }
 
   Future<Map<String, String>?> showCreatePantryDialog(BuildContext context) {

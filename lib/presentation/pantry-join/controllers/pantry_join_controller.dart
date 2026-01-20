@@ -1,26 +1,26 @@
 import 'package:get/get.dart';
+import 'package:partner_in_cook/routes/app_pages.dart';
 import 'package:partner_in_cook/services/pantry_service.dart';
 
 class PantryJoinController extends GetxController {
   final isLoading = true.obs;
   final error = RxnString();
 
-  late final String recipeListId;
+  late final String pantryId;
   final pantryApiService = PantryService();
-
 
   @override
   void onInit() {
-    recipeListId = Get.parameters['id']!;
-    _joinRecipeList();
+    pantryId = Get.parameters['id']!;
+    _joinPantry();
     super.onInit();
   }
 
-  Future<void> _joinRecipeList() async {
+  Future<void> _joinPantry() async {
     try {
-      await pantryApiService.joined(recipeListId);
+      await pantryApiService.joined(pantryId);
 
-      Get.offNamed('/pantry/$recipeListId');
+      Get.offAllNamed(Routes.pantryDetails, parameters: {'id': pantryId});
     } catch (e) {
       error.value = _mapError(e);
     } finally {
