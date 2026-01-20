@@ -1,10 +1,10 @@
-import 'package:partner_in_cook/common/config/constants/state_enum.dart';
-import 'package:partner_in_cook/model/light_user.dart';
-import 'package:partner_in_cook/model/recipe.dart';
-import 'package:partner_in_cook/model/tag.dart';
-import 'package:partner_in_cook/model/step.dart';
-import 'package:partner_in_cook/model/recipe_ingredient.dart';
-import 'package:partner_in_cook/model/utensil.dart';
+import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
+import 'package:partner_in_cook/model/api/light_user.dart';
+import 'package:partner_in_cook/model/api/recipe.dart';
+import 'package:partner_in_cook/model/api/tag.dart';
+import 'package:partner_in_cook/model/api/step.dart';
+import 'package:partner_in_cook/model/api/recipe_ingredient.dart';
+import 'package:partner_in_cook/model/api/utensil.dart';
 
 final author1 = LightUser(
   id: "1234",
@@ -26,7 +26,7 @@ final recipe1 = Recipe(
   id: '1',
   name: 'Pancakes moelleux',
   description: 'Délicieux pancakes fluffy parfaits pour le petit-déjeuner',
-  state: State.publicState,
+  visibilityState: VisibilityStateEnum.publicState,
   preparationTime: 10,
   restTime: 5,
   cookTime: 15,
@@ -69,7 +69,7 @@ final recipe2 = Recipe(
   id: '2',
   name: 'Salade César',
   description: 'Salade frais et croquante avec vinaigrette maison',
-  state: State.publicState,
+  visibilityState: VisibilityStateEnum.publicState,
   preparationTime: 15,
   restTime: 0,
   cookTime: 0,
@@ -112,7 +112,7 @@ final recipe3 = Recipe(
   id: '3',
   name: 'Pizza Margherita',
   description: 'Pizza classique avec tomate, mozzarella et basilic',
-  state: State.publicState,
+  visibilityState: VisibilityStateEnum.publicState,
   preparationTime: 20,
   restTime: 30,
   cookTime: 15,
@@ -148,7 +148,7 @@ final Recipe recipe4 = Recipe(
   id: '4',
   name: 'Spaghetti Bolognese',
   description: 'Classic Italian pasta dish with rich meat sauce',
-  state: State.publicState,
+  visibilityState: VisibilityStateEnum.publicState,
   preparationTime: 15,
   restTime: 0,
   cookTime: 45,

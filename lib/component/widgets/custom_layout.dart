@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomLayout extends StatelessWidget {
+class CustomLayout extends StatelessWidget { // fir scrollable list with padding and spacing
   final List<Widget> children;
   final double horizontalPadding;
   final double verticalPadding;

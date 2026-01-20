@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:partner_in_cook/model/recipe_list.dart';
+import 'package:partner_in_cook/model/api/recipe_list.dart';
 import 'package:partner_in_cook/component/widgets/avatars_superimposed.dart';
 
 class RecipeListCard extends StatelessWidget {
@@ -34,23 +34,15 @@ class RecipeListCard extends StatelessWidget {
                   recipeList.pictureUrl!,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Colors.orange.withOpacity(0.15),
-                      child: const Icon(
-                        LucideIcons.box,
-                        size: 32,
-                        color: Colors.orange,
-                      ),
+                    return Image.asset(
+                      "assets/images/recipe_list_pic.png",
+                      fit: BoxFit.cover,
                     );
                   },
                 )
-              : Container(
-                  color: Colors.orange.withOpacity(0.15),
-                  child: const Icon(
-                    LucideIcons.box,
-                    size: 32,
-                    color: Colors.orange,
-                  ),
+              : Image.asset(
+                  "assets/images/recipe_list_pic.png",
+                  fit: BoxFit.cover,
                 ),
         ),
 

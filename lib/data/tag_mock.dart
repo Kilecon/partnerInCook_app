@@ -1,4 +1,4 @@
-import 'package:partner_in_cook/model/tag.dart';
+import 'package:partner_in_cook/model/api/tag.dart';
 
 final List<Tag> tagsMock = [
   Tag(id: '1', name: 'Rapide'),

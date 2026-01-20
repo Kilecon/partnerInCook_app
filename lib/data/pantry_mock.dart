@@ -1,4 +1,4 @@
-import 'package:partner_in_cook/model/pantry.dart';
+import 'package:partner_in_cook/model/api/pantry.dart';
 import 'package:partner_in_cook/data/fridge_mock.dart' as fridge_mock;
 
 final Pantry pantryHome = Pantry(

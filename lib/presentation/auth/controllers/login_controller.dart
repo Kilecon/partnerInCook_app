@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:partner_in_cook/model/auth.dart';
+import 'package:partner_in_cook/model/api/auth.dart';
+import 'package:partner_in_cook/presentation/auth/services/login_service.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 import 'package:partner_in_cook/utils/snackbar.dart';
-import '../services/auth_service.dart' as local;
 
 class LoginController extends GetxController {
   LoginController({required this.localAuthService});
-  final local.AuthService<AuthLogin> localAuthService;
+  final LoginService localAuthService;
 
   // Champs alimentés par les inputs
   String? email;

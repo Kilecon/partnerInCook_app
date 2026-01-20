@@ -1,45 +1,39 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:partner_in_cook/model/auth.dart';
-import 'package:partner_in_cook/model/user.dart';
-import 'package:partner_in_cook/providers/api_helper.dart';
+import 'package:partner_in_cook/core/network/api_client.dart';
+import 'package:partner_in_cook/core/auth/auth_service.dart';
+import 'package:partner_in_cook/exceptions/api_exception.dart';
 import 'package:partner_in_cook/exceptions/exception_handler.dart';
-import 'package:partner_in_cook/services/auth_service.dart' as service;
-import 'auth_service.dart' as local;
+import 'package:partner_in_cook/model/api/auth.dart';
+import 'package:partner_in_cook/model/api/user.dart';
 
-class RegisterService implements local.AuthService<AuthRegister> {
-  final Rx<User?> currentUser = Get.find<service.AuthService>().user;
-  final DioClient _httpClient = DioClient();
+class RegisterService {
+  final AuthService _authService = Get.find<AuthService>();
+  final ApiClient _httpClient = ApiClient();
 
-  @override
+  /// Effectue l'inscription
   Future<void> performAuth(AuthRegister registerData) async {
     try {
-      // Appel de l'API d'inscription
       final response = await _httpClient.post(
-        '/register', // remplace par ton endpoint réel
+        '/register',
         data: json.encode(registerData.toJson()),
       );
 
-      final auth = AuthRes.fromJson(response as Map<String, dynamic>);
+      final data = response.data as Map<String, dynamic>;
+      final user = User.fromJson(data['user'] as Map<String, dynamic>);
+      final token = data['access_token'] as String;
+      final refresh = data['refresh_token'] as String;
 
-      // Mise à jour de l'état utilisateur + token
-      await Get.find<service.AuthService>().setAuth(auth);
-      currentUser.value = auth.user;
+      final auth = AuthRes(user: user, token: token, refreshToken: refresh);
+
+      await _authService.setAuth(auth);
+
     } on DioException catch (e) {
-      // Gestion centralisée des erreurs
       final error = handleDioException(e);
-      throw Exception(error.message);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
     }
   }
-}
-
-// Extension pour préparer les données d'inscription
-extension RegisterUser on User {
-  Map<String, dynamic> toJsonForSignUp() => {
-    'username': username,
-    'email': email,
-    'password': password,
-    'pic_url': profilePicture,
-  };
 }

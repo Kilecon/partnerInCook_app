@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/component/widgets/avatars_superimposed.dart';
-import 'package:partner_in_cook/model/pantry.dart';
-import 'package:partner_in_cook/model/fridge.dart';
+import 'package:partner_in_cook/model/api/pantry.dart';
+import 'package:partner_in_cook/model/api/fridge.dart';
 
 class PantryCard extends StatelessWidget {
   final Pantry pantry;
@@ -32,10 +32,14 @@ class PantryCard extends StatelessWidget {
             color: Colors.orange.withOpacity(0.15),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: const Icon(
-            LucideIcons.box,
-            size: 32,
-            color: Colors.orange,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(
+              "assets/images/pantry_pic.png",
+              fit: BoxFit.cover,
+              width: 64,
+              height: 64,
+            ),
           ),
         ),
 

@@ -5,14 +5,9 @@ import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({
-    super.key,
-    this.onBackPressed,
-    this.showBackButton = false,
-  });
+  const CustomAppBar({super.key, this.onBackPressed});
 
   final VoidCallback? onBackPressed;
-  final bool showBackButton;
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -24,19 +19,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       child: AppBar(
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
-        leading: showBackButton
-            ? IconButton(
-                onPressed: onBackPressed ?? () => Navigator.pop(context),
-                icon: const Icon(Icons.arrow_back),
-              )
-            : null,
-        automaticallyImplyLeading: showBackButton,
+        automaticallyImplyLeading: false,
         actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none),
-          ),
-          const SizedBox(width: 8),
           GestureDetector(
             onTap: () => Get.toNamed(Routes.profile),
             child: Container(

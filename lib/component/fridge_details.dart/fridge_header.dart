@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/widgets/circle_btn.dart';
 
 class FridgeHeader extends StatelessWidget {
   final int ingredientsCount;
+  final VoidCallback? onShareTap;
 
-  const FridgeHeader({super.key, required this.ingredientsCount});
+  const FridgeHeader({super.key, required this.ingredientsCount, this.onShareTap});
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +65,8 @@ class FridgeHeader extends StatelessWidget {
                                 onTap: () => Navigator.of(context).pop(),
                                 color: Colors.white,
                               ),
+                              if (onShareTap != null)
+                                CircleIconButton(icon: LucideIcons.share2, onTap: onShareTap!, color: Colors.white)
                             ],
                           ),
                           const SizedBox(height: 8),

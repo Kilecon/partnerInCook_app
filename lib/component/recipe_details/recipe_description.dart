@@ -50,7 +50,7 @@ class RecipeDescriptionSection extends StatelessWidget {
           const SizedBox(height: 12),
           // tags (avec ton TagList)
           TagList(
-            selected: tagsMock[0],
+            selected: [tagsMock[0]],
             tags: tagsMock,
             onChanged: (_) {},
           ),

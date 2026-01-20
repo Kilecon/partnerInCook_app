@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/data/light_recipe.dart';
 import 'package:partner_in_cook/data/tag_mock.dart';
-import 'package:partner_in_cook/model/light_recipe_list.dart';
-import 'package:partner_in_cook/model/tag.dart';
+import 'package:partner_in_cook/model/api/light_recipe_list.dart';
+import 'package:partner_in_cook/model/api/tag.dart';
 
 class ExplorerController extends GetxController {
   /// Search
   final SearchController searchController = SearchController();
 
   /// Selected tag
-  final Rx<Tag> selectedTag = tagsMock.first.obs;
+  final RxList<Tag> selectedTag = <Tag>[tagsMock.first].obs;
 
   /// Recipes source
   final List<LightRecipe> _recipes = recipesLight;
@@ -37,7 +37,7 @@ class ExplorerController extends GetxController {
   }
 
   void onTagChanged(Tag tag) {
-    selectedTag.value = tag;
+    selectedTag.value = [tag];
   }
 
   void onSearch() {

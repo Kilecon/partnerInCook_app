@@ -30,7 +30,7 @@ class FridgeView extends GetView<FridgeController> {
     }
 
     return Scaffold(
-      appBar: const CustomAppBar(showBackButton: false),
+      appBar: const CustomAppBar(),
       body: Container(
         color: AppColors.background,
         child: Obx(() {
@@ -67,7 +67,7 @@ class FridgeView extends GetView<FridgeController> {
         }),
       ),
        floatingActionButton: AddBtn(
-        onTap: () => controller.onAddPantryTap(),
+        onTap: () => controller.showCreatePantryDialog(context),
        )
     );
   }

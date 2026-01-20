@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/model/light_recipe_list.dart';
+import 'package:partner_in_cook/model/api/light_recipe_list.dart';
 import 'rating_stars.dart';
 
 class RecipeLargeCard extends StatelessWidget {

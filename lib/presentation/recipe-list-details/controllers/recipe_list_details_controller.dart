@@ -1,17 +1,22 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/data/recipe_list_mock.dart';
-import 'package:partner_in_cook/model/recipe_list.dart';
+import 'package:partner_in_cook/model/api/recipe_list.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 
 class RecipeListDetailsController extends GetxController {
   var recipeList = Rx<RecipeList?>(null);
   var searchController = TextEditingController();
+  final dynamic arguments = Get.arguments;
+
+  bool get isMyRecipes => arguments == 'my_recipes' ? true : false;
 
   @override
   void onInit() {
     super.onInit();
-    // Initialisation des données de test
+    if (!isMyRecipes) {
+      recipeList.value = mockRecipeLists[0];
+    }
     recipeList.value = mockRecipeLists[0];
   }
 

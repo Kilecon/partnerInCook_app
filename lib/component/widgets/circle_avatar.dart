@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/model/light_user.dart';
+import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 
-class OwnerAvatar extends StatelessWidget {
-  final LightUser user;
+class CircleAvatarCustom extends StatelessWidget {
+  final String name;
+  final String? url;
+  final double radius;
 
-  const OwnerAvatar({super.key, required this.user});
+  const CircleAvatarCustom({super.key, required this.name, this.url, this.radius = 12});
 
   @override
   Widget build(BuildContext context) {
 
     return CircleAvatar(
-      radius: 14,
-      backgroundColor: Colors.white,
-      child: CircleAvatar(
-        radius: 12,
-        backgroundImage:
-            user.profilePictureUrl != null &&
-                user.profilePictureUrl!.isNotEmpty
-            ? NetworkImage(user.profilePictureUrl!)
-            : null,
-        child:
-            (user.profilePictureUrl == null ||
-                user.profilePictureUrl!.isEmpty)
-            ? Text(
-                user.username.isNotEmpty
-                    ? user.username[0].toUpperCase()
-                    : '?',
-                style: const TextStyle(fontSize: 12),
-              )
-            : null,
-      ),
+      backgroundColor: AppColors.lightOrange,
+      foregroundColor: AppColors.primaryOrange,
+      radius: radius,
+      backgroundImage:
+          url != null &&
+              url!.isNotEmpty
+          ? NetworkImage(url!)
+          : null,
+      child:
+          (url == null ||
+              url!.isEmpty)
+          ? Text(
+              name.isNotEmpty
+                  ? name[0].toUpperCase()
+                  : '?',
+              style: TextStyle(fontSize: radius),
+            )
+          : null,
     );
   }
 }

@@ -15,6 +15,10 @@ abstract class Routes {
   static const pantryDetails = _Paths.pantryDetails;
   static const recipeList = _Paths.recipeList;
   static const recipeListDetails = _Paths.recipeListDetails;
+  static const createRecipe = _Paths.createRecipe;
+  static const createRecipeList = _Paths.createRecipeList;
+  static const recipeListJoin = _Paths.recipeListJoin;
+  static const pantryJoin = _Paths.pantryJoin;
 }
 
 abstract class _Paths {
@@ -31,4 +35,8 @@ abstract class _Paths {
   static const pantryDetails = '/pantry-details';
   static const recipeList = '/recipe-list';
   static const recipeListDetails = '/recipe-list-details';
+  static const createRecipe = '/create-recipe';
+  static const createRecipeList = '/create-recipe-list';
+  static const recipeListJoin = '/recipe-list/join/:id';
+  static const pantryJoin = '/pantry/join/:id';
 }
