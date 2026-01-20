@@ -16,7 +16,7 @@ class RegisterService {
   Future<void> performAuth(AuthRegister registerData) async {
     try {
       final response = await _httpClient.post(
-        '/register',
+        '/Auth/register',
         data: json.encode(registerData.toJson()),
       );
 

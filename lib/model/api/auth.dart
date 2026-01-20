@@ -11,12 +11,12 @@ class AuthRes {
     return AuthRes(
       user: User.fromJson(json['user'] as Map<String, dynamic>),
       token: json['token'] as String,
-      refreshToken: json['refreshToken'] as String,
+      refreshToken: json['refresh_token'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'user': user.toJson(), 'token': token, 'refreshToken': refreshToken};
+    return {'user': user.toJson(), 'token': token, 'refresh_token': refreshToken};
   }
 }
 

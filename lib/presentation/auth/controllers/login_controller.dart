@@ -36,8 +36,11 @@ class LoginController extends GetxController {
       final authLogin = AuthLogin(email: email!.trim(), password: password!);
 
       await localAuthService.performAuth(authLogin);
+      print("Login successful");
+      await Future.delayed(const Duration(milliseconds: 100));
 
       Get.offAllNamed(Routes.home);
+      
     } catch (e) {
       String message = "Une erreur est survenue";
       if (e is Exception) message = e.toString().replaceAll("Exception: ", "");

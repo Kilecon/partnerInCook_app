@@ -210,22 +210,38 @@ class ProfilView extends GetView<ProfilController> {
                   const SizedBox(height: 12),
 
                   CustomTitle(title: 'Quick links', padding: 0),
-                  Row(
+                  Column(
+                    spacing: 12,
                     children: [
-                      Expanded(
-                        child: ImageCoverCard(
-                          title: 'Mes recettes',
-                          imageUrl: "assets/images/recipes_banner.png",
-                          onTap: () {},
-                        ),
+                      Row(
+                        spacing: 12,
+                        children: [
+                          Expanded(
+                            child: ImageCoverCard(
+                              title: 'Mes recettes',
+                              imageUrl: "assets/images/my_recipes_banner.png",
+                              onTap: () {},
+                            ),
+                          ),
+                          Expanded(
+                            child: ImageCoverCard(
+                              title: 'Mes favoris',
+                              imageUrl: "assets/images/favorites_banner.png",
+                              onTap: () {},
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: ImageCoverCard(
-                          title: 'Mes favoris',
-                          imageUrl: "assets/images/favorites_banner.png",
-                          onTap: () {},
-                        ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ImageCoverCard(
+                              title: 'Mon frigo',
+                              imageUrl: "assets/images/my_fridge_banner.png",
+                              onTap: () {},
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

@@ -82,7 +82,7 @@ class AuthService extends GetxService {
     try {
       // Appel endpoint refresh
       final res = await Get.find<ApiClient>().post(
-        '/auth/refresh',
+        '/Auth/refresh',
         data: {'refresh_token': refreshToken.value},
       );
 

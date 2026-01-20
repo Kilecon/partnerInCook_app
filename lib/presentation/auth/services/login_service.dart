@@ -16,7 +16,7 @@ class LoginService {
   Future<void> performAuth(AuthLogin loginData) async {
     try {
       final response = await _httpClient.post(
-        '/login',
+        '/Auth/login',
         data: json.encode(loginData.toJson()),
       );
 
