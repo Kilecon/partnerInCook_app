@@ -28,7 +28,6 @@ class LoginController extends GetxController {
     if ((email == null || email!.isEmpty) ||
         (password == null || password!.isEmpty)) {
       loading.value = false;
-      showSnackError("Identifiants manquants");
       return;
     }
 
@@ -43,8 +42,10 @@ class LoginController extends GetxController {
       
     } catch (e) {
       String message = "Une erreur est survenue";
-      if (e is Exception) message = e.toString().replaceAll("Exception: ", "");
-      showSnackError(message);
+      if (e is Exception) {
+      }
+       message = e.toString().replaceAll("Exception: ", "");
+       print("Login error: $message");
     } finally {
       loading.value = false;
     }

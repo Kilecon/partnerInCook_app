@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
+import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
+import 'package:partner_in_cook/core/auth/auth_service.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -14,6 +14,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AuthService authService = Get.find<AuthService>();
+
     return Padding(
       padding: const EdgeInsets.only(right: 8.0),
       child: AppBar(
@@ -21,25 +23,27 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         actions: [
-          GestureDetector(
-            onTap: () => Get.toNamed(Routes.profile),
-            child: Container(
-              padding: const EdgeInsets.all(1), // épaisseur de la bordure
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.lightGray,
-                  width: 2,
-                ), // couleur et largeur de la bordure
-              ),
-              child: const CircleAvatar(
-                radius: 18,
-                backgroundImage: NetworkImage(
-                  'https://s3.mizury.fr/partnerincook/chef.png',
+          Obx(() {
+            final user = authService.user.value;
+            final imageUrl =
+                user?.profilePicture ??
+                'https://s3.mizury.fr/partnerincook/chef.png';
+
+            return GestureDetector(
+              onTap: () => Get.toNamed(Routes.profile),
+              child: Container(
+                padding: const EdgeInsets.all(1),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.lightGray, width: 2),
+                ),
+                child: CircleAvatar(
+                  radius: 18,
+                  backgroundImage: NetworkImage(imageUrl),
                 ),
               ),
-            ),
-          ),
+            );
+          }),
         ],
       ),
     );

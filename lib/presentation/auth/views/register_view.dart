@@ -20,7 +20,7 @@ class RegisterView extends GetView<RegisterController> {
         children: [
           Column(
             children: [
-              LogoTitle(
+              const LogoTitle(
                 title: "Inscription",
                 subtitle: "Inscrivez-vous pour rejoindre les partners !",
               ),
@@ -55,13 +55,14 @@ class RegisterView extends GetView<RegisterController> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
-                                // Username
+                                /// Username
                                 CustomInput(
+                                  controller:
+                                      controller.usernameController,
                                   keyboardType: TextInputType.text,
                                   title: "Nom d'utilisateur",
                                   prefixIcon: Icons.person,
                                   hintText: "Votre pseudo",
-                                  onSaved: (v) => controller.username = v,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return "Le champ ne peut pas être vide";
@@ -74,13 +75,13 @@ class RegisterView extends GetView<RegisterController> {
                                 ),
                                 const SizedBox(height: 16),
 
-                                // Email
+                                /// Email
                                 CustomInput(
+                                  controller: controller.emailController,
                                   keyboardType: TextInputType.emailAddress,
                                   title: "Email",
                                   prefixIcon: Icons.email,
                                   hintText: "exemple@email.com",
-                                  onSaved: (v) => controller.email = v,
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return "Le champ ne peut pas être vide";
@@ -93,15 +94,17 @@ class RegisterView extends GetView<RegisterController> {
                                 ),
                                 const SizedBox(height: 16),
 
-                                // Password
+                                /// Password
                                 Obx(
                                   () => CustomInput(
+                                    controller:
+                                        controller.passwordController,
                                     keyboardType: TextInputType.text,
                                     title: "Mot de passe",
-                                    isPassword: controller.hidePassword.value,
+                                    isPassword:
+                                        controller.hidePassword.value,
                                     prefixIcon: Icons.lock,
                                     hintText: "••••••••",
-                                    onSaved: (v) => controller.password = v,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return "Le champ ne peut pas être vide";
@@ -115,22 +118,26 @@ class RegisterView extends GetView<RegisterController> {
                                 ),
                                 const SizedBox(height: 16),
 
-                                // Confirm password
+                                /// Confirm password
                                 Obx(
                                   () => CustomInput(
+                                    controller: controller
+                                        .confirmPasswordController,
                                     keyboardType: TextInputType.text,
                                     title: "Confirmer le mot de passe",
-                                    isPassword:
-                                        controller.hideConfirmPassword.value,
+                                    isPassword: controller
+                                        .hideConfirmPassword.value,
                                     prefixIcon: Icons.lock,
                                     hintText: "••••••••",
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return "Le champ ne peut pas être vide";
                                       }
-                                      return value != controller.password
-                                          ? "Les mots de passe ne correspondent pas"
-                                          : null;
+                                      if (value != controller
+                                          .passwordController.text) {
+                                        return "Les mots de passe ne correspondent pas";
+                                      }
+                                      return null;
                                     },
                                   ),
                                 ),
@@ -141,6 +148,7 @@ class RegisterView extends GetView<RegisterController> {
                         ),
                       ),
 
+                      /// Bottom buttons
                       SafeArea(
                         top: false,
                         bottom: true,
@@ -160,14 +168,17 @@ class RegisterView extends GetView<RegisterController> {
                                   child: CustomButton(
                                     name: "S'inscrire",
                                     onClick: controller.register,
-                                    isDisabled: controller.loading.value,
-                                    isLoading: controller.loading.value,
+                                    isDisabled:
+                                        controller.loading.value,
+                                    isLoading:
+                                        controller.loading.value,
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 12),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.center,
                                 children: [
                                   const Text(
                                     "Déjà un compte ? ",
@@ -182,7 +193,8 @@ class RegisterView extends GetView<RegisterController> {
                                     child: const Text(
                                       "Se connecter",
                                       style: TextStyle(
-                                        color: AppColors.primaryOrange,
+                                        color:
+                                            AppColors.primaryOrange,
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -200,12 +212,14 @@ class RegisterView extends GetView<RegisterController> {
             ],
           ),
 
-          // Loading overlay
+          /// Loading overlay
           Obx(
             () => controller.loading.value
                 ? Container(
                     color: Colors.black.withOpacity(0.3),
-                    child: const Center(child: CircularProgressIndicator()),
+                    child: const Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   )
                 : const SizedBox.shrink(),
           ),

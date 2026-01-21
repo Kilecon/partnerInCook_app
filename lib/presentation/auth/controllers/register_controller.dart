@@ -10,26 +10,38 @@ class RegisterController extends GetxController {
 
   final RegisterService localAuthService;
 
-  String? username;
-  String? email;
-  String? password;
+  /// Form key
+  final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
 
+  /// Text controllers
+  final usernameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+
+  /// State
   final loading = false.obs;
   final hidePassword = true.obs;
   final hideConfirmPassword = true.obs;
 
-  final GlobalKey<FormState> registerFormKey = GlobalKey<FormState>();
-
-  void register() async {
+  /// Register logic
+  Future<void> register() async {
     Get.focusScope?.unfocus();
 
     if (!registerFormKey.currentState!.validate()) return;
-    registerFormKey.currentState!.save();
 
-    if (username == null ||
-        email == null ||
-        password == null) {
+    final username = usernameController.text.trim();
+    final email = emailController.text.trim();
+    final password = passwordController.text;
+    final confirmPassword = confirmPasswordController.text;
+
+    if (username.isEmpty || email.isEmpty || password.isEmpty) {
       showSnackError("Informations manquantes");
+      return;
+    }
+
+    if (password != confirmPassword) {
+      showSnackError("Les mots de passe ne correspondent pas");
       return;
     }
 
@@ -37,11 +49,10 @@ class RegisterController extends GetxController {
 
     try {
       final authRegister = AuthRegister(
-        email: email!.trim(),
-        password: password!,
-        username: username!.trim(),
-        picUrl:
-            "https://s3.mizury.fr/partnerincook/chef.png",
+        username: username,
+        email: email,
+        password: password,
+        picUrl: "https://s3.mizury.fr/partnerincook/chef.png",
       );
 
       await localAuthService.performAuth(authRegister);
@@ -53,5 +64,15 @@ class RegisterController extends GetxController {
     } finally {
       loading.value = false;
     }
+  }
+
+  /// Dispose controllers
+  @override
+  void onClose() {
+    usernameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.onClose();
   }
 }

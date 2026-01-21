@@ -85,18 +85,15 @@ class AuthService extends GetxService {
         '/Auth/refresh',
         data: {'refresh_token': refreshToken.value},
       );
+      final data = res.data as Map<String, dynamic>;
 
-      // Supposons que l'API renvoie { access_token: "...", refresh_token: "..." }
-      final newToken = res.data['access_token'] as String?;
-      final newRefresh = res.data['refresh_token'] as String?;
+      final user = User.fromJson(data['user'] as Map<String, dynamic>);
+      final newToken = data['token'] as String;
+      final newRefresh = data['refresh_token'] as String;
+      final auth = AuthRes(user: user, token: newToken, refreshToken: newRefresh);
+      await setAuth(auth);
 
-      if (newToken != null && newRefresh != null) {
-        apiToken.value = newToken;
-        refreshToken.value = newRefresh;
-        return true;
-      }
-
-      return false;
+      return true;
     } catch (_) {
       await clearAuth();
       return false;
@@ -150,7 +147,7 @@ class AuthService extends GetxService {
     final pref = await SharedPreferences.getInstance();
     await pref.setString(Constants.accessToken, auth.token);
     await pref.setString(Constants.refreshToken, auth.refreshToken);
-      await pref.setString(Constants.user, jsonEncode(auth.user.toJson()));
+    await pref.setString(Constants.user, jsonEncode(auth.user.toJson()));
   }
 
   static Future<void> clearAuth() async {
@@ -158,7 +155,7 @@ class AuthService extends GetxService {
     await pref.remove(Constants.accessToken);
     await pref.remove(Constants.refreshToken);
     await pref.remove(Constants.user);
-    Get.toNamed(Routes.login);
+    Get.offAllNamed(Routes.login);
   }
 
   static Future<void> logout() => clearAuth();

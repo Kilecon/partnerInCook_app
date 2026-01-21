@@ -3,8 +3,10 @@ import 'package:partner_in_cook/model/api/user.dart';
 import 'package:partner_in_cook/core/auth/auth_service.dart';
 
 class ProfilController extends GetxController {
+  final AuthService _authService = Get.find<AuthService>();
+  
   // Utilisateur réactif
-  final Rxn<User> user = Rxn<User>();
+  Rx<User?> get user => _authService.user;
 
   // Stats réactives
   final RxInt recipesCount = 0.obs;
@@ -14,11 +16,7 @@ class ProfilController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
-    // Charger l'utilisateur
-    final u = await AuthService.getUser();
-    user.value = u;
-
-    // Charger les compteurs (placeholder — remplacer par appels réels si dispo)
+        // Charger les compteurs
     await _loadCounts();
   }
 

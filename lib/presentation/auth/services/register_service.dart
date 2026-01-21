@@ -22,7 +22,7 @@ class RegisterService {
 
       final data = response.data as Map<String, dynamic>;
       final user = User.fromJson(data['user'] as Map<String, dynamic>);
-      final token = data['access_token'] as String;
+      final token = data['token'] as String;
       final refresh = data['refresh_token'] as String;
 
       final auth = AuthRes(user: user, token: token, refreshToken: refresh);
