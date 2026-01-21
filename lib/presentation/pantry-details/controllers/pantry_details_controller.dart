@@ -28,11 +28,6 @@ class PantryDetailsController extends GetxController {
     } catch (e) {
       pantry = null;
       fullInvitationLink = null;
-      Get.snackbar(
-        'Erreur',
-        'Impossible de charger le garde-manger.\nVérifiez votre connexion.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
     } finally {
       isLoading.value = false;
       update();

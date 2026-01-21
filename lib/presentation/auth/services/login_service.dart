@@ -10,7 +10,7 @@ import 'package:partner_in_cook/model/api/user.dart';
 
 class LoginService {
   final AuthService _authService = Get.find<AuthService>();
-  final ApiClient _httpClient = ApiClient();
+  final ApiClient _httpClient = Get.find<ApiClient>();
 
   /// Effectue la connexion
   Future<void> performAuth(AuthLogin loginData) async {

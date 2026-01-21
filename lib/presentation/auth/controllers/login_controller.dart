@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:partner_in_cook/model/api/auth.dart';
 import 'package:partner_in_cook/presentation/auth/services/login_service.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
-import 'package:partner_in_cook/utils/snackbar.dart';
 
 class LoginController extends GetxController {
   LoginController({required this.localAuthService});

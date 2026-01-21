@@ -2,21 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
-import 'package:partner_in_cook/data/recipe_list_mock.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 import 'package:partner_in_cook/model/api/recipe_list.dart';
+import 'package:partner_in_cook/services/recipe_list_service.dart';
 
 class RecipeListController extends GetxController {
   var recipeList = <RecipeList>[].obs;
   var searchController = TextEditingController();
+  final recipeListApi = RecipeListService();
+  var isLoading = true.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Initialisation des données de test
-    final sortedList = List<RecipeList>.from(mockRecipeLists);
-    sortedList.sort((a, b) => (b.isFavorite ? 1 : 0).compareTo(a.isFavorite ? 1 : 0));
-    recipeList.value = sortedList;
+    _loadRecipeList();
+  }
+
+  Future<void> _loadRecipeList() async {
+    try {
+      isLoading.value = true;
+
+      // Charger les listes owned et joined
+      final owned = await recipeListApi.getOwned();
+      print("Owned recipe lists loaded: ${owned.length}");
+
+      final joined = await recipeListApi.getJoined();
+      print("Joined recipe lists loaded: ${joined.length}");
+
+      // Combiner les deux listes
+      recipeList.value = [...owned, ...joined];
+
+      // Trier : les favoris en premier
+      final sortedList = List<RecipeList>.from(recipeList);
+      sortedList.sort(
+        (a, b) => (b.isFavorite ? 1 : 0).compareTo(a.isFavorite ? 1 : 0),
+      );
+      recipeList.value = sortedList;
+
+      print("Total recipe lists: ${recipeList.length}");
+    } catch (e) {
+      print("Error loading recipe lists: $e");
+      recipeList.value = [];
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void onRecipeListTap(String id) {
@@ -24,16 +53,9 @@ class RecipeListController extends GetxController {
   }
 
   void onMyRecipesTap() {
-    // Gérer la navigation vers "Mes recettes"
-    Get.toNamed(Routes.recipeDetails, arguments: 'my_recipes');
+    Get.toNamed(Routes.recipeListDetails, arguments: 'my_recipes');
   }
 
-  void onAddRecipeListTap() {
-    // Gérer l'ajout d'une nouvelle liste de recettes
-    Get.toNamed(Routes.createRecipe);
-  }
-
-  // Nouveau : affiche un bottom sheet pour choisir entre créer une recette ou une liste
   void showCreateOptions() {
     Get.bottomSheet(
       SafeArea(
@@ -47,7 +69,10 @@ class RecipeListController extends GetxController {
           child: Wrap(
             children: [
               ListTile(
-                leading: const Icon(LucideIcons.utensilsCrossed, color: AppColors.primaryOrange,),
+                leading: const Icon(
+                  LucideIcons.utensilsCrossed,
+                  color: AppColors.primaryOrange,
+                ),
                 title: const Text('Créer une recette'),
                 onTap: () {
                   Get.back();
@@ -55,7 +80,10 @@ class RecipeListController extends GetxController {
                 },
               ),
               ListTile(
-                leading: const Icon(LucideIcons.listPlus, color: AppColors.primaryOrange,),
+                leading: const Icon(
+                  LucideIcons.listPlus,
+                  color: AppColors.primaryOrange,
+                ),
                 title: const Text('Créer une liste de recettes'),
                 onTap: () {
                   Get.back();

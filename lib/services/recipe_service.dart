@@ -4,21 +4,15 @@ import 'package:get/get.dart';
 import 'package:partner_in_cook/core/network/api_client.dart';
 import 'package:partner_in_cook/exceptions/api_exception.dart';
 import 'package:partner_in_cook/exceptions/exception_handler.dart';
-import 'package:partner_in_cook/model/api/pantry.dart';
+import 'package:partner_in_cook/model/api/recipe.dart';
 
-class PantryService {
+class RecipeService {
   final ApiClient _api = Get.find<ApiClient>();
 
-  /// Joindre un pantry existant via son ID
-  Future<void> joined(String recipeListId) async {
+  /// Liker une recette
+  Future<void> like(String recipeId) async {
     try {
-      await _api.post(
-        '/Pantry/join/$recipeListId',
-      );
-
-      // Ici, si l'API renvoie un payload, tu peux le parser :
-      //final data = response.data as Map<String, dynamic>;
-
+      await _api.post('/Recipe/like/$recipeId');
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -27,13 +21,10 @@ class PantryService {
     }
   }
 
-  /// Récupérer tous les pantries
-  Future<List<Pantry>> getAllOwned() async {
+  /// Disliker une recette
+  Future<void> dislike(String recipeId) async {
     try {
-      final response = await _api.get('/Pantry/owned');
-
-      // Retourne la liste brute ou convertie en model
-      return response.data as List<Pantry>;
+      await _api.post('/Recipe/dislike/$recipeId');
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -42,12 +33,14 @@ class PantryService {
     }
   }
 
-    Future<List<Pantry>> getAllJoined() async {
+  /// Récupérer toutes les recettes publiques
+  Future<List<Recipe>> getAllPublic() async {
     try {
-      final response = await _api.get('/Pantry/joined');
-
-      // Retourne la liste brute ou convertie en model
-      return response.data as List<Pantry>;
+      final response = await _api.get('/Recipe/public');
+      final data = response.data['data'] as List;
+      return data
+          .map((json) => Recipe.fromJson(json as Map<String, dynamic>))
+          .toList();
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -56,11 +49,14 @@ class PantryService {
     }
   }
 
-
-    Future<Pantry> getById(String id) async {
+  /// Récupérer les recettes possédées
+  Future<List<Recipe>> getOwned() async {
     try {
-      final response = await _api.get('/Pantry/$id');
-      return response.data;
+      final response = await _api.get('/Recipe/owned');
+      final data = response.data['data'] as List;
+      return data
+          .map((json) => Recipe.fromJson(json as Map<String, dynamic>))
+          .toList();
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -69,14 +65,11 @@ class PantryService {
     }
   }
 
-  /// Créer un nouveau pantry
-  Future<Pantry> create(Map<String, dynamic> body) async {
+  /// Créer une nouvelle recette
+  Future<Recipe> create(Map<String, dynamic> body) async {
     try {
-      final response = await _api.post(
-        '/Pantry',
-        data: json.encode(body),
-      );
-      return response.data;
+      final response = await _api.post('/Recipe', data: json.encode(body));
+      return Recipe.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -85,11 +78,22 @@ class PantryService {
     }
   }
 
-  Future<void> leave(String pantryId) async {
+  /// Supprimer une recette
+  Future<void> delete(String recipeId) async {
     try {
-      await _api.post(
-        '/Pantry/leave/$pantryId',
-      );
+      await _api.delete('/Recipe/$recipeId');
+    } on DioException catch (e) {
+      final error = handleDioException(e);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
+    }
+  }
+
+  /// Mettre à jour une recette
+  Future<void> update(String recipeId, Map<String, dynamic> body) async {
+    try {
+      await _api.put('/Recipe/$recipeId', data: json.encode(body));
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:partner_in_cook/model/api/auth.dart';
 import 'package:partner_in_cook/presentation/auth/services/register_service.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
-import 'package:partner_in_cook/utils/snackbar.dart';
 
 class RegisterController extends GetxController {
   RegisterController({required this.localAuthService});
@@ -36,12 +35,10 @@ class RegisterController extends GetxController {
     final confirmPassword = confirmPasswordController.text;
 
     if (username.isEmpty || email.isEmpty || password.isEmpty) {
-      showSnackError("Informations manquantes");
       return;
     }
 
     if (password != confirmPassword) {
-      showSnackError("Les mots de passe ne correspondent pas");
       return;
     }
 
@@ -58,9 +55,11 @@ class RegisterController extends GetxController {
       await localAuthService.performAuth(authRegister);
       Get.offAllNamed(Routes.home);
     } catch (e) {
-      showSnackError(
-        e.toString().replaceAll("Exception: ", ""),
-      );
+      String message = "Une erreur est survenue";
+      if (e is Exception) {
+        message = e.toString().replaceAll("Exception: ", "");
+      }
+      print("Register error: $message");
     } finally {
       loading.value = false;
     }
