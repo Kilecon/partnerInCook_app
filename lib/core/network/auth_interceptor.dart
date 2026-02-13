@@ -11,7 +11,14 @@ class AuthInterceptor extends Interceptor {
   AuthInterceptor(this.dio);
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    // 1. SI c'est la requête de refresh, on ne touche à rien (pas de Bearer token)
+    if (options.path.contains('/Auth/refresh')) {
+      return handler.next(options);
+    }
     try {
       final token = await AuthService.getToken();
       if (token?.isNotEmpty == true) {
@@ -23,7 +30,7 @@ class AuthInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    if (err.response?.statusCode != 401) {
+    if (err.response?.statusCode != 401 || err.requestOptions.path.contains('/Auth/refresh')) {
       handler.next(err);
       return;
     }

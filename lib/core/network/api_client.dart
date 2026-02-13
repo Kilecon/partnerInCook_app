@@ -77,6 +77,11 @@ class ApiClient {
     try {
       return await dio.post(path, data: data, queryParameters: queryParameters, options: options);
     } on DioException catch (e) {
+      // Si e.error est bien une ApiException, on peut afficher son message
+      if (e.error is ApiException) {
+        final apiError = e.error as ApiException;
+        print("Erreur API (${apiError.code}): ${apiError.message}");
+      }
       throw e.error ?? e;
     }
   }

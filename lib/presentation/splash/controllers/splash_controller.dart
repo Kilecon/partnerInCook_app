@@ -13,15 +13,17 @@ class SplashController extends GetxController {
   Future<void> onInit() async {
     super.onInit();
     await _authService.init();
-    // Délai pour afficher le splash
-    await Future.delayed(const Duration(seconds: 1));
     // Si on a un refresh token, on tente de rafraîchir
     if (_authService.refreshToken.value != null) {
       final success = await _authService.refreshAuthToken();
       if (success) {
+        print('Token rafraîchi avec succès');
+        print('Redirection vers l\'app principale');
         // Token rafraîchi avec succès → redirection vers l'app
         Get.offAllNamed(Routes.home);
       } else {
+        print('Échec du rafraîchissement du token');
+        print('Redirection vers login');
         // Échec du refresh → redirection vers login
         Get.offAllNamed(Routes.login);
       }

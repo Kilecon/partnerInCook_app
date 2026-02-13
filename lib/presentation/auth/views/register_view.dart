@@ -13,39 +13,42 @@ class RegisterView extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
-          Column(
-            children: [
-              const LogoTitle(
-                title: "Inscription",
-                subtitle: "Inscrivez-vous pour rejoindre les partners !",
-              ),
-
-              Expanded(
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
+          SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: screenHeight),
+              child: IntrinsicHeight(
+                child: Column(
+                  children: [
+                    const LogoTitle(
+                      title: "Inscription",
+                      subtitle: "Inscrivez-vous pour rejoindre les partners !",
                     ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.yellowPrimary.withOpacity(0.08),
-                        blurRadius: 10,
-                        offset: const Offset(0, -4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: SingleChildScrollView(
+
+                    Expanded(
+                      child: Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(24),
+                            topRight: Radius.circular(24),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.yellowPrimary.withOpacity(0.08),
+                              blurRadius: 10,
+                              offset: const Offset(0, -4),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 24,
                             vertical: 30,
@@ -57,8 +60,7 @@ class RegisterView extends GetView<RegisterController> {
                               children: [
                                 /// Username
                                 CustomInput(
-                                  controller:
-                                      controller.usernameController,
+                                  controller: controller.usernameController,
                                   keyboardType: TextInputType.text,
                                   title: "Nom d'utilisateur",
                                   prefixIcon: Icons.person,
@@ -97,12 +99,10 @@ class RegisterView extends GetView<RegisterController> {
                                 /// Password
                                 Obx(
                                   () => CustomInput(
-                                    controller:
-                                        controller.passwordController,
+                                    controller: controller.passwordController,
                                     keyboardType: TextInputType.text,
                                     title: "Mot de passe",
-                                    isPassword:
-                                        controller.hidePassword.value,
+                                    isPassword: controller.hidePassword.value,
                                     prefixIcon: Icons.lock,
                                     hintText: "••••••••",
                                     validator: (value) {
@@ -121,95 +121,102 @@ class RegisterView extends GetView<RegisterController> {
                                 /// Confirm password
                                 Obx(
                                   () => CustomInput(
-                                    controller: controller
-                                        .confirmPasswordController,
+                                    controller:
+                                        controller.confirmPasswordController,
                                     keyboardType: TextInputType.text,
                                     title: "Confirmer le mot de passe",
-                                    isPassword: controller
-                                        .hideConfirmPassword.value,
+                                    isPassword:
+                                        controller.hideConfirmPassword.value,
                                     prefixIcon: Icons.lock,
                                     hintText: "••••••••",
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return "Le champ ne peut pas être vide";
                                       }
-                                      if (value != controller
-                                          .passwordController.text) {
+                                      if (value !=
+                                          controller.passwordController.text) {
                                         return "Les mots de passe ne correspondent pas";
                                       }
                                       return null;
                                     },
                                   ),
                                 ),
-                                const SizedBox(height: 16),
+
+                                const Spacer(),
+
+                                /// Bottom buttons avec SafeArea
+                                SafeArea(
+                                  top: false,
+                                  bottom: true,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                      bottom: bottomInset > 0 ? 16 : 0,
+                                      top: 16,
+                                    ),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        Obx(
+                                          () => FractionallySizedBox(
+                                            widthFactor: 0.8,
+                                            child: CustomButton(
+                                              name: "S'inscrire",
+                                              onClick: controller.register,
+                                              isDisabled:
+                                                  controller.loading.value,
+                                              isLoading:
+                                                  controller.loading.value,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 12),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Text(
+                                              "Déjà un compte ? ",
+                                              style: TextStyle(
+                                                color: AppColors.lightGray,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Get.offAllNamed(Routes.login),
+                                              style: TextButton.styleFrom(
+                                                padding: EdgeInsets.zero,
+                                                minimumSize: Size.zero,
+                                                tapTargetSize:
+                                                    MaterialTapTargetSize
+                                                        .shrinkWrap,
+                                              ),
+                                              child: const Text(
+                                                "Se connecter",
+                                                style: TextStyle(
+                                                  color:
+                                                      AppColors.primaryOrange,
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
                         ),
                       ),
-
-                      /// Bottom buttons
-                      SafeArea(
-                        top: false,
-                        bottom: true,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            24,
-                            8,
-                            24,
-                            bottomInset > 0 ? bottomInset : 24,
-                          ),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Obx(
-                                () => FractionallySizedBox(
-                                  widthFactor: 0.8,
-                                  child: CustomButton(
-                                    name: "S'inscrire",
-                                    onClick: controller.register,
-                                    isDisabled:
-                                        controller.loading.value,
-                                    isLoading:
-                                        controller.loading.value,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    "Déjà un compte ? ",
-                                    style: TextStyle(
-                                      color: AppColors.lightGray,
-                                      fontSize: 14,
-                                    ),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Get.offAllNamed(Routes.login),
-                                    child: const Text(
-                                      "Se connecter",
-                                      style: TextStyle(
-                                        color:
-                                            AppColors.primaryOrange,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
 
           /// Loading overlay
@@ -218,7 +225,9 @@ class RegisterView extends GetView<RegisterController> {
                 ? Container(
                     color: Colors.black.withOpacity(0.3),
                     child: const Center(
-                      child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(
+                        color: AppColors.primaryOrange,
+                      ),
                     ),
                   )
                 : const SizedBox.shrink(),

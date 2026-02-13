@@ -13,42 +13,46 @@ class LoginView extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.of(context).viewInsets.bottom;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: Colors.white,
+      resizeToAvoidBottomInset: true,
       body: Obx(
         () => Stack(
           children: [
-            Column(
-              children: [
-                // Logo et titre (padding uniquement en dessous dans LogoTitle)
-                LogoTitle(
-                  title: "Connexion",
-                  subtitle: "Identifiez-vous pour récupérer\nvos couteaux",
-                ),
-
-                // Zone en dessous du logo : prend tout l'espace restant, arrondie en haut + ombre
-                Expanded(
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(24),
-                        topRight: Radius.circular(24),
+            SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: screenHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      // Logo et titre - devient scrollable
+                      LogoTitle(
+                        title: "Connexion",
+                        subtitle:
+                            "Identifiez-vous pour récupérer\nvos couteaux",
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.yellowPrimary.withOpacity(0.1),
-                          blurRadius: 8,
-                          offset: const Offset(0, -2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        // Scrollable content (inputs + forget pw)
-                        Expanded(
-                          child: SingleChildScrollView(
+
+                      // Zone en dessous du logo
+                      Expanded(
+                        child: Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(24),
+                              topRight: Radius.circular(24),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: AppColors.yellowPrimary.withOpacity(0.1),
+                                blurRadius: 8,
+                                offset: const Offset(0, -2),
+                              ),
+                            ],
+                          ),
+                          child: Padding(
                             padding: const EdgeInsets.symmetric(
                               horizontal: 24,
                               vertical: 30,
@@ -116,82 +120,83 @@ class LoginView extends GetView<LoginController> {
                                       ),
                                     ),
                                   ),
+
+                                  const Spacer(),
+
+                                  // Bouton et inscription avec SafeArea
+                                  SafeArea(
+                                    top: false,
+                                    bottom: true,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        bottom: bottomInset > 0 ? 16 : 0,
+                                      ),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Align(
+                                            alignment: Alignment.center,
+                                            child: FractionallySizedBox(
+                                              widthFactor: 0.8,
+                                              child: CustomButton(
+                                                name: "Se connecter",
+                                                onClick: controller.login,
+                                                isDisabled:
+                                                    controller.loading.value,
+                                                isLoading:
+                                                    controller.loading.value,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 12),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Text(
+                                                "Pas encore de compte ? ",
+                                                style: TextStyle(
+                                                  color: AppColors.lightGray,
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  Get.toNamed(Routes.register);
+                                                },
+                                                style: TextButton.styleFrom(
+                                                  padding: EdgeInsets.zero,
+                                                  minimumSize: Size.zero,
+                                                  tapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .shrinkWrap,
+                                                ),
+                                                child: const Text(
+                                                  "S'inscrire",
+                                                  style: TextStyle(
+                                                    color:
+                                                        AppColors.primaryOrange,
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ),
                         ),
-
-                        // Spacer optionnel si besoin de pousser la zone fixe vers le bas
-                        const SizedBox(height: 4),
-
-                        // Zone fixe en bas : bouton + lien d'inscription (SafeArea bottom only)
-                        SafeArea(
-                          top: false,
-                          bottom: true,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              24,
-                              8,
-                              24,
-                              bottomInset > 0 ? bottomInset : 24,
-                            ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: FractionallySizedBox(
-                                    widthFactor: 0.8,
-                                    child: CustomButton(
-                                      name: "Se connecter",
-                                      onClick: controller.login,
-                                      isDisabled: controller.loading.value,
-                                      isLoading: controller.loading.value,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 12),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Text(
-                                      "Pas encore de compte ? ",
-                                      style: TextStyle(
-                                        color: AppColors.lightGray,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        Get.toNamed(Routes.register);
-                                      },
-                                      style: TextButton.styleFrom(
-                                        padding: EdgeInsets.zero,
-                                        minimumSize: Size.zero,
-                                        tapTargetSize:
-                                            MaterialTapTargetSize.shrinkWrap,
-                                      ),
-                                      child: const Text(
-                                        "S'inscrire",
-                                        style: TextStyle(
-                                          color: AppColors.primaryOrange,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
 
             // Loading overlay

@@ -77,6 +77,7 @@ class AuthService extends GetxService {
 
   /// Refresh token automatique
   Future<bool> refreshAuthToken() async {
+    print("AAAAAAAAAAA");
     if (refreshToken.value == null) return false;
 
     try {
@@ -85,16 +86,25 @@ class AuthService extends GetxService {
         '/Auth/refresh',
         data: {'refresh_token': refreshToken.value},
       );
+      print('Réponse API refresh token: ${res.data}');
+      if (res.statusCode == "401") {
+        print('Refresh token invalide ou expiré');
+        await clearAuth();
+        return false;
+      }
       final data = res.data as Map<String, dynamic>;
-
+      print('Réponse refresh token: $data');
       final user = User.fromJson(data['user'] as Map<String, dynamic>);
       final newToken = data['token'] as String;
       final newRefresh = data['refresh_token'] as String;
+      print('Nouveau token: $newToken');
       final auth = AuthRes(user: user, token: newToken, refreshToken: newRefresh);
+      print('Mise à jour de l\'authentification avec les nouveaux tokens');
       await setAuth(auth);
 
       return true;
-    } catch (_) {
+    } catch (e) {
+      print('Erreur lors du rafraîchissement du token: $e');
       await clearAuth();
       return false;
     }
