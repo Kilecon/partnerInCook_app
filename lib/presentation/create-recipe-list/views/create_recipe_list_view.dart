@@ -4,7 +4,6 @@ import 'package:partner_in_cook/component/create_recipe_list/create_recipe_list_
 import 'package:partner_in_cook/component/widgets/back_header.dart';
 import 'package:partner_in_cook/component/widgets/custom_button.dart';
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
-import 'package:partner_in_cook/component/widgets/layout/custom_layout_body.dart';
 import 'package:partner_in_cook/presentation/create-recipe-list/controllers/create_recipe_list_controller.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 
@@ -23,6 +22,7 @@ class CreateRecipeListView extends GetView<CreateRecipeListController> {
           ),
 
           Expanded(child: CustomLayout(children: [CreateRecipeListForm()])),
+
           SafeArea(
             top: false,
             child: Padding(
@@ -30,9 +30,13 @@ class CreateRecipeListView extends GetView<CreateRecipeListController> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  CustomButton(
-                    name: 'Valider',
-                    onClick: controller.createRecipeList,
+                  Obx(
+                    () => controller.isLoading.value
+                        ? const Center(child: CircularProgressIndicator())
+                        : CustomButton(
+                            name: 'Valider',
+                            onClick: controller.createRecipeList,
+                          ),
                   ),
                 ],
               ),

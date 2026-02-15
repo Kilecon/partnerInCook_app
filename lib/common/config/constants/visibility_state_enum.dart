@@ -19,8 +19,8 @@ VisibilityStateEnum visibilityStateFromJson(String value) {
 String visibilityStateToJson(VisibilityStateEnum state) {
   switch (state) {
     case VisibilityStateEnum.publicState:
-      return 'public';
+      return 'Public';
     case VisibilityStateEnum.privateState:
-      return 'private';
+      return 'Private';
   }
 }

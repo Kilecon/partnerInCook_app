@@ -15,10 +15,10 @@ class RecipeListController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadRecipeList();
+    loadRecipeList();
   }
 
-  Future<void> _loadRecipeList() async {
+  Future<void> loadRecipeList() async {
     try {
       isLoading.value = true;
 

@@ -101,4 +101,20 @@ class RecipeService {
       throw ApiException('Erreur inattendue: $e');
     }
   }
+
+    /// Récupérer les recettes possédées
+  Future<List<Recipe>> getById(String recipeId) async {
+    try {
+      final response = await _api.get('/Recipe/$recipeId');
+      final data = response.data['data'] as List;
+      return data
+          .map((json) => Recipe.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } on DioException catch (e) {
+      final error = handleDioException(e);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
+    }
+  }
 }

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -9,7 +10,6 @@ import 'package:partner_in_cook/component/widgets/image-selector.dart';
 import 'package:partner_in_cook/presentation/create-recipe-list/controllers/create_recipe_list_controller.dart';
 
 class CreateRecipeListForm extends GetView<CreateRecipeListController> {
-
   const CreateRecipeListForm({super.key});
 
   @override
@@ -23,7 +23,13 @@ class CreateRecipeListForm extends GetView<CreateRecipeListController> {
         children: [
           ImageSelector(
             title: 'Image de la liste de recettes',
-            onImageSelect: (XFile? image) {},
+            onImageSelect: (XFile? image) {
+              if (image != null) {
+                controller.setImage(File(image.path));
+              } else {
+                controller.setImage(null);
+              }
+            },
           ),
 
           CustomSelect<VisibilityStateEnum>(
@@ -31,15 +37,14 @@ class CreateRecipeListForm extends GetView<CreateRecipeListController> {
             title: 'Visibilité',
             items: VisibilityStateEnum.values,
             value: controller.form.value.visibilityState,
-            onChanged: (v) =>
-                controller.form.update((f) => f!.visibilityState = v!),
+            onChanged: (v) => controller.setVisibilityState(v!),
             labelBuilder: (v) => visibilityStateToJson(v).capitalizeFirst ?? '',
           ),
           CustomInput(
             keyboardType: TextInputType.text,
             title: 'Nom',
-            hintText: 'Nom de la recette',
-            onChanged: (v) => controller.form.value.name = v,
+            hintText: 'Nom de la liste de recettes',
+            onChanged: (v) => controller.setName(v),
             validator: (_) => errors['name'],
           ),
 
@@ -47,7 +52,7 @@ class CreateRecipeListForm extends GetView<CreateRecipeListController> {
             keyboardType: TextInputType.text,
             title: 'Description',
             hintText: 'Description',
-            onChanged: (v) => controller.form.value.description = v,
+            onChanged: (v) => controller.setDescription(v),
           ),
         ],
       );

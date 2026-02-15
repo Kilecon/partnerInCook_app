@@ -1,10 +1,13 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
+import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
+import 'package:partner_in_cook/core/auth/auth_service.dart';
 import 'package:partner_in_cook/core/network/api_client.dart';
 import 'package:partner_in_cook/exceptions/api_exception.dart';
 import 'package:partner_in_cook/exceptions/exception_handler.dart';
 import 'package:partner_in_cook/model/api/recipe_list.dart';
+import 'package:partner_in_cook/model/form/create_recipe_list_form.dart';
 
 class RecipeListService {
   final ApiClient _api = Get.find<ApiClient>();
@@ -106,14 +109,37 @@ class RecipeListService {
   }
 
   /// Créer une nouvelle liste de recettes
-  Future<RecipeList> create(Map<String, dynamic> body) async {
+  Future<RecipeList> create(CreateRecipeListForm form) async {
     try {
+      final connectedUser = await AuthService.getUser();
+
+      print('👤 Connected user: ${connectedUser?.userId}');
+
+      final body = {
+        'name': form.name,
+        'is_favorite': false,
+        'description': form.description,
+        'state': visibilityStateToJson(form.visibilityState),
+        'author_id': connectedUser!.userId,
+        if (form.imageUrl != null && form.imageUrl!.isNotEmpty)
+          'pic_url': form.imageUrl,
+      };
+
+      print('📤 Request body: ${json.encode(body)}');
+
       final response = await _api.post('/RecipeList', data: json.encode(body));
+
+      print('✅ Response: ${response.data}');
+
       return RecipeList.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
+      print('❌ DioException: ${e.message}');
+      print('❌ Response data: ${e.response?.data}');
+      print('❌ Status code: ${e.response?.statusCode}');
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
     } catch (e) {
+      print('❌ Exception: $e');
       throw ApiException('Erreur inattendue: $e');
     }
   }
