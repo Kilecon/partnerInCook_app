@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
-import 'package:partner_in_cook/model/api/light_recipe_list.dart';
+import 'package:partner_in_cook/model/api/light_recipe.dart';
 import 'package:partner_in_cook/component/widgets/empty_state.dart';
 import 'package:partner_in_cook/component/explorer/recipe_horizontal_card.dart';
 import 'package:partner_in_cook/component/explorer/recipe_large_card.dart';

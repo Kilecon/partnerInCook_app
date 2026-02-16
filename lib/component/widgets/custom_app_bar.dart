@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
+import 'package:partner_in_cook/component/widgets/circle_avatar.dart';
 import 'package:partner_in_cook/core/auth/auth_service.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 
@@ -25,9 +26,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           Obx(() {
             final user = authService.user.value;
-            final imageUrl =
-                user?.profilePicture ??
-                'https://s3.mizury.fr/partnerincook/chef.png';
 
             return GestureDetector(
               onTap: () => Get.toNamed(Routes.profile),
@@ -37,9 +35,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   shape: BoxShape.circle,
                   border: Border.all(color: AppColors.lightGray, width: 2),
                 ),
-                child: CircleAvatar(
+                child: CircleAvatarCustom(
+                  name: user?.username ?? 'U',
+                  url: user?.profilePicture,
                   radius: 18,
-                  backgroundImage: NetworkImage(imageUrl),
                 ),
               ),
             );

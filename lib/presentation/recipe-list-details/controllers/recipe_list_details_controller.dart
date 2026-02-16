@@ -1,23 +1,73 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/data/recipe_list_mock.dart';
+import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
+import 'package:partner_in_cook/core/auth/auth_service.dart';
+import 'package:partner_in_cook/model/api/light_user.dart';
+import 'package:partner_in_cook/model/api/recipe.dart';
 import 'package:partner_in_cook/model/api/recipe_list.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
+import 'package:partner_in_cook/services/recipe_list_service.dart';
+import 'package:partner_in_cook/services/recipe_service.dart';
 
 class RecipeListDetailsController extends GetxController {
   var recipeList = Rx<RecipeList?>(null);
   var searchController = TextEditingController();
   final dynamic arguments = Get.arguments;
+  var isLoading = true.obs;
+  final recipeListApi = RecipeListService();
+  final recipeApi = RecipeService();
 
   bool get isMyRecipes => arguments == 'my_recipes' ? true : false;
 
   @override
   void onInit() {
     super.onInit();
-    if (!isMyRecipes) {
-      recipeList.value = mockRecipeLists[0];
+    if (isMyRecipes) {
+      loadMyRecipes();
+    } else if (arguments is String) {
+      loadRecipeListDetails(arguments);
     }
-    recipeList.value = mockRecipeLists[0];
+  }
+
+  Future<void> loadRecipeListDetails(String id) async {
+    try {
+      isLoading.value = true;
+      final details = await recipeListApi.getById(id);
+      recipeList.value = details;
+    } catch (e) {
+      print("Error loading recipe list details: $e");
+      recipeList.value = null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> loadMyRecipes() async {
+    final connectedUser = await AuthService.getUser();
+    try {
+      isLoading.value = true;
+      final recipes = await recipeApi.getOwned();
+      // Créer une RecipeList pour "Mes Recettes"
+      recipeList.value = RecipeList(
+        isFavorite: false,
+        id: 'my_recipes',
+        members: [],
+        visibilityState: VisibilityStateEnum.privateState,
+        name: 'Mes Recettes',
+        recipes: recipes.toLightRecipes(),
+        pictureUrl: null,
+        author: LightUser(
+          id: connectedUser!.userId!,
+          username: connectedUser.username!,
+          profilePictureUrl: connectedUser.profilePicture,
+        ),
+      );
+    } catch (e) {
+      print("Error loading my recipes: $e");
+      recipeList.value = null;
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void onRecipeTap(String recipeId) {

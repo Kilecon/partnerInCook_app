@@ -209,7 +209,7 @@ class ProfilView extends GetView<ProfilController> {
 
                   const SizedBox(height: 12),
 
-                  CustomTitle(title: 'Quick links', padding: 0),
+                  CustomTitle(title: 'Accès rapide', padding: 0),
                   Column(
                     spacing: 12,
                     children: [

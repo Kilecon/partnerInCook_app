@@ -1,4 +1,5 @@
 import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
+import 'package:partner_in_cook/model/api/light_recipe.dart';
 import 'package:partner_in_cook/model/api/step.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
 import 'package:partner_in_cook/model/api/utensil.dart';
@@ -90,10 +91,34 @@ class Recipe {
       'tags': tags.map((e) => e.toJson()).toList(),
       'steps': steps.map((e) => e.toJson()).toList(),
       'utensils': utensils.map((e) => e.toJson()).toList(),
-      'recipe_ingredients':
-          recipeIngredients.map((e) => e.toJson()).toList(),
+      'recipe_ingredients': recipeIngredients.map((e) => e.toJson()).toList(),
       'notation_count': notationsCount,
       'average_notation': averageNotation,
     };
+  }
+
+  LightRecipe toLightRecipe() {
+    int? globalTime;
+    if (preparationTime != null || restTime != null || cookTime != null) {
+      globalTime = (preparationTime ?? 0) + (restTime ?? 0) + (cookTime ?? 0);
+    }
+
+    return LightRecipe(
+      id: id,
+      name: name,
+      globalTime: globalTime,
+      isFavorite: isFavorite,
+      pictureUrl: pictureUrl,
+      author: author,
+      notationsCount: notationsCount,
+      averageNotation: averageNotation,
+      tags: tags,
+    );
+  }
+}
+
+extension RecipeListExtension on List<Recipe> {
+  List<LightRecipe> toLightRecipes() {
+    return map((recipe) => recipe.toLightRecipe()).toList();
   }
 }

@@ -9,7 +9,7 @@ import 'package:partner_in_cook/model/api/fridge.dart';
 class FridgeService {
   final ApiClient _api = Get.find<ApiClient>();
 
-    Future<List<Fridge>> getAllJoined() async {
+  Future<List<Fridge>> getAllJoined() async {
     try {
       final response = await _api.get('/Fridge/joined');
 
@@ -23,10 +23,21 @@ class FridgeService {
     }
   }
 
-
-    Future<Fridge> getById(String id) async {
+  Future<Fridge> getById(String id) async {
     try {
       final response = await _api.get('/Fridge/$id');
+      return response.data;
+    } on DioException catch (e) {
+      final error = handleDioException(e);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
+    }
+  }
+
+  Future<Fridge> getOwned() async {
+    try {
+      final response = await _api.get('/Fridge/owned');
       return response.data;
     } on DioException catch (e) {
       final error = handleDioException(e);
@@ -39,10 +50,7 @@ class FridgeService {
   /// Créer un nouveau fridge
   Future<Fridge> create(Map<String, dynamic> body) async {
     try {
-      final response = await _api.post(
-        '/Fridge',
-        data: json.encode(body),
-      );
+      final response = await _api.post('/Fridge', data: json.encode(body));
       return response.data;
     } on DioException catch (e) {
       final error = handleDioException(e);

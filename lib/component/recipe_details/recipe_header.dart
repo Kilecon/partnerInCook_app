@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/component/recipe_details/tag_author.dart';
 import 'package:partner_in_cook/component/widgets/circle_btn.dart';
-import 'package:partner_in_cook/data/fridge_mock.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 
 class RecipeHeader extends StatelessWidget {
@@ -10,8 +9,9 @@ class RecipeHeader extends StatelessWidget {
   final IconData icon;
   final VoidCallback onTapAction;
   final String? imageUrl;
+  final bool canShare;
 
-  const RecipeHeader({super.key, required this.user, required this.icon, required this.onTapAction, this.imageUrl});
+  const RecipeHeader({super.key, required this.user, required this.icon, required this.onTapAction, this.imageUrl, this.canShare = false});
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +38,7 @@ class RecipeHeader extends StatelessWidget {
                   onTap: () => Navigator.of(context).pop(),
                   color: color,
                 ),
+                if (canShare)
                 CircleIconButton(icon: icon, onTap: onTapAction, color: color),
               ],
             ),
@@ -67,8 +68,8 @@ class RecipeHeader extends StatelessWidget {
                 child: imageUrl != null ? Image.network(
                   imageUrl!,
                   fit: BoxFit.cover,
-                ) : Image.network(
-                  'https://s3.mizury.fr/partnerincook/ingredient_base.jpg',
+                ) : Image.asset(
+                  'assets/images/my_recipes_banner.png',
                   fit: BoxFit.cover,
                 ),
               ),
@@ -92,7 +93,7 @@ class RecipeHeader extends StatelessWidget {
                 bottom: 12,
                 child: Opacity(
                   opacity: 1 - scrollRatio,
-                  child: AuthorTag(author: userAlice),
+                  child: AuthorTag(author: user),
                 ),
               ),
             ],

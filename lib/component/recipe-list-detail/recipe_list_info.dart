@@ -9,12 +9,14 @@ class RecipeListInfo extends StatelessWidget {
   final RecipeList recipeList;
   final VoidCallback? onDelete;
   final VoidCallback? onEdit;
+  final bool isMyRecipes;
 
   const RecipeListInfo({
     super.key,
     required this.recipeList,
     this.onDelete,
     this.onEdit,
+    this.isMyRecipes = false,
   });
 
   void _showOptions(BuildContext context) {
@@ -81,7 +83,7 @@ class RecipeListInfo extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  if (recipeList.members.isNotEmpty) const SizedBox(height: 4),
                   AvatarSuperimposed(users: recipeList.members),
                 ],
               ),
@@ -92,8 +94,15 @@ class RecipeListInfo extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 12),
-        if (recipeList.description != null &&
+        if (isMyRecipes)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: Text(
+              "C'est vous le chef ! Cette liste regroupe toutes les recettes que vous avez créées.",
+              style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+            ),
+          )
+        else if (recipeList.description != null &&
             recipeList.description!.isNotEmpty)
           Padding(
             padding: const EdgeInsets.only(bottom: 12),

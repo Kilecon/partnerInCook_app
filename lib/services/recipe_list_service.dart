@@ -113,8 +113,6 @@ class RecipeListService {
     try {
       final connectedUser = await AuthService.getUser();
 
-      print('👤 Connected user: ${connectedUser?.userId}');
-
       final body = {
         'name': form.name,
         'is_favorite': false,
@@ -125,21 +123,12 @@ class RecipeListService {
           'pic_url': form.imageUrl,
       };
 
-      print('📤 Request body: ${json.encode(body)}');
-
       final response = await _api.post('/RecipeList', data: json.encode(body));
-
-      print('✅ Response: ${response.data}');
-
       return RecipeList.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
-      print('❌ DioException: ${e.message}');
-      print('❌ Response data: ${e.response?.data}');
-      print('❌ Status code: ${e.response?.statusCode}');
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
     } catch (e) {
-      print('❌ Exception: $e');
       throw ApiException('Erreur inattendue: $e');
     }
   }
@@ -160,6 +149,18 @@ class RecipeListService {
   Future<void> update(String recipeListId, Map<String, dynamic> body) async {
     try {
       await _api.put('/RecipeList/$recipeListId', data: json.encode(body));
+    } on DioException catch (e) {
+      final error = handleDioException(e);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
+    }
+  }
+
+  Future<RecipeList> getById(String recipeListId) async {
+    try {
+      final response = await _api.get('/RecipeList/$recipeListId');
+      return RecipeList.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);

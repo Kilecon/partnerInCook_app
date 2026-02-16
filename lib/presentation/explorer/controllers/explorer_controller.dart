@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/data/light_recipe.dart';
 import 'package:partner_in_cook/data/tag_mock.dart';
-import 'package:partner_in_cook/model/api/light_recipe_list.dart';
+import 'package:partner_in_cook/model/api/light_recipe.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
 
 class ExplorerController extends GetxController {
