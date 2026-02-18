@@ -108,7 +108,10 @@ class ProfilView extends GetView<ProfilController> {
                                     const SizedBox(height: 8),
                                     Obx(
                                       () => Text(
-                                        controller.recipesCount.value
+                                        controller
+                                            .userStats
+                                            .value
+                                            .createdRecipesCount
                                             .toString(),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -145,7 +148,10 @@ class ProfilView extends GetView<ProfilController> {
                                     const SizedBox(height: 8),
                                     Obx(
                                       () => Text(
-                                        controller.recipeListsCount.value
+                                        controller
+                                            .userStats
+                                            .value
+                                            .linkedRecipelists
                                             .toString(),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -182,7 +188,10 @@ class ProfilView extends GetView<ProfilController> {
                                     const SizedBox(height: 8),
                                     Obx(
                                       () => Text(
-                                        controller.favoritesCount.value
+                                        controller
+                                            .userStats
+                                            .value
+                                            .favoritesRecipesCount
                                             .toString(),
                                         style: const TextStyle(
                                           fontWeight: FontWeight.bold,
@@ -220,14 +229,14 @@ class ProfilView extends GetView<ProfilController> {
                             child: ImageCoverCard(
                               title: 'Mes recettes',
                               imageUrl: "assets/images/my_recipes_banner.png",
-                              onTap: () {},
+                              onTap: controller.onMyRecipesTap,
                             ),
                           ),
                           Expanded(
                             child: ImageCoverCard(
                               title: 'Mes favoris',
                               imageUrl: "assets/images/favorites_banner.png",
-                              onTap: () {},
+                              onTap: controller.onRecipeListTap,
                             ),
                           ),
                         ],
@@ -238,7 +247,7 @@ class ProfilView extends GetView<ProfilController> {
                             child: ImageCoverCard(
                               title: 'Mon frigo',
                               imageUrl: "assets/images/my_fridge_banner.png",
-                              onTap: () {},
+                              onTap: controller.onFridgeTap,
                             ),
                           ),
                         ],

@@ -15,10 +15,6 @@ class PantryService {
       await _api.post(
         '/Pantry/join/$recipeListId',
       );
-
-      // Ici, si l'API renvoie un payload, tu peux le parser :
-      //final data = response.data as Map<String, dynamic>;
-
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -31,9 +27,8 @@ class PantryService {
   Future<List<Pantry>> getAllOwned() async {
     try {
       final response = await _api.get('/Pantry/owned');
-
-      // Retourne la liste brute ou convertie en model
-      return response.data as List<Pantry>;
+      final dataList = response.data['data'] as List<dynamic>;
+      return dataList.map((data) => Pantry.fromJson(data as Map<String, dynamic>)).toList();
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -45,9 +40,8 @@ class PantryService {
     Future<List<Pantry>> getAllJoined() async {
     try {
       final response = await _api.get('/Pantry/joined');
-
-      // Retourne la liste brute ou convertie en model
-      return response.data as List<Pantry>;
+      final dataList = response.data['data'] as List<dynamic>;
+      return dataList.map((data) => Pantry.fromJson(data as Map<String, dynamic>)).toList();
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -60,7 +54,7 @@ class PantryService {
     Future<Pantry> getById(String id) async {
     try {
       final response = await _api.get('/Pantry/$id');
-      return response.data;
+      return Pantry.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -76,7 +70,8 @@ class PantryService {
         '/Pantry',
         data: json.encode(body),
       );
-      return response.data;
+
+      return Pantry.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);

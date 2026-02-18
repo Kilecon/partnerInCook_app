@@ -38,7 +38,8 @@ class FridgeService {
   Future<Fridge> getOwned() async {
     try {
       final response = await _api.get('/Fridge/owned');
-      return response.data;
+      final data = response.data['data'] as Map<String, dynamic>;
+      return Fridge.fromJson(data);
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -47,11 +48,12 @@ class FridgeService {
     }
   }
 
-  /// Créer un nouveau fridge
-  Future<Fridge> create(Map<String, dynamic> body) async {
+  /// Mettre à jour un fridge existant
+  Future<Fridge> patch(String id, Map<String, dynamic> body) async {
     try {
-      final response = await _api.post('/Fridge', data: json.encode(body));
-      return response.data;
+      final response = await _api.patch('/Fridge/$id', data: body);      
+      final data = response.data['data'] as Map<String, dynamic>;
+      return Fridge.fromJson(data);
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);

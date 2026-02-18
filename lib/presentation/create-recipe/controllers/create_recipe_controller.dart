@@ -148,9 +148,9 @@ class CreateRecipeController extends GetxController {
     }
   }
 
-  Future<List<Ingredient>> searchIngredients(String query) {
-    return _ingredientService.searchIngredients(query);
-  }
+  // Future<List<Ingredient>> searchIngredients(String query) {
+  //   return _ingredientService.searchIngredients(query);
+  // }
 
   /// Ouverture modal en ajout
   void openAddIngredientModal() {

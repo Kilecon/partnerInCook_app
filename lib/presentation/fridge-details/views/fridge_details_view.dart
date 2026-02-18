@@ -45,7 +45,9 @@ class FridgeDetailsView extends GetView<FridgeDetailsController> {
           ],
         );
       }),
-      floatingActionButton: AddBtn(onTap: () {}),
+      floatingActionButton: AddBtn(
+        onTap: () => controller.showAddIngredientDialog(context),
+      ),
     );
   }
 }

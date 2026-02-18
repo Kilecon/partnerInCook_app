@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/component/widgets/swipe_card.dart';
 import 'package:partner_in_cook/component/fridge_details.dart/ingredient_pantry_card.dart';
 import 'package:partner_in_cook/model/api/fridge_ingredient.dart';
 import 'package:partner_in_cook/component/widgets/empty_state.dart';
+import 'package:partner_in_cook/presentation/fridge-details/controllers/fridge_details_controller.dart';
 
 class IngredientsList extends StatelessWidget {
   final List<dynamic> ingredients; // Accepte les deux types
@@ -19,6 +21,8 @@ class IngredientsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FridgeDetailsController controller =
+        Get.find<FridgeDetailsController>();
     return ingredients.isEmpty
         ? EmptyState(
             message: isPantry
@@ -46,11 +50,14 @@ class IngredientsList extends StatelessWidget {
                 } else {
                   return SwipeCard(
                     onTap: () {},
-                    onDelete: () => {},
-                    onEdit: () => {},
+                    onDelete: () =>
+                        controller.deleteIngredient(ingredient.ingredientId),
+                    onEdit: () =>
+                        controller.showEditQuantityDialog(context, ingredient),
                     name: ingredient.ingredient!.name,
                     unit: ingredient.ingredient!.unit,
                     quantity: ingredient.quantity,
+                    iconUrl: ingredient.ingredient!.iconPictureUrl,
                   );
                 }
               },

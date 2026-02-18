@@ -1,28 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/widgets/app_dialog.dart';
-import 'package:partner_in_cook/component/widgets/image-selector.dart';
-import 'package:partner_in_cook/data/fridge_mock.dart';
-import 'package:partner_in_cook/data/pantry_mock.dart';
 import 'package:partner_in_cook/model/api/fridge.dart';
 import 'package:partner_in_cook/model/api/pantry.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
+import 'package:partner_in_cook/services/fridge_service.dart';
+import 'package:partner_in_cook/services/pantry_service.dart';
 
 class FridgeController extends GetxController {
-  var pantries = <Pantry>[].obs;
-  var fridge = Rx<Fridge>(fridgeMock);
+  var pantries = <Pantry?>[].obs;
+  var fridge = Rx<Fridge?>(null);
   var selectedTag = Rxn<Tag>();
   var searchController = TextEditingController();
+  final fridgeService = FridgeService();
+  final pantryService = PantryService();
+  var isLoading = true.obs;
 
   @override
   void onInit() {
     super.onInit();
-    // Initialisation des données de test
-    pantries.value = pantriesMock;
-    fridge.value = fridgeMock;
+    loadFridgeDetails('');
+    loadAllPantry();
+  }
+
+  Future<void> loadFridgeDetails(String id) async {
+    try {
+      isLoading.value = true;
+      final details = await fridgeService.getOwned();
+      fridge.value = details;
+    } catch (e) {
+      print("Error loading fridge details: $e");
+      fridge.value = null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> loadAllPantry() async {
+    try {
+      isLoading.value = true;
+
+      // Charger les listes owned et joined
+      final owned = await pantryService.getAllOwned();
+      print("Owned pantries loaded: ${owned.length}");
+
+      final joined = await pantryService.getAllJoined();
+      print("Joined pantries loaded: ${joined.length}");
+
+      // Combiner les deux listes
+      pantries.value = [...owned, ...joined];
+
+      // Trier : les favoris en premier
+      final sortedList = List<Pantry>.from(pantries);
+
+      sortedList.sort((a, b) => a.name.compareTo(b.name));
+      pantries.value = sortedList;
+
+      print("Total pantries: ${pantries.length}");
+    } catch (e) {
+      print("Error loading pantries: $e");
+      pantries.value = [];
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void onPantryTap(String id) {
@@ -36,7 +78,6 @@ class FridgeController extends GetxController {
 
   Future<Map<String, String>?> showCreatePantryDialog(BuildContext context) {
     final nameController = TextEditingController();
-    XFile? selectedImage;
 
     return showDialog<Map<String, String>>(
       context: context,
@@ -61,7 +102,7 @@ class FridgeController extends GetxController {
                   if (name.isEmpty) return;
                   Navigator.of(
                     ctx,
-                  ).pop({'name': name, 'image': selectedImage?.path ?? ''});
+                  ).pop({'name': name});
                 },
                 child: const Text('Créer'),
               ),
@@ -71,18 +112,7 @@ class FridgeController extends GetxController {
             mainAxisSize: MainAxisSize.min,
             spacing: 20,
             children: [
-              // ImageSelector utilise la galerie pour choisir une image
-              ImageSelector(
-                title: 'Ajouter une image',
-                width: double.infinity,
-                height: 140,
-                borderColor: AppColors.primaryOrange,
-                iconColor: AppColors.primaryOrange,
-                backgroundColor: Colors.white,
-                onImageSelect: (xfile) {
-                  selectedImage = xfile;
-                },
-              ),
+           
               TextField(
                 controller: nameController,
                 keyboardType: TextInputType.text,

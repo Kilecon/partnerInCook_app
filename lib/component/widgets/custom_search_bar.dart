@@ -100,8 +100,39 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               itemCount: _suggestions.length,
               itemBuilder: (context, index) {
                 final recipe = _suggestions[index];
+                // Dans CustomSearchBar.dart, ligne ~90 (dans l'itemBuilder)
                 return ListTile(
+                  leading: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: AppColors.primaryOrange.withOpacity(0.1),
+                    ),
+                    child:
+                        recipe.iconPictureUrl != null &&
+                            recipe.iconPictureUrl!.isNotEmpty
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              recipe.iconPictureUrl!,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Icon(
+                                    Icons.restaurant,
+                                    color: AppColors.primaryOrange,
+                                  ),
+                            ),
+                          )
+                        : Icon(
+                            Icons.restaurant,
+                            color: AppColors.primaryOrange,
+                          ),
+                  ),
                   title: Text(recipe.name),
+                  subtitle: Text(
+                    recipe.unit,
+                  ), // Optionnel : affiche l'unité (g, ml, etc.)
                   onTap: () {
                     widget.searchController.text = recipe.name;
                     _focusNode.unfocus();

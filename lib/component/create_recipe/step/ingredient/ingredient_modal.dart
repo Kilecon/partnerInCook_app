@@ -25,8 +25,8 @@ class _IngredientModalState extends State<IngredientModal> {
   }
 
   Future<void> _loadInitialIngredients() async {
-    results = await controller.searchIngredients('');
-    if (mounted) setState(() {});
+    // results = await controller.searchIngredients('');
+    // if (mounted) setState(() {});
   }
 
   @override
@@ -54,16 +54,16 @@ class _IngredientModalState extends State<IngredientModal> {
         mainAxisSize: MainAxisSize.min,
         children: [
           /// SEARCH
-          CustomInput(
-            keyboardType: TextInputType.text,
-            title: 'Ingrédient',
-            hintText: 'Tomate, farine...',
-            controller: searchController,
-            onChanged: (v) async {
-              results = await controller.searchIngredients(v);
-              if (mounted) setState(() {});
-            },
-          ),
+          // CustomInput(
+          //   keyboardType: TextInputType.text,
+          //   title: 'Ingrédient',
+          //   hintText: 'Tomate, farine...',
+          //   controller: searchController,
+          //   onChanged: (v) async {
+          //     results = () => {}; // await controller.searchIngredients(v);
+          //     if (mounted) setState(() {});
+          //   },
+          // ),
 
           const SizedBox(height: 12),
 

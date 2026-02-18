@@ -23,7 +23,7 @@ class FridgeView extends GetView<FridgeController> {
     for (var pantry in controller.pantries) {
       cards.add(
         PantryCard(
-          pantry: pantry,
+          pantry: pantry!,
           onTap: () => controller.onPantryTap(pantry.id),
         ),
       );
@@ -34,6 +34,10 @@ class FridgeView extends GetView<FridgeController> {
       body: Container(
         color: AppColors.background,
         child: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
           return Column(
             children: [
               TitlePage(
@@ -49,11 +53,12 @@ class FridgeView extends GetView<FridgeController> {
                   verticalPadding: 20,
 
                   children: [
-                    FridgeCard(
-                      fridge: controller.fridge.value,
-                      onTap: () =>
-                          controller.onFridgeTap(controller.fridge.value.id),
-                    ),
+                    if (controller.fridge.value != null)
+                      FridgeCard(
+                        fridge: controller.fridge.value!,
+                        onTap: () =>
+                            controller.onFridgeTap(controller.fridge.value!.id),
+                      ),
                     CardList(
                       cards: cards,
                       icon: LucideIcons.refrigerator,
