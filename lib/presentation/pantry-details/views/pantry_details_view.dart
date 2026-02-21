@@ -6,7 +6,6 @@ import 'package:partner_in_cook/component/fridge_details.dart/ingredient_list.da
 import 'package:partner_in_cook/component/widgets/custom_layout.dart';
 import 'package:partner_in_cook/component/widgets/fridge_description.dart';
 import 'package:partner_in_cook/model/api/fridge_ingredient.dart';
-import 'package:partner_in_cook/model/api/light_user.dart';
 import 'package:partner_in_cook/model/api/pantry.dart';
 
 import '../controllers/pantry_details_controller.dart';
@@ -46,8 +45,9 @@ class PantryDetailsView extends GetView<PantryDetailsController> {
       }
     }
 
-    final List<FridgeIngredientWOwner> ingredientsWithOwner =
-        mergedIngredients.values.toList();
+    final List<FridgeIngredientWOwner> ingredientsWithOwner = mergedIngredients
+        .values
+        .toList();
 
     ingredientsWithOwner.sort((a, b) {
       final nameA = a.ingredient?.name ?? '';
@@ -60,60 +60,55 @@ class PantryDetailsView extends GetView<PantryDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PantryDetailsController>(
-      builder: (controller) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: Obx(() {
         // Loader pendant l'appel API
         if (controller.isLoading.value) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
-          );
+          return const Center(child: CircularProgressIndicator());
         }
 
         // Message d'erreur si échec API
-        if (controller.pantry == null) {
-          return const Scaffold(
-            body: Center(
-              child: Text(
-                'Impossible de charger le garde-manger.\nVérifiez votre connexion.',
-                textAlign: TextAlign.center,
-              ),
+        if (controller.pantry.value == null) {
+          return const Center(
+            child: Text(
+              'Impossible de charger le garde-manger.\nVérifiez votre connexion.',
+              textAlign: TextAlign.center,
             ),
           );
         }
 
-        final pantry = controller.pantry!;
+        final pantry = controller.pantry.value!;
         final members = pantry.fridges.map((f) => f.owner).toList();
-        final ingredientsWithOwner =
-            convertPantryToIngredientsWithOwner(pantry);
-
-        return Scaffold(
-          backgroundColor: AppColors.background,
-          body: Column(
-            children: [
-              FridgeHeader(
-                ingredientsCount: ingredientsWithOwner.length,
-                onShareTap: () => controller.onShareTap(),
-              ),
-              FridgeDescription(title: pantry.name, sharedUsers: members),
-              Expanded(
-                child: CustomLayout(
-                  useSafeArea: true,
-                  safeAreaTop: false,
-                  safeAreaBottom: true,
-                  verticalPadding: 0,
-                  spacing: 30,
-                  children: [
-                    IngredientsList(
-                      ingredients: ingredientsWithOwner,
-                      isPantry: true,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
+        final ingredientsWithOwner = convertPantryToIngredientsWithOwner(
+          pantry,
         );
-      },
+
+        return Column(
+          children: [
+            FridgeHeader(
+              ingredientsCount: ingredientsWithOwner.length,
+              onShareTap: () => controller.onShareTap(),
+            ),
+            FridgeDescription(title: pantry.name, sharedUsers: members),
+            Expanded(
+              child: CustomLayout(
+                useSafeArea: true,
+                safeAreaTop: false,
+                safeAreaBottom: true,
+                verticalPadding: 0,
+                spacing: 30,
+                children: [
+                  IngredientsList(
+                    ingredients: ingredientsWithOwner,
+                    isPantry: true,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

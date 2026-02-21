@@ -46,11 +46,11 @@ class FridgeController extends GetxController {
       final owned = await pantryService.getAllOwned();
       print("Owned pantries loaded: ${owned.length}");
 
-      final joined = await pantryService.getAllJoined();
-      print("Joined pantries loaded: ${joined.length}");
+      // final joined = await pantryService.getAllJoined();
+      // print("Joined pantries loaded: ${joined.length}");
 
       // Combiner les deux listes
-      pantries.value = [...owned, ...joined];
+      pantries.value = [...owned]; //, ...joined];
 
       // Trier : les favoris en premier
       final sortedList = List<Pantry>.from(pantries);

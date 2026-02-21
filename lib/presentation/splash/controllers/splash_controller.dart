@@ -12,6 +12,7 @@ class SplashController extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    await Future.delayed(const Duration(seconds: 1)); // Simule un splash screen de 2 secondes
     await _authService.init();
     // Si on a un refresh token, on tente de rafraîchir
     if (_authService.refreshToken.value != null) {

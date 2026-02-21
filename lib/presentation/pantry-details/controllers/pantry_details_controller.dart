@@ -8,7 +8,7 @@ class PantryDetailsController extends GetxController {
   final pantryApi = Get.find<PantryService>();
 
   late final String pantryId;
-  late Pantry? pantry;
+  var pantry = Rx<Pantry?>(null);
 
   QrImage? qrImage;
   String? fullInvitationLink;
@@ -23,10 +23,11 @@ class PantryDetailsController extends GetxController {
 
   Future<void> _loadPantry() async {
     try {
-      pantry = await pantryApi.getById(pantryId);
-      _generateQrCode();
+      final details = await pantryApi.getById(pantryId);
+      pantry.value = details;
+      // _generateQrCode();
     } catch (e) {
-      pantry = null;
+      pantry.value = null;
       fullInvitationLink = null;
     } finally {
       isLoading.value = false;

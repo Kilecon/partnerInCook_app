@@ -53,6 +53,8 @@ class RegisterController extends GetxController {
       );
 
       await localAuthService.performAuth(authRegister);
+      print("Register successful");
+      await Future.delayed(const Duration(milliseconds: 500)); // Petite pause pour laisser le temps
       Get.offAllNamed(Routes.home);
     } catch (e) {
       String message = "Une erreur est survenue";

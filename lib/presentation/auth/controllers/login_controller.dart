@@ -35,7 +35,7 @@ class LoginController extends GetxController {
 
       await localAuthService.performAuth(authLogin);
       print("Login successful");
-      await Future.delayed(const Duration(milliseconds: 100));
+      await Future.delayed(const Duration(milliseconds: 500)); // Petite pause pour laisser le temps au token de se stocker
 
       Get.offAllNamed(Routes.home);
       

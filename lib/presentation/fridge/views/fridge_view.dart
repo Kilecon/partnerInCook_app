@@ -18,17 +18,6 @@ class FridgeView extends GetView<FridgeController> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> cards = [];
-
-    for (var pantry in controller.pantries) {
-      cards.add(
-        PantryCard(
-          pantry: pantry!,
-          onTap: () => controller.onPantryTap(pantry.id),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Container(
@@ -37,6 +26,14 @@ class FridgeView extends GetView<FridgeController> {
           if (controller.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           }
+
+          // Générer la liste des cards pantry depuis l'observable
+          List<Widget> cards = controller.pantries.map((pantry) {
+            return PantryCard(
+              pantry: pantry!,
+              onTap: () => controller.onPantryTap(pantry.id),
+            );
+          }).toList();
 
           return Column(
             children: [
@@ -51,7 +48,6 @@ class FridgeView extends GetView<FridgeController> {
               Expanded(
                 child: CustomLayout(
                   verticalPadding: 20,
-
                   children: [
                     if (controller.fridge.value != null)
                       FridgeCard(
@@ -62,7 +58,7 @@ class FridgeView extends GetView<FridgeController> {
                     CardList(
                       cards: cards,
                       icon: LucideIcons.refrigerator,
-                      emptyString: "Aucun garde mangé disponible",
+                      emptyString: "Aucun garde-manger disponible",
                     ),
                   ],
                 ),
@@ -71,9 +67,9 @@ class FridgeView extends GetView<FridgeController> {
           );
         }),
       ),
-       floatingActionButton: AddBtn(
+      floatingActionButton: AddBtn(
         onTap: () => controller.showCreatePantryDialog(context),
-       )
+      ),
     );
   }
 }
