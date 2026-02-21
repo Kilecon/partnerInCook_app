@@ -42,21 +42,8 @@ class FridgeController extends GetxController {
     try {
       isLoading.value = true;
 
-      // Charger les listes owned et joined
-      final owned = await pantryService.getAllOwned();
-      print("Owned pantries loaded: ${owned.length}");
-
-      // final joined = await pantryService.getAllJoined();
-      // print("Joined pantries loaded: ${joined.length}");
-
-      // Combiner les deux listes
-      pantries.value = [...owned]; //, ...joined];
-
-      // Trier : les favoris en premier
-      final sortedList = List<Pantry>.from(pantries);
-
-      sortedList.sort((a, b) => a.name.compareTo(b.name));
-      pantries.value = sortedList;
+      final joined = await pantryService.getAllJoined();
+      pantries.value = joined;
 
       print("Total pantries: ${pantries.length}");
     } catch (e) {
@@ -100,9 +87,7 @@ class FridgeController extends GetxController {
                 onPressed: () {
                   final name = nameController.text.trim();
                   if (name.isEmpty) return;
-                  Navigator.of(
-                    ctx,
-                  ).pop({'name': name});
+                  Navigator.of(ctx).pop({'name': name});
                 },
                 child: const Text('Créer'),
               ),
@@ -112,7 +97,6 @@ class FridgeController extends GetxController {
             mainAxisSize: MainAxisSize.min,
             spacing: 20,
             children: [
-           
               TextField(
                 controller: nameController,
                 keyboardType: TextInputType.text,

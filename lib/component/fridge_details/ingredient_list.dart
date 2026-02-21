@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/component/widgets/swipe_card.dart';
-import 'package:partner_in_cook/component/fridge_details.dart/ingredient_pantry_card.dart';
+import 'package:partner_in_cook/component/fridge_details/ingredient_pantry_card.dart';
 import 'package:partner_in_cook/model/api/fridge_ingredient.dart';
 import 'package:partner_in_cook/component/widgets/empty_state.dart';
 import 'package:partner_in_cook/presentation/fridge-details/controllers/fridge_details_controller.dart';

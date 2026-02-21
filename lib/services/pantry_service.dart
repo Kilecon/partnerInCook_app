@@ -12,9 +12,7 @@ class PantryService {
   /// Joindre un pantry existant via son ID
   Future<void> joined(String recipeListId) async {
     try {
-      await _api.post(
-        '/Pantry/join/$recipeListId',
-      );
+      await _api.post('/Pantry/join/$recipeListId');
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -28,7 +26,9 @@ class PantryService {
     try {
       final response = await _api.get('/Pantry/owned');
       final dataList = response.data['data'] as List<dynamic>;
-      return dataList.map((data) => Pantry.fromJson(data as Map<String, dynamic>)).toList();
+      return dataList
+          .map((data) => Pantry.fromJson(data as Map<String, dynamic>))
+          .toList();
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -37,11 +37,13 @@ class PantryService {
     }
   }
 
-    Future<List<Pantry>> getAllJoined() async {
+  Future<List<Pantry>> getAllJoined() async {
     try {
       final response = await _api.get('/Pantry/joined');
       final dataList = response.data['data'] as List<dynamic>;
-      return dataList.map((data) => Pantry.fromJson(data as Map<String, dynamic>)).toList();
+      return dataList
+          .map((data) => Pantry.fromJson(data as Map<String, dynamic>))
+          .toList();
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -50,8 +52,7 @@ class PantryService {
     }
   }
 
-
-    Future<Pantry> getById(String id) async {
+  Future<Pantry> getById(String id) async {
     try {
       final response = await _api.get('/Pantry/$id');
       return Pantry.fromJson(response.data['data'] as Map<String, dynamic>);
@@ -66,10 +67,7 @@ class PantryService {
   /// Créer un nouveau pantry
   Future<Pantry> create(Map<String, dynamic> body) async {
     try {
-      final response = await _api.post(
-        '/Pantry',
-        data: json.encode(body),
-      );
+      final response = await _api.post('/Pantry', data: json.encode(body));
 
       return Pantry.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
@@ -82,9 +80,7 @@ class PantryService {
 
   Future<void> leave(String pantryId) async {
     try {
-      await _api.post(
-        '/Pantry/leave/$pantryId',
-      );
+      await _api.post('/Pantry/leave/$pantryId');
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:partner_in_cook/component/pantry_details/pantry_share_dialog.dart';
+import 'package:partner_in_cook/component/widgets/qr_share_dialog.dart';
 import 'package:partner_in_cook/model/api/pantry.dart';
 import 'package:partner_in_cook/services/pantry_service.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
@@ -25,10 +25,16 @@ class PantryDetailsController extends GetxController {
     try {
       final details = await pantryApi.getById(pantryId);
       pantry.value = details;
-      // _generateQrCode();
-    } catch (e) {
+
+      try {
+        _generateQrCode();
+      } catch (e) {
+        print("QR Code Error: $e");
+      }
+    } catch (e, stacktrace) {
+      print("🔴 ERREUR CRITIQUE API/MAPPING: $e");
+      print("📜 STACKTRACE: $stacktrace");
       pantry.value = null;
-      fullInvitationLink = null;
     } finally {
       isLoading.value = false;
       update();
@@ -38,13 +44,23 @@ class PantryDetailsController extends GetxController {
   void _generateQrCode() {
     fullInvitationLink = 'partnerincook://pantry/join/$pantryId';
 
-    final qrCode = QrCode(5, QrErrorCorrectLevel.H)
+    final qrCode = QrCode(10, QrErrorCorrectLevel.H)
       ..addData(fullInvitationLink!);
-
+      print("EL LINK ${fullInvitationLink}");
     qrImage = QrImage(qrCode);
+    print(qrImage.toString());
   }
 
   void onShareTap() {
-    Get.dialog(const PantryShareDialog());
+    if (fullInvitationLink == null) return;
+
+    Get.dialog(
+      QrShareDialog(
+        title: 'Partager mon garde-manger',
+        description:
+            'Invitez vos amis en scannant ce code ou en copiant le lien ci-dessous.',
+        data: fullInvitationLink!,
+      ),
+    );
   }
 }

@@ -32,11 +32,11 @@ abstract class _Paths {
   static const explorer = '/explorer';
   static const fridge = '/fridge';
   static const fridgeDetails = '/fridge-details';
-  static const pantryDetails = '/pantry-details';
+  static const pantryDetails = '/pantryDetails';
   static const recipeList = '/recipe-list';
   static const recipeListDetails = '/recipe-list-details';
   static const createRecipe = '/create-recipe';
   static const createRecipeList = '/create-recipe-list';
-  static const recipeListJoin = '/recipe-list/join/:id';
-  static const pantryJoin = '/pantry/join/:id';
+  static const recipeListJoin = '/recipe-list/join';
+  static const pantryJoin = '/pantry/join';
 }

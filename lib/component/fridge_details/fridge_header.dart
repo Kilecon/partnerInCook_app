@@ -59,6 +59,7 @@ class FridgeHeader extends StatelessWidget {
                         children: [
                           /// Top bar
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               CircleIconButton(
                                 icon: Icons.arrow_back,
