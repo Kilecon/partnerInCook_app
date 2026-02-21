@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:partner_in_cook/component/widgets/qr_share_dialog.dart';
 import 'package:partner_in_cook/model/api/pantry.dart';
 import 'package:partner_in_cook/services/pantry_service.dart';
+import 'package:partner_in_cook/utils/qr_code.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class PantryDetailsController extends GetxController {
@@ -25,30 +26,18 @@ class PantryDetailsController extends GetxController {
     try {
       final details = await pantryApi.getById(pantryId);
       pantry.value = details;
-
       try {
-        _generateQrCode();
+        fullInvitationLink = 'partnerincook://pantry/join/$pantryId';
+        qrImage = generateQrCode(fullInvitationLink!);
       } catch (e) {
         print("QR Code Error: $e");
       }
-    } catch (e, stacktrace) {
-      print("🔴 ERREUR CRITIQUE API/MAPPING: $e");
-      print("📜 STACKTRACE: $stacktrace");
+    } catch (e) {
       pantry.value = null;
     } finally {
       isLoading.value = false;
       update();
     }
-  }
-
-  void _generateQrCode() {
-    fullInvitationLink = 'partnerincook://pantry/join/$pantryId';
-
-    final qrCode = QrCode(10, QrErrorCorrectLevel.H)
-      ..addData(fullInvitationLink!);
-      print("EL LINK ${fullInvitationLink}");
-    qrImage = QrImage(qrCode);
-    print(qrImage.toString());
   }
 
   void onShareTap() {

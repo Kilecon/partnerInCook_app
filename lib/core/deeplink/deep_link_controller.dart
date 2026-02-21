@@ -36,7 +36,7 @@ class DeepLinkController extends GetxController {
         _handlePantry(uri);
         break;
 
-      case 'recipelist':
+      case 'recipe-list':
         _handleRecipeList(uri);
         break;
 

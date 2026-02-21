@@ -109,7 +109,7 @@ class RecipeListCard extends StatelessWidget {
                   
                   /// Avatars des membres
                   if (recipeList.members.isNotEmpty)
-                    AvatarSuperimposed(users: recipeList.members),
+                    AvatarSuperimposed(users: [recipeList.author, ...recipeList.members]),
                 ],
               ),
             ),

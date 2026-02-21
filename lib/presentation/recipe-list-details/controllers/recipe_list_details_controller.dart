@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
+import 'package:partner_in_cook/component/widgets/qr_share_dialog.dart';
 import 'package:partner_in_cook/core/auth/auth_service.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 import 'package:partner_in_cook/model/api/recipe.dart';
@@ -8,14 +9,18 @@ import 'package:partner_in_cook/model/api/recipe_list.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 import 'package:partner_in_cook/services/recipe_list_service.dart';
 import 'package:partner_in_cook/services/recipe_service.dart';
+import 'package:partner_in_cook/utils/qr_code.dart';
+import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class RecipeListDetailsController extends GetxController {
   var recipeList = Rx<RecipeList?>(null);
   var searchController = TextEditingController();
   final dynamic arguments = Get.arguments;
+  String? fullInvitationLink;
   var isLoading = true.obs;
   final recipeListApi = RecipeListService();
   final recipeApi = RecipeService();
+  QrImage? qrImage;
 
   bool get isMyRecipes => arguments == 'my_recipes' ? true : false;
 
@@ -26,6 +31,8 @@ class RecipeListDetailsController extends GetxController {
       loadMyRecipes();
     } else if (arguments is String) {
       loadRecipeListDetails(arguments);
+      fullInvitationLink = 'partnerincook://recipe-list/join/$arguments';
+      qrImage = generateQrCode(fullInvitationLink!);
     }
   }
 
@@ -34,6 +41,7 @@ class RecipeListDetailsController extends GetxController {
       isLoading.value = true;
       final details = await recipeListApi.getById(id);
       recipeList.value = details;
+
     } catch (e) {
       print("Error loading recipe list details: $e");
       recipeList.value = null;
@@ -103,6 +111,19 @@ class RecipeListDetailsController extends GetxController {
       'Info',
       'Édition de la liste à implémenter',
       snackPosition: SnackPosition.BOTTOM,
+    );
+  }
+
+  void onShareTap() {
+    if (qrImage == null) return;
+
+    Get.dialog(
+      QrShareDialog(
+        title: 'Partager ma liste de recettes',
+        description:
+            'Invitez vos amis en scannant ce code ou en copiant le lien ci-dessous.',
+        data: fullInvitationLink!,
+      ),
     );
   }
 }

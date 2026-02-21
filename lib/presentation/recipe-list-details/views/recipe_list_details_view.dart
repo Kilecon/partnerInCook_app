@@ -42,11 +42,11 @@ class RecipeListDetailsView extends GetView<RecipeListDetailsController> {
           child: CustomScrollView(
             slivers: [
               RecipeHeader(
-                canShare: !controller.isMyRecipes ? controller.recipeList.value!.visibilityState == VisibilityStateEnum.publicState : false,
                 user: controller.recipeList.value!.author,
                 icon: LucideIcons.share2,
-                onTapAction: () {},
+                onTapAction: () => controller.onShareTap(),
                 imageUrl: controller.recipeList.value?.pictureUrl,
+                canShare: controller.qrImage != null && !controller.recipeList.value!.isFavorite && !controller.isMyRecipes,
               ), // image + appbar + auteur (sliver)
 
               SliverPadding(

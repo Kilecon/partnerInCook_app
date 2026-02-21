@@ -11,7 +11,7 @@ class RecipeHeader extends StatelessWidget {
   final String? imageUrl;
   final bool canShare;
 
-  const RecipeHeader({super.key, required this.user, required this.icon, required this.onTapAction, this.imageUrl, this.canShare = false});
+  const RecipeHeader({super.key, required this.user, required this.icon, required this.onTapAction, this.imageUrl, this.canShare = true});
 
   @override
   Widget build(BuildContext context) {

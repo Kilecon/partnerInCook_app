@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:partner_in_cook/routes/app_pages.dart';
 import 'package:partner_in_cook/services/recipe_list_service.dart';
 
 
@@ -11,7 +12,7 @@ class RecipeListJoinController extends GetxController {
 
   @override
   void onInit() {
-    recipeListId = Get.parameters['id']!;
+    recipeListId = Get.arguments['id'] ?? '';
     _joinRecipeList();
     super.onInit();
   }
@@ -20,7 +21,7 @@ class RecipeListJoinController extends GetxController {
     try {
       await recipeListApi.joined(recipeListId);
 
-      Get.offNamed('/pantry/$recipeListId');
+      Get.offNamed(Routes.recipeListDetails, arguments: recipeListId);
     } catch (e) {
       error.value = _mapError(e);
     } finally {
