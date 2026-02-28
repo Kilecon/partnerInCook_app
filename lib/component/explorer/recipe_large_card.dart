@@ -50,9 +50,7 @@ class RecipeLargeCard extends StatelessWidget {
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.favorite_border),
-            const SizedBox(height: 4),
-            Text('${recipe.notationsCount}'),
+            (recipe.isFavorite) ? const Icon(Icons.favorite, color: Colors.red) : const Icon(Icons.favorite_border, color: Colors.grey),
           ],
         ),
       ),

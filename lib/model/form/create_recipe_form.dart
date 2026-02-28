@@ -24,14 +24,15 @@ class CreateRecipeForm {
   // CONTENT
   // ----------------------------
   List<CreateRecipeIngredient> ingredients;
-  List<Step> steps;
+  List<StepCreateRequest> steps;
   List<Utensil> utensils;
 
   // ----------------------------
   // META
   // ----------------------------
   List<Tag> tags;
-  File? image; // path / url temporaire
+  File? image;
+  String? imageUrl;
 
   CreateRecipeForm({
     this.name = '',
@@ -42,10 +43,11 @@ class CreateRecipeForm {
     this.cookTime = 0,
     this.visibilityState = VisibilityStateEnum.privateState,
     List<CreateRecipeIngredient>? ingredients,
-    List<Step>? steps,
+    List<StepCreateRequest>? steps,
     List<Utensil>? utensils,
     List<Tag>? tags,
     this.image,
+    this.imageUrl,
   }) : ingredients = ingredients ?? [],
        steps = steps ?? [],
        utensils = utensils ?? [],

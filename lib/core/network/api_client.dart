@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:dio_cache_interceptor/dio_cache_interceptor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:partner_in_cook/core/network/auth_interceptor.dart';
 import 'package:partner_in_cook/exceptions/api_exception.dart';

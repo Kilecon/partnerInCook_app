@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -10,7 +12,7 @@ import 'package:partner_in_cook/component/explorer/tag_list.dart';
 import 'package:partner_in_cook/component/widgets/custom_input.dart';
 import 'package:partner_in_cook/component/widgets/custom_select.dart';
 import 'package:partner_in_cook/component/widgets/image-selector.dart';
-import 'package:partner_in_cook/data/tag_mock.dart';
+import '';
 import 'package:partner_in_cook/presentation/create-recipe/controllers/create_recipe_controller.dart';
 
 class StepMainInfo extends GetView<CreateRecipeController> {
@@ -27,16 +29,20 @@ class StepMainInfo extends GetView<CreateRecipeController> {
         children: [
           ImageSelector(
             title: 'Image de la recette',
-            onImageSelect: (XFile? image) {},
+            onImageSelect: (XFile? image) {
+              if (image != null) {
+                controller.form.update((f) => f?.image = File(image.path));
+              }
+            },
           ),
 
-          TagList(
+          Obx(() => TagList(
             title: 'Catégories',
-            selected: [tagsMock[0]],
-            tags: tagsMock,
-            onChanged: (_) {},
+            tags: controller.tagsLibrary.value , // Ta liste de tags globale
+            selected: controller.form.value.tags, // La liste dans le form
+            onChanged: (tag) => controller.toggleTag(tag),
             color: AppColors.yellowPrimary,
-          ),
+          )),
 
           CustomSelect<VisibilityStateEnum>(
             prefixIcon: LucideIcons.lock,
@@ -45,13 +51,14 @@ class StepMainInfo extends GetView<CreateRecipeController> {
             value: controller.form.value.visibilityState,
             onChanged: (v) =>
                 controller.form.update((f) => f!.visibilityState = v!),
-            labelBuilder: (v) => visibilityStateToJson(v).capitalizeFirst ?? '',
+            labelBuilder: (v) => visibilityStateToJson(v).capitalizeFirst == "Private" ? "Privée" : "Publique",
           ),
 
           CustomInput(
             keyboardType: TextInputType.text,
             title: 'Nom',
             hintText: 'Nom de la recette',
+            initialValue: controller.form.value.name,
             onChanged: (v) => controller.form.value.name = v,
             validator: (_) => errors['name'],
           ),
@@ -60,6 +67,7 @@ class StepMainInfo extends GetView<CreateRecipeController> {
             keyboardType: TextInputType.text,
             title: 'Description',
             hintText: 'Description',
+            initialValue: controller.form.value.description,
             onChanged: (v) => controller.form.value.description = v,
           ),
 

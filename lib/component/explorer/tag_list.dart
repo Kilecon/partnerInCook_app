@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
 import 'package:partner_in_cook/component/explorer/tag.dart';
-
 class TagList extends StatelessWidget {
   const TagList({
     super.key,
-    required this.selected,
+    required this.selected, // Liste des tags sélectionnés
     required this.onChanged,
-    required this.tags,
+    required this.tags, // Tous les tags dispos
     this.color = AppColors.primaryOrange,
     this.title,
   });
@@ -25,31 +24,26 @@ class TagList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (title != null) ...[
-          Text(
-            title!,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: AppColors.black,
-            ),
-          ),
-          const SizedBox(height: 6),
+          Text(title!, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+          const SizedBox(height: 8),
         ],
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              for (int i = 0; i < tags.length; i++) ...[
-                CustomTag(
+            children: tags.map((tag) {
+              // Vérification par ID
+              final isSelected = selected.any((t) => t.id == tag.id);
+              
+              return Padding(
+                padding: const EdgeInsets.only(right: 8),
+                child: CustomTag(
                   color: color,
-                  isSelect: selected.contains(tags[i]),
-                  name: tags[i].name,
-                  onClick: () => onChanged(tags[i]),
+                  isSelect: isSelected,
+                  name: tag.name,
+                  onClick: () => onChanged(tag),
                 ),
-                if (i < tags.length - 1) const SizedBox(width: 8),
-              ],
-            ],
+              );
+            }).toList(),
           ),
         ),
       ],

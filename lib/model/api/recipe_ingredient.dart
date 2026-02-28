@@ -29,3 +29,31 @@ class RecipeIngredient {
     };
   }
 }
+
+class RecipeIngredientCreateRequest {
+  final double quantity;
+  final String recipeId;
+  final String ingredientId;
+
+  RecipeIngredientCreateRequest({
+    required this.quantity,
+    required this.recipeId,
+    required this.ingredientId,
+  });
+
+  factory RecipeIngredientCreateRequest.fromJson(Map<String, dynamic> json) {
+    return RecipeIngredientCreateRequest(
+      quantity: (json['quantity'] as num).toDouble(),
+      recipeId: json['recipe_id'] as String,
+      ingredientId: json['ingredient_id'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'quantity': quantity,
+      'recipe_id': recipeId,
+      'ingredient_id': ingredientId,
+    };
+  }
+}

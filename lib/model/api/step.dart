@@ -29,3 +29,31 @@ class Step {
     };
   }
 }
+
+class StepCreateRequest {
+  final String description;
+  final int order;
+  final String recipeId;
+
+  StepCreateRequest({
+    required this.description,
+    required this.order,
+    required this.recipeId,
+  });
+
+  factory StepCreateRequest.fromJson(Map<String, dynamic> json) {
+    return StepCreateRequest(
+      description: json['description'] as String,
+      order: json['order'] as int,
+      recipeId: json['recipe_id'] as String,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'description': description,
+      'order': order,
+      'recipe_id': recipeId,
+    };
+  }
+}

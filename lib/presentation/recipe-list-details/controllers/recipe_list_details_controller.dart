@@ -4,7 +4,6 @@ import 'package:partner_in_cook/common/config/constants/visibility_state_enum.da
 import 'package:partner_in_cook/component/widgets/qr_share_dialog.dart';
 import 'package:partner_in_cook/core/auth/auth_service.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
-import 'package:partner_in_cook/model/api/recipe.dart';
 import 'package:partner_in_cook/model/api/recipe_list.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 import 'package:partner_in_cook/services/recipe_list_service.dart';
@@ -62,7 +61,7 @@ class RecipeListDetailsController extends GetxController {
         members: [],
         visibilityState: VisibilityStateEnum.privateState,
         name: 'Mes Recettes',
-        recipes: recipes.toLightRecipes(),
+        recipes: recipes,
         pictureUrl: null,
         author: LightUser(
           id: connectedUser!.userId!,

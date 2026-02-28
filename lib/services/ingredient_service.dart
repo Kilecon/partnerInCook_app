@@ -10,8 +10,8 @@ class IngredientService {
 
     Future<List<Ingredient>> getAll() async {
     try {
-      final response = await _api.get('/Ingredient');
-      final dataList = response.data['data'] as List<dynamic>;
+      final response = await _api.get('/Ingredient/all');
+      final dataList = response.data as List<dynamic>;
       return dataList.map((data) => Ingredient.fromJson(data as Map<String, dynamic>)).toList();
     } on DioException catch (e) {
       final error = handleDioException(e);

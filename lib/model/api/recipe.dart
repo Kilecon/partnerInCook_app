@@ -57,7 +57,7 @@ class Recipe {
       isFavorite: json['is_favorite'] as bool? ?? false,
       portions: json['portions'] as int,
       pictureUrl: json['pic_url'] as String?,
-      author: LightUser.fromJson(json['author']),
+      author: json['author'] == null ? LightUser(id: '', username: 'Inconnu' ) : LightUser.fromJson(json['author']),
       tags: (json['tags'] as List<dynamic>)
           .map((e) => Tag.fromJson(e))
           .toList(),

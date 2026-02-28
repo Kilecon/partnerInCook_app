@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
-import 'package:partner_in_cook/component/create_recipe/step/ingredient/ingredient_modal.dart';
+import 'package:partner_in_cook/component/create_recipe/modal/recipe_ingredient_modal.dart';
 import 'package:partner_in_cook/component/widgets/add_btn_list.dart';
 import 'package:partner_in_cook/component/widgets/swipe_card.dart';
 import 'package:partner_in_cook/presentation/create-recipe/controllers/create_recipe_controller.dart';
@@ -55,8 +55,8 @@ class StepIngredients extends GetView<CreateRecipeController> {
                     iconUrl: i.ingredient.iconPictureUrl,
                     onDelete: () => controller.removeIngredient(index),
                     onEdit: () {
-                      controller.openAddIngredientModal();
-                      Get.dialog(const IngredientModal());
+                      controller.openEditIngredientModal(index);
+                      Get.dialog(const RecipeIngredientModal());
                     },
                   ),
                 );
@@ -69,7 +69,9 @@ class StepIngredients extends GetView<CreateRecipeController> {
             child: AddBtnList(
               onTap: () {
                 controller.openAddIngredientModal();
-                Get.dialog(const IngredientModal());
+                Get.dialog(
+                  const RecipeIngredientModal(),
+                ); // Utilise le nouveau nom
               },
             ),
           ),

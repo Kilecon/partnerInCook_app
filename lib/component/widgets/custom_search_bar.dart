@@ -99,8 +99,19 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
               shrinkWrap: true,
               itemCount: _suggestions.length,
               itemBuilder: (context, index) {
-                final recipe = _suggestions[index];
-                // Dans CustomSearchBar.dart, ligne ~90 (dans l'itemBuilder)
+                final item =
+                    _suggestions[index]; // 'item' est plus juste que 'recipe' ici
+
+                // On vérifie si l'objet possède une propriété 'unit' (cas des Ingrédients)
+                // Sinon on ne met rien ou une chaîne vide.
+                String? subtitleText;
+                try {
+                  // On tente de lire l'unité, si ça n'existe pas, on catch l'erreur
+                  subtitleText = item.unit;
+                } catch (e) {
+                  subtitleText = null;
+                }
+
                 return ListTile(
                   leading: Container(
                     width: 40,
@@ -110,12 +121,12 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                       color: AppColors.primaryOrange.withOpacity(0.1),
                     ),
                     child:
-                        recipe.iconPictureUrl != null &&
-                            recipe.iconPictureUrl!.isNotEmpty
+                        item.iconPictureUrl != null &&
+                            item.iconPictureUrl!.isNotEmpty
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(8),
                             child: Image.network(
-                              recipe.iconPictureUrl!,
+                              item.iconPictureUrl!,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) =>
                                   Icon(
@@ -129,12 +140,11 @@ class _CustomSearchBarState extends State<CustomSearchBar> {
                             color: AppColors.primaryOrange,
                           ),
                   ),
-                  title: Text(recipe.name),
-                  subtitle: Text(
-                    recipe.unit,
-                  ), // Optionnel : affiche l'unité (g, ml, etc.)
+                  title: Text(item.name),
+                  // ON N'AFFICHE LE SUBTITLE QUE S'IL Y A UNE UNITÉ
+                  subtitle: subtitleText != null ? Text(subtitleText) : null,
                   onTap: () {
-                    widget.searchController.text = recipe.name;
+                    widget.searchController.text = item.name;
                     _focusNode.unfocus();
                     setState(() => _showSuggestions = false);
                     widget.onSearchResultTap();
