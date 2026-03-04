@@ -1,14 +1,18 @@
+import 'package:partner_in_cook/model/api/ingredient.dart';
+
 class RecipeIngredient {
   final String id;
   final double quantity;
   final String recipeId;
   final String ingredientId;
+  final Ingredient? ingredient;
 
   RecipeIngredient({
     required this.id,
     required this.quantity,
     required this.recipeId,
     required this.ingredientId,
+    this.ingredient,
   });
 
   factory RecipeIngredient.fromJson(Map<String, dynamic> json) {
@@ -17,6 +21,9 @@ class RecipeIngredient {
       quantity: (json['quantity'] as num).toDouble(),
       recipeId: json['recipe_id'] as String,
       ingredientId: json['ingredient_id'] as String,
+      ingredient: json['ingredient'] != null
+          ? Ingredient.fromJson(json['ingredient'] as Map<String, dynamic>)
+          : null,
     );
   }
 
@@ -26,6 +33,7 @@ class RecipeIngredient {
       'quantity': quantity,
       'recipe_id': recipeId,
       'ingredient_id': ingredientId,
+      if (ingredient != null) 'ingredient': ingredient!.toJson(),
     };
   }
 }

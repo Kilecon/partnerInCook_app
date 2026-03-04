@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
-import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
 import 'package:partner_in_cook/component/explorer/recipe_large_card.dart';
 import 'package:partner_in_cook/component/fridge/card_list.dart';
 import 'package:partner_in_cook/component/recipe_details/recipe_header.dart';
@@ -33,6 +32,8 @@ class RecipeListDetailsView extends GetView<RecipeListDetailsController> {
             RecipeLargeCard(
               recipe: recipe,
               onTap: () => controller.onRecipeTap(recipe.id),
+              onDelete: () => controller.removeRecipeFromList(recipe.id),
+              onEdit: () => controller.addRecipeToList(recipe.id),
             ),
           );
         }
@@ -66,6 +67,8 @@ class RecipeListDetailsView extends GetView<RecipeListDetailsController> {
                           onDelete: () => controller.onDeleteRecipeList(),
                           onEdit: () => controller.onEditRecipeList(),
                           isMyRecipes: controller.isMyRecipes,
+                          isFavorite: controller.recipeList.value!.isFavorite,
+                          isMyPlaylist: controller.isMyPlaylist,
                         ),
                       CardList(
                         cards: cards,

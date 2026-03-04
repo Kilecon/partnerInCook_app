@@ -77,7 +77,6 @@ class AuthService extends GetxService {
 
   /// Refresh token automatique
   Future<bool> refreshAuthToken() async {
-    print("AAAAAAAAAAA");
     if (refreshToken.value == null) return false;
 
     try {
@@ -120,6 +119,21 @@ class AuthService extends GetxService {
   static Future<String?> getRefreshToken() async {
     final pref = await SharedPreferences.getInstance();
     return pref.getString(Constants.refreshToken);
+  }
+
+  static Future<String?> getUserId() async {
+    final pref = await SharedPreferences.getInstance();
+    final userJson = pref.getString(Constants.user);
+    if (userJson == null) return null;
+
+    try {
+      final Map<String, dynamic> userMap = jsonDecode(userJson);
+      final user = User.fromJson(userMap);
+      return user.userId;
+    } catch (_) {
+      await clearAuth();
+      return null;
+    }
   }
 
   static Future<User?> getUser() async {

@@ -1,26 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 
 class RecipeSection extends StatelessWidget {
   const RecipeSection({
     super.key,
     required this.title,
     required this.child,
+    this.trailing,
   });
 
   final String title;
   final Widget child;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // header + bouton +
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Barre orange décorative
+              Container(
+                width: 4,
+                height: 18,
+                margin: const EdgeInsets.only(right: 8),
+                decoration: BoxDecoration(
+                  color: AppColors.primaryOrange,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
               Text(
                 title,
                 style: const TextStyle(
@@ -28,14 +40,11 @@ class RecipeSection extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.add, size: 20),
-              ),
+              if (trailing != null) ...[const Spacer(), trailing!],
             ],
           ),
-          const SizedBox(height: 8),
-          child, // le contenu précis (ingrédients, etc.)
+          const SizedBox(height: 10),
+          child,
         ],
       ),
     );

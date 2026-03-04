@@ -21,7 +21,13 @@ class RecipeListDetailsController extends GetxController {
   final recipeApi = RecipeService();
   QrImage? qrImage;
 
+  // 1. Ajouter une variable pour stocker l'ID de l'utilisateur courant
+  String? currentUserId;
+
   bool get isMyRecipes => arguments == 'my_recipes' ? true : false;
+
+  // 2. Transformer le Future<bool> en bool
+  bool get isMyPlaylist => recipeList.value?.author.id == currentUserId;
 
   @override
   void onInit() {
@@ -38,9 +44,11 @@ class RecipeListDetailsController extends GetxController {
   Future<void> loadRecipeListDetails(String id) async {
     try {
       isLoading.value = true;
+      // 3. Charger l'ID de l'utilisateur
+      currentUserId = await AuthService.getUserId();
+
       final details = await recipeListApi.getById(id);
       recipeList.value = details;
-
     } catch (e) {
       print("Error loading recipe list details: $e");
       recipeList.value = null;
@@ -51,6 +59,9 @@ class RecipeListDetailsController extends GetxController {
 
   Future<void> loadMyRecipes() async {
     final connectedUser = await AuthService.getUser();
+    // 4. Stocker l'ID de l'utilisateur
+    currentUserId = connectedUser?.userId;
+
     try {
       isLoading.value = true;
       final recipes = await recipeApi.getOwned();
@@ -124,5 +135,33 @@ class RecipeListDetailsController extends GetxController {
         data: fullInvitationLink!,
       ),
     );
+  }
+
+  Future<void> removeRecipeFromList(String id) async {
+    try {
+      isLoading.value = true;
+
+      final details = await recipeListApi.getById(id);
+      recipeList.value = details;
+    } catch (e) {
+      print("Error loading recipe list details: $e");
+      recipeList.value = null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  Future<void> addRecipeToList(String id) async {
+    try {
+      isLoading.value = true;
+
+      final details = await recipeListApi.getById(id);
+      recipeList.value = details;
+    } catch (e) {
+      print("Error loading recipe list details: $e");
+      recipeList.value = null;
+    } finally {
+      isLoading.value = false;
+    }
   }
 }

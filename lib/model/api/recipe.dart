@@ -14,7 +14,7 @@ class Recipe {
   final int? preparationTime;
   final int? restTime;
   final int? cookTime;
-  final bool isFavorite;
+  bool isFavorite;
   final int portions;
   final String? pictureUrl;
   final LightUser author;

@@ -10,6 +10,8 @@ class RecipeListInfo extends StatelessWidget {
   final VoidCallback? onDelete;
   final VoidCallback? onEdit;
   final bool isMyRecipes;
+  final bool isFavorite;
+  final bool isMyPlaylist;
 
   const RecipeListInfo({
     super.key,
@@ -17,6 +19,8 @@ class RecipeListInfo extends StatelessWidget {
     this.onDelete,
     this.onEdit,
     this.isMyRecipes = false,
+    this.isFavorite = false,
+    this.isMyPlaylist = false,
   });
 
   void _showOptions(BuildContext context) {
@@ -33,32 +37,35 @@ class RecipeListInfo extends StatelessWidget {
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
           padding: const EdgeInsets.symmetric(vertical: 10),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (onEdit != null)
-                ListTile(
-                  leading: const Icon(
-                    LucideIcons.pencil,
-                    color: AppColors.primaryOrange,
-                  ),
-                  title: const Text('Modifier'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    onEdit?.call();
-                  },
-                ),
-              if (onDelete != null)
-                ListTile(
-                  leading: const Icon(LucideIcons.trash2, color: Colors.red),
-                  title: const Text('Supprimer'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    onDelete?.call();
-                  },
-                ),
-            ],
-          ),
+
+          child: !isMyRecipes && !isFavorite
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (onEdit != null)
+                      ListTile(
+                        leading: const Icon(
+                          LucideIcons.pencil,
+                          color: AppColors.primaryOrange,
+                        ),
+                        title: const Text('Modifier'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          onEdit?.call();
+                        },
+                      ),
+                    if (onDelete != null)
+                      ListTile(
+                        leading: const Icon(LucideIcons.trash2, color: Colors.red),
+                        title: const Text('Supprimer'),
+                        onTap: () {
+                          Navigator.pop(context);
+                          onDelete?.call();
+                        },
+                      ),
+                  ],
+                )
+              : const SizedBox.shrink(),
         ),
       ),
     );
@@ -83,15 +90,19 @@ class RecipeListInfo extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  if (recipeList.members.isNotEmpty) const SizedBox(height: 4),
-                  AvatarSuperimposed(users: recipeList.members),
+                  if (recipeList.members.isNotEmpty)
+                    ...[
+                      const SizedBox(height: 8),
+                      AvatarSuperimposed(users: recipeList.members),
+                    ],
                 ],
               ),
             ),
-            IconButton(
-              icon: const Icon(Icons.more_vert),
-              onPressed: () => _showOptions(context),
-            ),
+            if (!isMyRecipes || !isFavorite || isMyPlaylist)
+              IconButton(
+                icon: const Icon(Icons.more_vert),
+                onPressed: () => _showOptions(context),
+              ),
           ],
         ),
         if (isMyRecipes)

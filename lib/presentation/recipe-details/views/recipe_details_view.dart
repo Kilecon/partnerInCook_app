@@ -6,8 +6,8 @@ import 'package:partner_in_cook/component/recipe_details/ingredient_content.dart
 import 'package:partner_in_cook/component/recipe_details/recipe_description.dart';
 import 'package:partner_in_cook/component/recipe_details/recipe_header.dart';
 import 'package:partner_in_cook/component/recipe_details/recipe_section.dart';
+import 'package:partner_in_cook/component/recipe_details/step_content.dart';
 import 'package:partner_in_cook/component/recipe_details/utensil_content.dart';
-import 'package:partner_in_cook/component/widgets/layout/custom_layout_body.dart';
 
 import '../controllers/recipe_details_controller.dart';
 
@@ -16,37 +16,86 @@ class RecipeDetailsView extends GetView<RecipeDetailsController> {
 
   @override
   Widget build(BuildContext context) {
-    final dynamic args = Get.arguments;
-
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: CustomScrollView(
-        slivers: [
-          RecipeHeader(user: controller.recipe.author, icon: LucideIcons.heart, onTapAction: () {}, imageUrl: controller.recipe.pictureUrl), // image + appbar + auteur (sliver)
+      body: SafeArea(
+        child: Obx(() {
+          // État chargement
+          if (controller.isLoading.value) {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: AppColors.primaryOrange,
+                strokeWidth: 2.5,
+              ),
+            );
+          }
 
-          SliverToBoxAdapter(
-            child: CustomLayoutBody(
-              // variante sans ListView (BaseLayout + Column)
-              children: const [
-                RecipeDescriptionSection(), // titre, temps, tags
-                SizedBox(height: 16),
-                RecipeSection(
-                  title: 'Ustensiles',
-                  child: UstensilContent(), // contenu spécifique
+          final recipe = controller.recipe.value;
+
+          // État erreur / introuvable
+          if (recipe == null) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(
+                    Icons.error_outline,
+                    size: 48,
+                    color: AppColors.lightGray,
+                  ),
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Recette introuvable',
+                    style: TextStyle(fontSize: 16, color: AppColors.lightGray),
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: () => Get.back(),
+                    child: const Text('Retour'),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          return CustomScrollView(
+            slivers: [
+              RecipeHeader(
+                user: recipe.author,
+                icon: recipe.isFavorite
+                    ? Icons.favorite
+                    : Icons.favorite_border,
+                iconColor: recipe.isFavorite ? Colors.red : Colors.white,
+                onTapAction: () => controller.toggleFavorite(),
+                imageUrl: recipe.pictureUrl,
+              ),
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    RecipeDescriptionSection(recipe: recipe),
+                    const SizedBox(height: 4),
+                    RecipeSection(
+                      title: 'Ingrédients',
+                      child: IngredientContent(
+                        ingredients: recipe.recipeIngredients,
+                      ),
+                    ),
+                    RecipeSection(
+                      title: 'Ustensiles',
+                      child: UstensilContent(utensils: recipe.utensils),
+                    ),
+                    RecipeSection(
+                      title: 'Préparation',
+                      child: StepContent(steps: recipe.steps),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
                 ),
-                RecipeSection(
-                  title: 'Ingrédients',
-                  child: IngredientContent(), // check + qtt
-                ),
-                RecipeSection(
-                  title: 'Préparation',
-                  child: StepContent(), // étapes numérotées
-                ),
-                SizedBox(height: 16),
-              ],
-            ),
-          ),
-        ],
+              ),
+            ],
+          );
+        }),
       ),
     );
   }

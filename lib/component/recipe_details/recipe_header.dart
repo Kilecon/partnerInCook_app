@@ -4,18 +4,25 @@ import 'package:partner_in_cook/component/widgets/circle_btn.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 
 class RecipeHeader extends StatelessWidget {
-
   final LightUser user;
   final IconData icon;
+  final Color? iconColor;
   final VoidCallback onTapAction;
   final String? imageUrl;
   final bool canShare;
 
-  const RecipeHeader({super.key, required this.user, required this.icon, required this.onTapAction, this.imageUrl, this.canShare = true});
+  const RecipeHeader({
+    super.key,
+    required this.user,
+    required this.icon,
+    required this.onTapAction,
+    this.iconColor,
+    this.imageUrl,
+    this.canShare = true,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var color = Colors.white;
 
     return SliverAppBar(
       pinned: true,
@@ -36,10 +43,14 @@ class RecipeHeader extends StatelessWidget {
                 CircleIconButton(
                   icon: Icons.arrow_back,
                   onTap: () => Navigator.of(context).pop(),
-                  color: color,
+                  color: Colors.white,
                 ),
                 if (canShare)
-                CircleIconButton(icon: icon, onTap: onTapAction, color: color),
+                  CircleIconButton(
+                    icon: icon,
+                    onTap: onTapAction,
+                    color: iconColor ?? Colors.white,
+                  ),
               ],
             ),
           ),
@@ -65,13 +76,12 @@ class RecipeHeader extends StatelessWidget {
                   bottomLeft: Radius.circular(24 * (1 - scrollRatio)),
                   bottomRight: Radius.circular(24 * (1 - scrollRatio)),
                 ),
-                child: imageUrl != null ? Image.network(
-                  imageUrl!,
-                  fit: BoxFit.cover,
-                ) : Image.asset(
-                  'assets/images/my_recipes_banner.png',
-                  fit: BoxFit.cover,
-                ),
+                child: imageUrl != null
+                    ? Image.network(imageUrl!, fit: BoxFit.cover)
+                    : Image.asset(
+                        'assets/images/my_recipes_banner.png',
+                        fit: BoxFit.cover,
+                      ),
               ),
               // Gradient sombre (disparaît progressivement)
               Container(

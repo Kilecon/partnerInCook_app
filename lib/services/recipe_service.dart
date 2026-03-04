@@ -14,6 +14,17 @@ import 'package:partner_in_cook/model/form/create_recipe_form.dart';
 class RecipeService {
   final ApiClient _api = Get.find<ApiClient>();
 
+  Future<void> toggleFavorite(String recipeId, bool isFavorite) async {
+    if (recipeId.isEmpty) {
+      throw ApiException('ID de recette invalide');
+    }
+    if (isFavorite) {
+      await like(recipeId);
+    } else {
+      await dislike(recipeId);
+    }
+  }
+
   /// Liker une recette
   Future<void> like(String recipeId) async {
     try {
@@ -127,13 +138,11 @@ class RecipeService {
   }
 
     /// Récupérer les recettes possédées
-  Future<List<Recipe>> getById(String recipeId) async {
+  Future<Recipe> getById(String recipeId) async {
     try {
       final response = await _api.get('/Recipe/$recipeId');
-      final data = response.data['data'] as List;
-      return data
-          .map((json) => Recipe.fromJson(json as Map<String, dynamic>))
-          .toList();
+      final data = response.data['data'] as Map<String, dynamic>;
+      return Recipe.fromJson(data);
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
