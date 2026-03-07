@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
 import 'package:partner_in_cook/component/widgets/qr_share_dialog.dart';
 import 'package:partner_in_cook/core/auth/auth_service.dart';
@@ -13,10 +14,12 @@ import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class RecipeListDetailsController extends GetxController {
   var recipeList = Rx<RecipeList?>(null);
+  var recipeLists = <RecipeList>[].obs;
   var searchController = TextEditingController();
   final dynamic arguments = Get.arguments;
   String? fullInvitationLink;
   var isLoading = true.obs;
+  var isRecipeListLoading = false.obs;
   final recipeListApi = RecipeListService();
   final recipeApi = RecipeService();
   QrImage? qrImage;
@@ -54,6 +57,34 @@ class RecipeListDetailsController extends GetxController {
       recipeList.value = null;
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<void> loadRecipeLists() async {
+    try {
+      isRecipeListLoading.value = true;
+
+      // Charger les listes owned et joined
+      final owned = await recipeListApi.getOwned();
+      print("Owned recipe lists loaded: ${owned.length}");
+
+      final joined = await recipeListApi.getJoined();
+      print("Joined recipe lists loaded: ${joined.length}");
+
+      // Combiner les deux listes
+      recipeLists.value = [...owned, ...joined];
+
+      // Trier : les favoris en premier
+      final sortedList = List<RecipeList>.from(recipeLists);
+      sortedList.removeWhere((recipe) => recipe.isFavorite);
+      recipeLists.value = sortedList;
+
+      print("Total recipe lists: ${recipeLists.length}");
+    } catch (e) {
+      print("Error loading recipe lists: $e");
+      recipeLists.value = [];
+    } finally {
+      isRecipeListLoading.value = false;
     }
   }
 
@@ -163,5 +194,72 @@ class RecipeListDetailsController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void showAddPlaylist() {
+    loadRecipeLists();
+    Get.bottomSheet(
+      SafeArea(
+        child: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+          ),
+          // On utilise Obx pour que la liste se mette à jour si loadRecipeLists est asynchrone
+          child: Obx(() {
+            if (isRecipeListLoading.value) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: AppColors.primaryOrange,
+                ),
+              );
+            }
+            return Wrap(
+              children: [
+                // Correction de la syntaxe de la boucle for (ajout des parenthèses)
+                for (var recipeList in recipeLists)
+                  ListTile(
+                    leading:
+                        recipeList.pictureUrl != null &&
+                            recipeList.pictureUrl!.isNotEmpty
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(
+                              8.0,
+                            ), // Ajustez la valeur du radius selon vos besoins
+                            child: Image.network(
+                              recipeList.pictureUrl!,
+                              width: 50,
+                              height: 50,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : const Icon(Icons.playlist_play),
+                    title: Text(
+                      style: const TextStyle(fontWeight: FontWeight.w700),
+                      recipeList.name,
+                    ),
+                    onTap: () {
+                      // Correction de l'accès à l'ID (pas besoin de .value! si recipeList est l'élément de la boucle)
+                      addRecipeToList(recipeList.id);
+                      Get.back();
+                    },
+                  ),
+                const SizedBox(height: 8, width: double.infinity),
+              ],
+            );
+          }),
+        ),
+      ),
+      isScrollControlled: false,
+    );
+  }
+
+  void onCreateRecipeTap() {
+    Get.toNamed(Routes.createRecipe);
+  }
+
+  void onCreateRecipeListTap() {
+    Get.toNamed(Routes.createRecipeList);
   }
 }
