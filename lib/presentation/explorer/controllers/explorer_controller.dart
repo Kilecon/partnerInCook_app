@@ -1,39 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:partner_in_cook/data/light_recipe.dart';
+import 'package:partner_in_cook/component/explorer/recipe_list.dart';
 import 'package:partner_in_cook/data/tag_mock.dart';
-import 'package:partner_in_cook/model/api/light_recipe.dart';
+import 'package:partner_in_cook/model/api/recipe.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
+import 'package:partner_in_cook/services/recipe_list_service.dart';
+import 'package:partner_in_cook/services/recipe_service.dart';
+import 'package:partner_in_cook/services/tag_service.dart';
 
 class ExplorerController extends GetxController {
-  /// Search
-  final SearchController searchController = SearchController();
+  final searchController = TextEditingController();
 
-  /// Selected tag
-  final RxList<Tag> selectedTag = <Tag>[tagsMock.first].obs;
+  final RxList<Tag> selectedTag = <Tag>[].obs;
+  var recipes = Rxn<Recipe>();
+  var recipeLists = Rxn<RecipeList>();
+  var tags = Rxn<List<Tag>>();
 
-  /// Recipes source
-  final List<LightRecipe> _recipes = recipesLight;
+  var isLoading = false.obs;
 
-  /// Filtered recipes (computed)
-  List<LightRecipe> get filteredRecipes {
-    var result = _recipes;
+  final recipeApi = RecipeService();
+  final recipeListApi = RecipeListService();
+  final tagApi = TagService();
 
-    // Exemple filtre tag (si besoin)
-    if (selectedTag.value != tagsMock.first) {
-      result = result
-          .where((r) => r.tags!.contains(selectedTag.value))
-          .toList();
+  Future<void> loadData() async {
+    try {
+      isLoading.value = true;
+      final results = await Future.wait([
+        recipeApi.getAllPublic(),
+        recipeListApi.getAllPublic(),
+        tagApi.getAll(),
+      ]);
+
+      recipes.value = results[0] as Recipe;
+      recipeLists.value = results[1] as RecipeList;
+      tags.value = results[2] as List<Tag>;
+    } catch (e) {
+      print("Error: $e");
+    } finally {
+      isLoading.value = false;
     }
-
-    final query = searchController.text.trim().toLowerCase();
-    if (query.isNotEmpty) {
-      result = result
-          .where((r) => r.name.toLowerCase().contains(query))
-          .toList();
-    }
-
-    return result;
   }
 
   void onTagChanged(Tag tag) {

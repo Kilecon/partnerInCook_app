@@ -63,8 +63,8 @@ class RecipeListService {
   /// Récupérer toutes les listes de recettes publiques
   Future<List<RecipeList>> getAllPublic() async {
     try {
-      final response = await _api.get('/RecipeList/public');
-      final data = response.data['data'] as List;
+      final response = await _api.get('/RecipeList/explore');
+      final data = response.data as List;
       return data
           .map((json) => RecipeList.fromJson(json as Map<String, dynamic>))
           .toList();
