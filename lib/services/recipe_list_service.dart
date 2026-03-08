@@ -168,4 +168,26 @@ class RecipeListService {
       throw ApiException('Erreur inattendue: $e');
     }
   }
+
+  Future<void> addToList(String recipeListId, String recipeId) async {
+    try {
+      await _api.post('/RecipeList/$recipeListId/AddRecipe/$recipeId');
+    } on DioException catch (e) {
+      final error = handleDioException(e);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
+    }
+  }
+
+  Future<void> removeFromList(String recipeListId, String recipeId) async {
+    try {
+      await _api.post('/RecipeList/$recipeListId/RemoveRecipe/$recipeId');
+    } on DioException catch (e) {
+      final error = handleDioException(e);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
+    }
+  }
 }

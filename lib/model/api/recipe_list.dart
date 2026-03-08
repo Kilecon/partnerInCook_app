@@ -8,7 +8,7 @@ class RecipeList {
   final String? description;
   final VisibilityStateEnum visibilityState;
   final LightUser author;
-  final List<LightRecipe> recipes;
+  List<LightRecipe> recipes;
   final List<LightUser> members;
   final String? pictureUrl;
   final bool isFavorite;

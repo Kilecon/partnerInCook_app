@@ -33,7 +33,7 @@ class RecipeListDetailsView extends GetView<RecipeListDetailsController> {
               recipe: recipe,
               onTap: () => controller.onRecipeTap(recipe.id),
               onDelete: () => controller.removeRecipeFromList(recipe.id),
-              onEdit: () => controller.showAddPlaylist(),
+              onAdd: () => controller.showAddPlaylist(recipe.id),
             ),
           );
         }

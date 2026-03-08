@@ -7,14 +7,14 @@ import 'rating_stars.dart';
 class RecipeLargeCard extends StatefulWidget {
   final LightRecipe recipe;
   final VoidCallback onTap;
-  final VoidCallback? onEdit;
+  final VoidCallback? onAdd;
   final VoidCallback? onDelete;
 
   const RecipeLargeCard({
     super.key,
     required this.recipe,
     required this.onTap,
-    this.onEdit,
+    this.onAdd,
     this.onDelete,
   });
 
@@ -62,14 +62,14 @@ class _RecipeLargeCardState extends State<RecipeLargeCard> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  if (widget.onEdit != null)
+                  if (widget.onAdd != null)
                     _ActionBtn(
-                      color: AppColors.lightGreen,
-                      icon: LucideIcons.edit3,
-                      iconColor: Colors.green,
+                      color: AppColors.lightOrange,
+                      icon: LucideIcons.plus,
+                      iconColor: Colors.orange,
                       onTap: () {
                         _reset();
-                        widget.onEdit?.call();
+                        widget.onAdd?.call();
                       },
                     ),
                   const SizedBox(width: 10),

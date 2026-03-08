@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
 import 'package:partner_in_cook/component/widgets/qr_share_dialog.dart';
 import 'package:partner_in_cook/core/auth/auth_service.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 import 'package:partner_in_cook/model/api/recipe_list.dart';
+import 'package:partner_in_cook/presentation/recipe-list/controllers/recipe_list_controller.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
 import 'package:partner_in_cook/services/recipe_list_service.dart';
 import 'package:partner_in_cook/services/recipe_service.dart';
@@ -168,35 +170,100 @@ class RecipeListDetailsController extends GetxController {
     );
   }
 
-  Future<void> removeRecipeFromList(String id) async {
+  Future<void> removeRecipeFromList(String recipeId) async {
     try {
-      isLoading.value = true;
+      // Pour éviter de flasher l'écran complet, on utilise un loader d'arrière-plan ou isRecipeListLoading
+      isRecipeListLoading.value = true;
+      await recipeListApi.removeFromList(recipeList.value!.id, recipeId);
 
-      final details = await recipeListApi.getById(id);
-      recipeList.value = details;
+      // Recharger les données pour mettre à jour l'UI sans isLoading.value = true
+      if (isMyRecipes) {
+        final recipes = await recipeApi.getOwned();
+        recipeList.value?.recipes = recipes;
+      } else if (arguments is String) {
+        final details = await recipeListApi.getById(arguments);
+        recipeList.value = details;
+      }
+      await loadRecipeLists();
+
+      // Forcer le rafraîchissement de la vue principale
+      recipeList.refresh();
+      recipeLists.refresh();
+
+      // Synchroniser avec RecipeListController s'il est actif
+      if (Get.isRegistered<RecipeListController>()) {
+        Get.find<RecipeListController>().loadRecipeList();
+      }
     } catch (e) {
       print("Error loading recipe list details: $e");
-      recipeList.value = null;
     } finally {
-      isLoading.value = false;
+      isRecipeListLoading.value = false;
     }
   }
 
-  Future<void> addRecipeToList(String id) async {
+  Future<void> addRecipeToList(String recipeListId, String recipeId) async {
     try {
-      isLoading.value = true;
+      isRecipeListLoading.value = true;
+      await recipeListApi.addToList(recipeListId, recipeId);
 
-      final details = await recipeListApi.getById(id);
-      recipeList.value = details;
+      // Recharger les données pour mettre à jour l'UI
+      if (isMyRecipes) {
+        final recipes = await recipeApi.getOwned();
+        recipeList.value?.recipes = recipes;
+      } else if (arguments is String) {
+        final details = await recipeListApi.getById(arguments);
+        if (recipeList.value?.id == recipeListId) {
+          recipeList.value = details;
+        }
+      }
+      await loadRecipeLists();
+
+      // Forcer le rafraîchissement de la vue et BottomSheet
+      recipeList.refresh();
+      recipeLists.refresh();
+
+      // Synchroniser avec RecipeListController s'il est actif
+      if (Get.isRegistered<RecipeListController>()) {
+        Get.find<RecipeListController>().loadRecipeList();
+      }
     } catch (e) {
       print("Error loading recipe list details: $e");
-      recipeList.value = null;
     } finally {
-      isLoading.value = false;
+      isRecipeListLoading.value = false;
     }
   }
 
-  void showAddPlaylist() {
+  Future<void> removeRecipeFromSpecificList(
+    String recipeListId,
+    String recipeId,
+  ) async {
+    try {
+      isRecipeListLoading.value = true;
+      await recipeListApi.removeFromList(recipeListId, recipeId);
+
+      // Recharger les listes pour le BottomSheet
+      await loadRecipeLists();
+
+      // Mettre à jour la vue RecipeList actuelle si on l'a modifiée
+      if (recipeList.value?.id == recipeListId && arguments is String) {
+        final details = await recipeListApi.getById(arguments);
+        recipeList.value = details;
+        recipeList.refresh();
+      }
+
+      recipeLists.refresh();
+
+      if (Get.isRegistered<RecipeListController>()) {
+        Get.find<RecipeListController>().loadRecipeList();
+      }
+    } catch (e) {
+      print("Error loading recipe list details: $e");
+    } finally {
+      isRecipeListLoading.value = false;
+    }
+  }
+
+  void showAddPlaylist(String recipeId) {
     loadRecipeLists();
     Get.bottomSheet(
       SafeArea(
@@ -239,10 +306,28 @@ class RecipeListDetailsController extends GetxController {
                       style: const TextStyle(fontWeight: FontWeight.w700),
                       recipeList.name,
                     ),
+                    subtitle: Text(
+                      recipeList.recipes.length > 1
+                          ? '${recipeList.recipes.length} recettes'
+                          : '${recipeList.recipes.length} recette',
+                    ),
+                    trailing:
+                        recipeList.recipes.any(
+                          (recipe) => recipe.id == recipeId,
+                        )
+                        ? const Icon(LucideIcons.check, color: Colors.green)
+                        : const Icon(
+                            LucideIcons.plus,
+                            color: AppColors.primaryOrange,
+                          ),
                     onTap: () {
-                      // Correction de l'accès à l'ID (pas besoin de .value! si recipeList est l'élément de la boucle)
-                      addRecipeToList(recipeList.id);
-                      Get.back();
+                      if (recipeList.recipes.any(
+                        (recipe) => recipe.id == recipeId,
+                      )) {
+                        removeRecipeFromSpecificList(recipeList.id, recipeId);
+                      } else {
+                        addRecipeToList(recipeList.id, recipeId);
+                      }
                     },
                   ),
                 const SizedBox(height: 8, width: double.infinity),
