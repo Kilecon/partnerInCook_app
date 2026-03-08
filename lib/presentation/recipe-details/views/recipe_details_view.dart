@@ -8,6 +8,7 @@ import 'package:partner_in_cook/component/recipe_details/recipe_header.dart';
 import 'package:partner_in_cook/component/recipe_details/recipe_section.dart';
 import 'package:partner_in_cook/component/recipe_details/step_content.dart';
 import 'package:partner_in_cook/component/recipe_details/utensil_content.dart';
+import 'package:partner_in_cook/component/widgets/add_btn.dart';
 
 import '../controllers/recipe_details_controller.dart';
 
@@ -58,8 +59,16 @@ class RecipeDetailsView extends GetView<RecipeDetailsController> {
             );
           }
 
-          return CustomScrollView(
-            slivers: [
+          return RefreshIndicator(
+            color: AppColors.primaryOrange,
+            onRefresh: () async {
+              if (controller.arguments is String) {
+                await controller.loadRecipeDetails(controller.arguments);
+              }
+            },
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
               RecipeHeader(
                 user: recipe.author,
                 icon: recipe.isFavorite
@@ -94,8 +103,12 @@ class RecipeDetailsView extends GetView<RecipeDetailsController> {
                 ),
               ),
             ],
-          );
+          ));
         }),
+      ),
+      floatingActionButton: CustomFloatingBtn(
+        icon: LucideIcons.star,
+        onTap: () => controller.showAddNotationDialog(),
       ),
     );
   }

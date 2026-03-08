@@ -138,7 +138,6 @@ class RecipeListDetailsController extends GetxController {
       buttonColor: Colors.red,
       onConfirm: () {
         Get.back();
-        Get.back(); // Retour à la page précédente
         Get.snackbar(
           'Succès',
           'Liste supprimée avec succès',

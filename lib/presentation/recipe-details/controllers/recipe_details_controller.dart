@@ -1,11 +1,18 @@
+import 'dart:ffi';
+
 import 'package:get/get.dart';
+import 'package:partner_in_cook/component/recipe_details/rating_dialog.dart';
+import 'package:partner_in_cook/core/auth/auth_service.dart';
+import 'package:partner_in_cook/model/api/notation.dart';
 import 'package:partner_in_cook/model/api/recipe.dart';
 import 'package:partner_in_cook/presentation/recipe-list-details/controllers/recipe_list_details_controller.dart';
+import 'package:partner_in_cook/services/notation_service.dart';
 import 'package:partner_in_cook/services/recipe_service.dart';
 
 class RecipeDetailsController extends GetxController {
   var recipe = Rx<Recipe?>(null);
   final recipeApi = RecipeService();
+  final notationApi = NotationService();
 
   final dynamic arguments = Get.arguments;
   var isLoading = true.obs;
@@ -53,5 +60,33 @@ class RecipeDetailsController extends GetxController {
     } catch (e) {
       print("Error toggling favorite: $e");
     }
+  }
+
+  Future<void> addNotation(int rating) async {
+    try {
+      isLoading.value = true;
+      final currentUserId = await AuthService.getUserId();
+      await notationApi.create(NotationCreateRequest(recipeId: recipe.value!.id, userId: currentUserId!, notation: rating));
+    } catch (e) {
+      print("Error loading recipe details: $e");
+      recipe.value = null;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void showAddNotationDialog() {
+    if (recipe.value == null) return;
+
+    Get.dialog(
+      RatingDialog(
+        title: 'Noter la recette',
+        description: 'Veuillez attribuer une note à cette recette',
+        onConfirm: (rating) {
+            addNotation(rating);
+          print("Notation attribuée : $rating étoiles");
+        },
+      ),
+    );
   }
 }

@@ -31,21 +31,28 @@ class FridgeDetailsView extends GetView<FridgeDetailsController> {
           children: [
             FridgeHeader(ingredientsCount: fridge.ingredients.length),
             Expanded(
-              child: CustomLayout(
-                spacing: 30,
-                children: [
-                  const SizedBox(height: 15),
-                  IngredientsList(
-                    ingredients: fridge.ingredients,
-                    isPantry: false,
-                  ),
-                ],
+              child: RefreshIndicator(
+                color: AppColors.primaryOrange,
+                onRefresh: () async {
+                  await controller.loadData();
+                },
+                child: CustomLayout(
+                  spacing: 30,
+                  children: [
+                    const SizedBox(height: 15),
+                    IngredientsList(
+                      ingredients: fridge.ingredients,
+                      isPantry: false,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         );
       }),
-      floatingActionButton: AddBtn(
+      floatingActionButton: CustomFloatingBtn(
+        icon: Icons.add,
         onTap: () => controller.showAddIngredientDialog(context),
       ),
     );

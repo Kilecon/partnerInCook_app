@@ -56,13 +56,17 @@ class RecipeListInfo extends StatelessWidget {
                       ),
                     if (onDelete != null)
                       ListTile(
-                        leading: const Icon(LucideIcons.trash2, color: Colors.red),
+                        leading: const Icon(
+                          LucideIcons.trash2,
+                          color: Colors.red,
+                        ),
                         title: const Text('Supprimer'),
                         onTap: () {
                           Navigator.pop(context);
                           onDelete?.call();
                         },
                       ),
+                   
                   ],
                 )
               : const SizedBox.shrink(),
@@ -90,15 +94,14 @@ class RecipeListInfo extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                     ),
                   ),
-                  if (recipeList.members.isNotEmpty)
-                    ...[
-                      const SizedBox(height: 8),
-                      AvatarSuperimposed(users: recipeList.members),
-                    ],
+                  if (recipeList.members.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    AvatarSuperimposed(users: recipeList.members),
+                  ],
                 ],
               ),
             ),
-            if (!isMyRecipes || !isFavorite || isMyPlaylist)
+            if (!isMyRecipes && !isFavorite && isMyPlaylist)
               IconButton(
                 icon: const Icon(Icons.more_vert),
                 onPressed: () => _showOptions(context),

@@ -46,28 +46,36 @@ class FridgeView extends GetView<FridgeController> {
               ),
 
               Expanded(
-                child: CustomLayout(
-                  verticalPadding: 20,
-                  children: [
-                    if (controller.fridge.value != null)
-                      FridgeCard(
-                        fridge: controller.fridge.value!,
-                        onTap: () =>
-                            controller.onFridgeTap(controller.fridge.value!.id),
+                child: RefreshIndicator(
+                  color: AppColors.primaryOrange,
+                  onRefresh: () async {
+                    await controller.loadAllPantry();
+                  },
+                  child: CustomLayout(
+                    verticalPadding: 20,
+                    children: [
+                      if (controller.fridge.value != null)
+                        FridgeCard(
+                          fridge: controller.fridge.value!,
+                          onTap: () => controller.onFridgeTap(
+                            controller.fridge.value!.id,
+                          ),
+                        ),
+                      CardList(
+                        cards: cards,
+                        icon: LucideIcons.refrigerator,
+                        emptyString: "Aucun garde-manger disponible",
                       ),
-                    CardList(
-                      cards: cards,
-                      icon: LucideIcons.refrigerator,
-                      emptyString: "Aucun garde-manger disponible",
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ],
           );
         }),
       ),
-      floatingActionButton: AddBtn(
+      floatingActionButton: CustomFloatingBtn(
+        icon: LucideIcons.plus,
         onTap: () => controller.showCreatePantryDialog(context),
       ),
     );

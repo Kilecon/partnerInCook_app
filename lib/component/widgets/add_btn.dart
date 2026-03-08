@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 
-class AddBtn extends StatelessWidget {
+class CustomFloatingBtn extends StatelessWidget {
   final VoidCallback onTap;
-
-  const AddBtn({super.key, required this.onTap});
+  final IconData icon;
+  final Color? backgroundColor;
+  const CustomFloatingBtn({super.key, required this.onTap, required this.icon, this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,11 @@ class AddBtn extends StatelessWidget {
           color: AppColors.lightOrange,
           shape: BoxShape.circle,
         ),
-        child: const Icon(LucideIcons.plus, color: AppColors.primaryOrange, size: 24),
+        child: Icon(
+          icon,
+          color: backgroundColor ?? AppColors.primaryOrange,
+          size: 24,
+        ),
       ),
     );
   }

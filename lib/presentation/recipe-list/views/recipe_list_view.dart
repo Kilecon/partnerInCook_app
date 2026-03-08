@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/fridge/card_list.dart';
 import 'package:partner_in_cook/component/recipe-list/image_cover_card.dart';
@@ -65,22 +66,29 @@ class RecipeListView extends GetView<RecipeListController> {
                   );
                 }
 
-                return CustomLayout(
-                  verticalPadding: 20,
-                  children: [
-                    CardList(
-                      icon: Icons.list_alt,
-                      cards: cards,
-                      emptyString: "Aucune liste de recettes disponible",
-                    ),
-                  ],
+                return RefreshIndicator(
+                  color: AppColors.primaryOrange,
+                  onRefresh: controller.loadRecipeList,
+                  child: CustomLayout(
+                    verticalPadding: 20,
+                    children: [
+                      CardList(
+                        icon: Icons.list_alt,
+                        cards: cards,
+                        emptyString: "Aucune liste de recettes disponible",
+                      ),
+                    ],
+                  ),
                 );
               }),
             ),
           ],
         ),
       ),
-      floatingActionButton: AddBtn(onTap: () => controller.showCreateOptions()),
+      floatingActionButton: CustomFloatingBtn(
+        icon: LucideIcons.plus,
+        onTap: () => controller.showCreateOptions(),
+      ),
     );
   }
 }

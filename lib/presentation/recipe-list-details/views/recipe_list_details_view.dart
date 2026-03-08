@@ -40,8 +40,18 @@ class RecipeListDetailsView extends GetView<RecipeListDetailsController> {
 
         return SafeArea(
           top: false,
-          child: CustomScrollView(
-            slivers: [
+          child: RefreshIndicator(
+            color: AppColors.primaryOrange,
+            onRefresh: () async {
+              if (controller.isMyRecipes) {
+                await controller.loadMyRecipes();
+              } else if (controller.arguments is String) {
+                await controller.loadRecipeListDetails(controller.arguments);
+              }
+            },
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
               RecipeHeader(
                 user: controller.recipeList.value!.author,
                 icon: LucideIcons.share2,
@@ -81,7 +91,7 @@ class RecipeListDetailsView extends GetView<RecipeListDetailsController> {
               ),
             ],
           ),
-        );
+        ));
       }),
     );
   }

@@ -29,8 +29,10 @@ class ExplorerView extends GetView<ExplorerController> {
               title: 'Explorer',
               subtitle: 'Découvrez des milliers de recettes',
               searchController: controller.searchController,
-              data: const [], // TitlePage réclame data et onSearchResultTap si hasSearchBar == true
-              onSearchResultTap: () {}, // Fonction vide pour éviter le Null check
+              data:
+                  const [], // TitlePage réclame data et onSearchResultTap si hasSearchBar == true
+              onSearchResultTap:
+                  () {}, // Fonction vide pour éviter le Null check
             ),
 
             // Barre de sélection de l'onglet : Recettes ou Listes
@@ -108,39 +110,43 @@ class ExplorerView extends GetView<ExplorerController> {
                   listIcon = Icons.list_alt;
                 }
 
-                return CustomLayout(
-                  verticalPadding: 0,
-                  horizontalPadding: 16,
-                  children: [
-                    // Affiche les tags uniquement pour les recettes
-                    if (isRecipesTab && controller.tags.isNotEmpty) ...[
-                      TagList(
-                        selected: controller.selectedTags.toList(),
-                        tags: controller.tags.toList(),
-                        onChanged: controller.toggleTag,
-                      ),
-                    ],
+                return RefreshIndicator(
+                  color: AppColors.primaryOrange,
+                  onRefresh: controller.loadData,
+                  child: CustomLayout(
+                    verticalPadding: 0,
+                    horizontalPadding: 16,
+                    children: [
+                      // Affiche les tags uniquement pour les recettes
+                      if (isRecipesTab && controller.tags.isNotEmpty) ...[
+                        TagList(
+                          selected: controller.selectedTags.toList(),
+                          tags: controller.tags.toList(),
+                          onChanged: controller.toggleTag,
+                        ),
+                      ],
 
-                    if (controller.searchController.text.isNotEmpty ||
-                        controller.selectedTags.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 16.0),
-                        child: Text(
-                          '$resultsCount résultat(s)',
-                          style: const TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                      if (controller.searchController.text.isNotEmpty ||
+                          controller.selectedTags.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 16.0),
+                          child: Text(
+                            '$resultsCount résultat(s)',
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
+                            ),
                           ),
                         ),
-                      ),
 
-                    CardList(
-                      icon: listIcon,
-                      cards: cards,
-                      emptyString: emptyMsg,
-                    ),
-                    const SizedBox(height: 30),
-                  ],
+                      CardList(
+                        icon: listIcon,
+                        cards: cards,
+                        emptyString: emptyMsg,
+                      ),
+                      const SizedBox(height: 30),
+                    ],
+                  ),
                 );
               }),
             ),

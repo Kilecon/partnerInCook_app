@@ -92,18 +92,24 @@ class PantryDetailsView extends GetView<PantryDetailsController> {
             ),
             FridgeDescription(title: pantry.name, sharedUsers: members),
             Expanded(
-              child: CustomLayout(
-                useSafeArea: true,
-                safeAreaTop: false,
-                safeAreaBottom: true,
-                verticalPadding: 0,
-                spacing: 30,
-                children: [
-                  IngredientsList(
-                    ingredients: ingredientsWithOwner,
-                    isPantry: true,
-                  ),
-                ],
+              child: RefreshIndicator(
+                color: AppColors.primaryOrange,
+                onRefresh: () async {
+                  await controller.loadPantry();
+                },
+                child: CustomLayout(
+                  useSafeArea: true,
+                  safeAreaTop: false,
+                  safeAreaBottom: true,
+                  verticalPadding: 0,
+                  spacing: 30,
+                  children: [
+                    IngredientsList(
+                      ingredients: ingredientsWithOwner,
+                      isPantry: true,
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

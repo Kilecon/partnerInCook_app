@@ -19,10 +19,10 @@ class PantryDetailsController extends GetxController {
   void onInit() {
     super.onInit();
     pantryId = Get.arguments['id']!;
-    _loadPantry();
+    loadPantry();
   }
 
-  Future<void> _loadPantry() async {
+  Future<void> loadPantry() async {
     try {
       final details = await pantryApi.getById(pantryId);
       pantry.value = details;

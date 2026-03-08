@@ -18,7 +18,7 @@ class CustomTag extends StatelessWidget {
     return GestureDetector(
       onTap: onClick,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         decoration: BoxDecoration(
           color: isSelect ? color : Colors.white,
           border: Border.all(color: color, width: 2),
