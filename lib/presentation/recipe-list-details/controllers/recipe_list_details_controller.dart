@@ -201,6 +201,37 @@ class RecipeListDetailsController extends GetxController {
     }
   }
 
+  Future<void> removeRecipe(String recipeId) async {
+    try {
+      // Pour éviter de flasher l'écran complet, on utilise un loader d'arrière-plan ou isRecipeListLoading
+      isRecipeListLoading.value = true;
+      await recipeApi.delete(recipeId);
+
+      // Recharger les données pour mettre à jour l'UI sans isLoading.value = true
+      if (isMyRecipes) {
+        final recipes = await recipeApi.getOwned();
+        recipeList.value?.recipes = recipes;
+      } else if (arguments is String) {
+        final details = await recipeListApi.getById(arguments);
+        recipeList.value = details;
+      }
+      await loadRecipeLists();
+
+      // Forcer le rafraîchissement de la vue principale
+      recipeList.refresh();
+      recipeLists.refresh();
+
+      // Synchroniser avec RecipeListController s'il est actif
+      if (Get.isRegistered<RecipeListController>()) {
+        Get.find<RecipeListController>().loadRecipeList();
+      }
+    } catch (e) {
+      print("Error loading recipe list details: $e");
+    } finally {
+      isRecipeListLoading.value = false;
+    }
+  }
+
   Future<void> addRecipeToList(String recipeListId, String recipeId) async {
     try {
       isRecipeListLoading.value = true;
@@ -262,6 +293,8 @@ class RecipeListDetailsController extends GetxController {
       isRecipeListLoading.value = false;
     }
   }
+
+
 
   void showAddPlaylist(String recipeId) {
     loadRecipeLists();

@@ -32,7 +32,7 @@ class RecipeListDetailsView extends GetView<RecipeListDetailsController> {
             RecipeLargeCard(
               recipe: recipe,
               onTap: () => controller.onRecipeTap(recipe.id),
-              onDelete: () => controller.removeRecipeFromList(recipe.id),
+              onDelete: () => (controller.isMyRecipes) ? controller.removeRecipe(recipe.id) : controller.removeRecipeFromList(recipe.id),
               onAdd: () => controller.showAddPlaylist(recipe.id),
             ),
           );
