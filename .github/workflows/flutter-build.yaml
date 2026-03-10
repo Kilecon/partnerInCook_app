@@ -1,0 +1,40 @@
+name: Flutter Build
+
+on:
+  push:
+    branches: [ "feature/cicd" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: macos-latest # Nécessaire pour build l'IPA (iOS)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      # Build Android
+      - name: Build APK
+        run: flutter build apk --release
+
+      # Build iOS (Nécessite la config des certificats dans Xcode)
+      - name: Build IPA
+        run: |
+          flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
+
+      # Upload des fichiers dans les artefacts
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-outputs
+          path: |
+            build/app/outputs/flutter-apk/app-release.apk
+            build/ios/ipa/*.ipa
