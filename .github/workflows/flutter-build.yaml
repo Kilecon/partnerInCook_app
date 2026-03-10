@@ -25,10 +25,10 @@ jobs:
       - name: Build APK
         run: flutter build apk --release
 
-      # Build iOS (Nécessite la config des certificats dans Xcode)
+      # Build iOS (Non signé)
       - name: Build IPA
         run: |
-          flutter build ipa --release --export-options-plist=ios/ExportOptions.plist
+          flutter build ipa --release --no-codesign
 
       # Upload des fichiers dans les artefacts
       - name: Upload Artifacts
