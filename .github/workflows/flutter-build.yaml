@@ -1,40 +1,36 @@
-name: Flutter Build
+name: Build Android Release
 
 on:
   push:
-    branches: [ "feature/cicd" ]
-  pull_request:
-    branches: [ "main" ]
+    tags:
+      - 'v*'
 
 jobs:
   build:
-    runs-on: macos-latest # Nécessaire pour build l'IPA (iOS)
-
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
 
-      - name: Install Dependencies
-        run: flutter pub get
+      - name: Build App Bundle
+        run: flutter build appbundle --release
 
-      # Build Android
       - name: Build APK
         run: flutter build apk --release
 
-      # Build iOS (Non signé)
-      - name: Build IPA
-        run: |
-          flutter build ipa --release --no-codesign
-
-      # Upload des fichiers dans les artefacts
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: build-outputs
-          path: |
+          files: |
+            build/app/outputs/bundle/release/app-release.aab
             build/app/outputs/flutter-apk/app-release.apk
-            build/ios/ipa/*.ipa
