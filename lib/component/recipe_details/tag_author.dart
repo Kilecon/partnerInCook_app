@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
+import 'package:partner_in_cook/component/widgets/circle_avatar.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 
 class AuthorTag extends StatelessWidget {
   final LightUser author;
 
-  const AuthorTag({
-    super.key,
-    required this.author,
-  });
+  const AuthorTag({super.key, required this.author});
 
   @override
   Widget build(BuildContext context) {
@@ -17,23 +15,16 @@ class AuthorTag extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.50), // effet "glass"/clair
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: AppColors.primaryOrange,
-          width: 1.5,
-        ),
+        border: Border.all(color: AppColors.primaryOrange, width: 1.5),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          // Avatar rond
-          ClipRRect(
-            borderRadius: BorderRadius.circular(999),
-            child: Image.network(
-              author.profilePictureUrl ?? '',
-              width: 32,
-              height: 32,
-              fit: BoxFit.cover,
-            ),
+          // Avatar rond avec CircleAvatarCustom
+          CircleAvatarCustom(
+            name: author.username,
+            url: author.profilePictureUrl,
+            radius: 18,
           ),
           const SizedBox(width: 8),
           // Textes alignés verticalement

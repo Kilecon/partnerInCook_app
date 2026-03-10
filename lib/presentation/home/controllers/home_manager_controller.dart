@@ -10,7 +10,7 @@ class HomeManagerController extends GetxController {
     currentPageIndex.value = index;
   }
 
-  List<String> listLabels = ['Explorer', 'Mes recettes', 'Mon frigo'];
+  List<String> listLabels = ['Explorer', 'Recettes', 'Frigos'];
 
   List<IconData> listIcon = [
     LucideIcons.home,

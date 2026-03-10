@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:partner_in_cook/model/api/light_recipe_list.dart';
+import 'package:partner_in_cook/model/api/light_recipe.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
 import 'package:partner_in_cook/component/widgets/section_header.dart';
 import 'package:partner_in_cook/component/explorer/recipe_list.dart';

@@ -1,10 +1,6 @@
 import 'dart:io';
 
 import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
-import 'package:partner_in_cook/model/api/step.dart';
-import 'package:partner_in_cook/model/api/tag.dart';
-import 'package:partner_in_cook/model/api/utensil.dart';
-import 'package:partner_in_cook/model/form/create_recipe_ingredient_form.dart';
 
 class CreateRecipeListForm {
   // ----------------------------
@@ -15,16 +11,14 @@ class CreateRecipeListForm {
 
   VisibilityStateEnum visibilityState;
 
-  File? image; // path / url temporaire
+  File? image; // Fichier local temporaire
+  String? imageUrl; // URL de l'image uploadée
 
   CreateRecipeListForm({
     this.name = '',
     this.description = '',
     this.visibilityState = VisibilityStateEnum.privateState,
-    List<CreateRecipeIngredient>? ingredients,
-    List<Step>? steps,
-    List<Utensil>? utensils,
-    List<Tag>? tags,
     this.image,
-  }) ;
+    this.imageUrl,
+  });
 }

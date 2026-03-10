@@ -11,7 +11,7 @@ class PantryJoinController extends GetxController {
 
   @override
   void onInit() {
-    pantryId = Get.parameters['id']!;
+    pantryId = Get.arguments["id"] ?? '';
     _joinPantry();
     super.onInit();
   }
@@ -20,7 +20,7 @@ class PantryJoinController extends GetxController {
     try {
       await pantryApiService.joined(pantryId);
 
-      Get.offAllNamed(Routes.pantryDetails, parameters: {'id': pantryId});
+      Get.offNamed(Routes.pantryDetails, arguments: {'id': pantryId});
     } catch (e) {
       error.value = _mapError(e);
     } finally {

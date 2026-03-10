@@ -1,5 +1,5 @@
 import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
-import 'package:partner_in_cook/model/api/light_recipe_list.dart';
+import 'package:partner_in_cook/model/api/light_recipe.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 
 class RecipeList {
@@ -8,7 +8,7 @@ class RecipeList {
   final String? description;
   final VisibilityStateEnum visibilityState;
   final LightUser author;
-  final List<LightRecipe> recipes;
+  List<LightRecipe> recipes;
   final List<LightUser> members;
   final String? pictureUrl;
   final bool isFavorite;
@@ -30,7 +30,7 @@ class RecipeList {
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String?,
-      visibilityState: visibilityStateFromJson(json['state'] as String),
+      visibilityState: visibilityStateFromJson(json['state'] as String), 
       author: LightUser.fromJson(json['author']),
       recipes: (json['recipes'] as List<dynamic>)
           .map((e) => LightRecipe.fromJson(e))

@@ -1,26 +1,23 @@
+import 'package:dio/dio.dart';
+import 'package:get/get.dart';
+import 'package:partner_in_cook/core/network/api_client.dart';
+import 'package:partner_in_cook/exceptions/api_exception.dart';
+import 'package:partner_in_cook/exceptions/exception_handler.dart';
 import 'package:partner_in_cook/model/api/utensil.dart';
 
 class UtensilService {
-  /// Recherche des ingrédients par nom
-  /// TODO: Remplacer par un vrai appel API
-  Future<List<Utensil>> searchUtensils(String query) async {
-    await Future.delayed(const Duration(milliseconds: 300));
+   final ApiClient _api = Get.find<ApiClient>();
 
-    // Mock data - à remplacer par un vrai appel API
-    final allUtensils = [
-      Utensil(id: '1', name: 'Couteau'),
-      Utensil(id: '2', name: 'Fourchette'),
-      Utensil(id: '3', name: 'Cuillère'),
-      Utensil(id: '4', name: 'Poêle'),
-      Utensil(id: '5', name: 'Casserole'),
-      Utensil(id: '6', name: 'Mixeur'),
-      Utensil(id: '7', name: 'Planche à découper'),
-    ];
-
-    if (query.isEmpty) return allUtensils;
-
-    return allUtensils
-        .where((ing) => ing.name.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+    Future<List<Utensil>> getAll() async {
+    try {
+      final response = await _api.get('/Utensil/all');
+      final dataList = response.data as List<dynamic>;
+      return dataList.map((data) => Utensil.fromJson(data as Map<String, dynamic>)).toList();
+    } on DioException catch (e) {
+      final error = handleDioException(e);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
+    }
   }
 }

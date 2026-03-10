@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CustomLayout extends StatelessWidget { // fir scrollable list with padding and spacing
+class CustomLayout extends StatelessWidget {
+  // fir scrollable list with padding and spacing
   final List<Widget> children;
   final double horizontalPadding;
   final double verticalPadding;
@@ -8,6 +9,7 @@ class CustomLayout extends StatelessWidget { // fir scrollable list with padding
   final bool useSafeArea;
   final bool safeAreaTop;
   final bool safeAreaBottom;
+  final ScrollPhysics? physics;
 
   const CustomLayout({
     super.key,
@@ -18,6 +20,7 @@ class CustomLayout extends StatelessWidget { // fir scrollable list with padding
     this.useSafeArea = false,
     this.safeAreaTop = true,
     this.safeAreaBottom = true,
+    this.physics = const AlwaysScrollableScrollPhysics(),
   });
 
   @override
@@ -28,6 +31,7 @@ class CustomLayout extends StatelessWidget { // fir scrollable list with padding
         vertical: verticalPadding,
       ),
       child: ListView.separated(
+        physics: physics,
         padding: EdgeInsets.zero,
         itemCount: children.length,
         separatorBuilder: (context, index) => SizedBox(height: spacing),

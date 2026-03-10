@@ -5,11 +5,9 @@ enum VisibilityStateEnum {
 
 VisibilityStateEnum visibilityStateFromJson(String value) {
   switch (value) {
-    case 'public':
-    case 'publicState':
+    case 'Public':
       return VisibilityStateEnum.publicState;
-    case 'private':
-    case 'privateState':
+    case 'Private':
       return VisibilityStateEnum.privateState;
     default:
       return VisibilityStateEnum.privateState; // fallback propre
@@ -19,8 +17,8 @@ VisibilityStateEnum visibilityStateFromJson(String value) {
 String visibilityStateToJson(VisibilityStateEnum state) {
   switch (state) {
     case VisibilityStateEnum.publicState:
-      return 'public';
+      return 'Public';
     case VisibilityStateEnum.privateState:
-      return 'private';
+      return 'Private';
   }
 }

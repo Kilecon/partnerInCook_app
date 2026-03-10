@@ -10,19 +10,19 @@ import 'package:partner_in_cook/model/api/user.dart';
 
 class LoginService {
   final AuthService _authService = Get.find<AuthService>();
-  final ApiClient _httpClient = ApiClient();
+  final ApiClient _httpClient = Get.find<ApiClient>();
 
   /// Effectue la connexion
   Future<void> performAuth(AuthLogin loginData) async {
     try {
       final response = await _httpClient.post(
-        '/login',
+        '/Auth/login',
         data: json.encode(loginData.toJson()),
       );
 
       final data = response.data as Map<String, dynamic>;
       final user = User.fromJson(data['user'] as Map<String, dynamic>);
-      final token = data['access_token'] as String;
+      final token = data['token'] as String;
       final refresh = data['refresh_token'] as String;
 
       final auth = AuthRes(user: user, token: token, refreshToken: refresh);

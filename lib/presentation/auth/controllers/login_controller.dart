@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:partner_in_cook/model/api/auth.dart';
 import 'package:partner_in_cook/presentation/auth/services/login_service.dart';
 import 'package:partner_in_cook/routes/app_pages.dart';
-import 'package:partner_in_cook/utils/snackbar.dart';
 
 class LoginController extends GetxController {
   LoginController({required this.localAuthService});
@@ -28,7 +27,6 @@ class LoginController extends GetxController {
     if ((email == null || email!.isEmpty) ||
         (password == null || password!.isEmpty)) {
       loading.value = false;
-      showSnackError("Identifiants manquants");
       return;
     }
 
@@ -36,12 +34,17 @@ class LoginController extends GetxController {
       final authLogin = AuthLogin(email: email!.trim(), password: password!);
 
       await localAuthService.performAuth(authLogin);
+      print("Login successful");
+      await Future.delayed(const Duration(milliseconds: 500)); // Petite pause pour laisser le temps au token de se stocker
 
       Get.offAllNamed(Routes.home);
+      
     } catch (e) {
       String message = "Une erreur est survenue";
-      if (e is Exception) message = e.toString().replaceAll("Exception: ", "");
-      showSnackError(message);
+      if (e is Exception) {
+      }
+       message = e.toString().replaceAll("Exception: ", "");
+       print("Login error: $message");
     } finally {
       loading.value = false;
     }

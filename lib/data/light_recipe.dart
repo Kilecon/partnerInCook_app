@@ -1,4 +1,4 @@
-import 'package:partner_in_cook/model/api/light_recipe_list.dart';
+import 'package:partner_in_cook/model/api/light_recipe.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
 

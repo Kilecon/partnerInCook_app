@@ -18,22 +18,23 @@ class FridgeView extends GetView<FridgeController> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> cards = [];
-
-    for (var pantry in controller.pantries) {
-      cards.add(
-        PantryCard(
-          pantry: pantry,
-          onTap: () => controller.onPantryTap(pantry.id),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Container(
         color: AppColors.background,
         child: Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // Générer la liste des cards pantry depuis l'observable
+          List<Widget> cards = controller.pantries.map((pantry) {
+            return PantryCard(
+              pantry: pantry!,
+              onTap: () => controller.onPantryTap(pantry.id),
+            );
+          }).toList();
+
           return Column(
             children: [
               TitlePage(
@@ -45,30 +46,38 @@ class FridgeView extends GetView<FridgeController> {
               ),
 
               Expanded(
-                child: CustomLayout(
-                  verticalPadding: 20,
-
-                  children: [
-                    FridgeCard(
-                      fridge: controller.fridge.value,
-                      onTap: () =>
-                          controller.onFridgeTap(controller.fridge.value.id),
-                    ),
-                    CardList(
-                      cards: cards,
-                      icon: LucideIcons.refrigerator,
-                      emptyString: "Aucun garde mangé disponible",
-                    ),
-                  ],
+                child: RefreshIndicator(
+                  color: AppColors.primaryOrange,
+                  onRefresh: () async {
+                    await controller.loadAllPantry();
+                  },
+                  child: CustomLayout(
+                    verticalPadding: 20,
+                    children: [
+                      if (controller.fridge.value != null)
+                        FridgeCard(
+                          fridge: controller.fridge.value!,
+                          onTap: () => controller.onFridgeTap(
+                            controller.fridge.value!.id,
+                          ),
+                        ),
+                      CardList(
+                        cards: cards,
+                        icon: LucideIcons.refrigerator,
+                        emptyString: "Aucun garde-manger disponible",
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
           );
         }),
       ),
-       floatingActionButton: AddBtn(
+      floatingActionButton: CustomFloatingBtn(
+        icon: LucideIcons.plus,
         onTap: () => controller.showCreatePantryDialog(context),
-       )
+      ),
     );
   }
 }

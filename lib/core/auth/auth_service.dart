@@ -82,22 +82,28 @@ class AuthService extends GetxService {
     try {
       // Appel endpoint refresh
       final res = await Get.find<ApiClient>().post(
-        '/auth/refresh',
+        '/Auth/refresh',
         data: {'refresh_token': refreshToken.value},
       );
-
-      // Supposons que l'API renvoie { access_token: "...", refresh_token: "..." }
-      final newToken = res.data['access_token'] as String?;
-      final newRefresh = res.data['refresh_token'] as String?;
-
-      if (newToken != null && newRefresh != null) {
-        apiToken.value = newToken;
-        refreshToken.value = newRefresh;
-        return true;
+      print('Réponse API refresh token: ${res.data}');
+      if (res.statusCode == "401") {
+        print('Refresh token invalide ou expiré');
+        await clearAuth();
+        return false;
       }
+      final data = res.data as Map<String, dynamic>;
+      print('Réponse refresh token: $data');
+      final user = User.fromJson(data['user'] as Map<String, dynamic>);
+      final newToken = data['token'] as String;
+      final newRefresh = data['refresh_token'] as String;
+      print('Nouveau token: $newToken');
+      final auth = AuthRes(user: user, token: newToken, refreshToken: newRefresh);
+      print('Mise à jour de l\'authentification avec les nouveaux tokens');
+      await setAuth(auth);
 
-      return false;
-    } catch (_) {
+      return true;
+    } catch (e) {
+      print('Erreur lors du rafraîchissement du token: $e');
       await clearAuth();
       return false;
     }
@@ -113,6 +119,21 @@ class AuthService extends GetxService {
   static Future<String?> getRefreshToken() async {
     final pref = await SharedPreferences.getInstance();
     return pref.getString(Constants.refreshToken);
+  }
+
+  static Future<String?> getUserId() async {
+    final pref = await SharedPreferences.getInstance();
+    final userJson = pref.getString(Constants.user);
+    if (userJson == null) return null;
+
+    try {
+      final Map<String, dynamic> userMap = jsonDecode(userJson);
+      final user = User.fromJson(userMap);
+      return user.userId;
+    } catch (_) {
+      await clearAuth();
+      return null;
+    }
   }
 
   static Future<User?> getUser() async {
@@ -150,7 +171,7 @@ class AuthService extends GetxService {
     final pref = await SharedPreferences.getInstance();
     await pref.setString(Constants.accessToken, auth.token);
     await pref.setString(Constants.refreshToken, auth.refreshToken);
-      await pref.setString(Constants.user, jsonEncode(auth.user.toJson()));
+    await pref.setString(Constants.user, jsonEncode(auth.user.toJson()));
   }
 
   static Future<void> clearAuth() async {
@@ -158,7 +179,7 @@ class AuthService extends GetxService {
     await pref.remove(Constants.accessToken);
     await pref.remove(Constants.refreshToken);
     await pref.remove(Constants.user);
-    Get.toNamed(Routes.login);
+    Get.offAllNamed(Routes.login);
   }
 
   static Future<void> logout() => clearAuth();

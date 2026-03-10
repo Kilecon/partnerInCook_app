@@ -1,21 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:partner_in_cook/component/recipe_details/tag_author.dart';
 import 'package:partner_in_cook/component/widgets/circle_btn.dart';
-import 'package:partner_in_cook/data/fridge_mock.dart';
 import 'package:partner_in_cook/model/api/light_user.dart';
 
 class RecipeHeader extends StatelessWidget {
-
   final LightUser user;
   final IconData icon;
+  final Color? iconColor;
   final VoidCallback onTapAction;
   final String? imageUrl;
+  final bool canShare;
 
-  const RecipeHeader({super.key, required this.user, required this.icon, required this.onTapAction, this.imageUrl});
+  const RecipeHeader({
+    super.key,
+    required this.user,
+    required this.icon,
+    required this.onTapAction,
+    this.iconColor,
+    this.imageUrl,
+    this.canShare = true,
+  });
 
   @override
   Widget build(BuildContext context) {
-    var color = Colors.white;
 
     return SliverAppBar(
       pinned: true,
@@ -36,9 +43,14 @@ class RecipeHeader extends StatelessWidget {
                 CircleIconButton(
                   icon: Icons.arrow_back,
                   onTap: () => Navigator.of(context).pop(),
-                  color: color,
+                  color: Colors.white,
                 ),
-                CircleIconButton(icon: icon, onTap: onTapAction, color: color),
+                if (canShare)
+                  CircleIconButton(
+                    icon: icon,
+                    onTap: onTapAction,
+                    color: iconColor ?? Colors.white,
+                  ),
               ],
             ),
           ),
@@ -64,13 +76,12 @@ class RecipeHeader extends StatelessWidget {
                   bottomLeft: Radius.circular(24 * (1 - scrollRatio)),
                   bottomRight: Radius.circular(24 * (1 - scrollRatio)),
                 ),
-                child: imageUrl != null ? Image.network(
-                  imageUrl!,
-                  fit: BoxFit.cover,
-                ) : Image.network(
-                  'https://s3.mizury.fr/partnerincook/ingredient_base.jpg',
-                  fit: BoxFit.cover,
-                ),
+                child: imageUrl != null
+                    ? Image.network(imageUrl!, fit: BoxFit.cover)
+                    : Image.asset(
+                        'assets/images/my_recipes_banner.png',
+                        fit: BoxFit.cover,
+                      ),
               ),
               // Gradient sombre (disparaît progressivement)
               Container(
@@ -92,7 +103,7 @@ class RecipeHeader extends StatelessWidget {
                 bottom: 12,
                 child: Opacity(
                   opacity: 1 - scrollRatio,
-                  child: AuthorTag(author: userAlice),
+                  child: AuthorTag(author: user),
                 ),
               ),
             ],

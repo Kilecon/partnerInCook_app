@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
-import 'package:partner_in_cook/component/create_recipe/step/ingredient/ingredient_modal.dart';
-import 'package:partner_in_cook/component/create_recipe/step/utensil/utensil_modal.dart';
+import 'package:partner_in_cook/component/create_recipe/modal/utensil_modal.dart';
 import 'package:partner_in_cook/component/widgets/add_btn_list.dart';
 import 'package:partner_in_cook/component/widgets/swipe_card.dart';
 import 'package:partner_in_cook/presentation/create-recipe/controllers/create_recipe_controller.dart';
@@ -54,8 +53,8 @@ class StepUtensils extends GetView<CreateRecipeController> {
                     iconUrl: i.iconPictureUrl,
                     onDelete: () => controller.removeUtensil(index),
                     onEdit: () {
-                      controller.openAddUtensilModal();
-                      Get.dialog(const UtensilModal());
+                      controller.openEditUtensilModal(index);
+                      Get.dialog(const RecipeUtensilModal());
                     },
                   ),
                 );
@@ -67,9 +66,9 @@ class StepUtensils extends GetView<CreateRecipeController> {
             width: double.infinity,
             child: AddBtnList(
               onTap: () {
-                controller.openAddUtensilModal();
-                Get.dialog(const UtensilModal());
-              },
+              controller.openAddUtensilModal();
+              Get.dialog(const RecipeUtensilModal());
+            },
             ),
           ),
         ],

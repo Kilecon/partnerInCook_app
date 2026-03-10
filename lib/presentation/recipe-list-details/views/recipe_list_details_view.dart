@@ -15,55 +15,84 @@ class RecipeListDetailsView extends GetView<RecipeListDetailsController> {
   const RecipeListDetailsView({super.key});
   @override
   Widget build(BuildContext context) {
-    List<Widget> cards = [];
-
-    for (var recipe in controller.recipeList.value?.recipes ?? []) {
-      cards.add(
-        RecipeLargeCard(
-          recipe: recipe,
-          onTap: () => controller.onRecipeTap(recipe.id),
-        ),
-      );
-    }
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: SafeArea(
-        top: false,
-        child: CustomScrollView(
-          slivers: [
-            RecipeHeader(
-              user: controller.recipeList.value!.author,
-              icon: LucideIcons.share2,
-              onTapAction: () {},
-              imageUrl: controller.recipeList.value?.pictureUrl,
-            ), // image + appbar + auteur (sliver)
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-              sliver: SliverToBoxAdapter(
-                child: CustomLayoutBody(
-                  spacing: 20,
-                  horizontalPadding: 0,
-                  verticalPadding: 0,
-                  children: [
-                    if (controller.recipeList.value != null)
-                      RecipeListInfo(
-                        recipeList: controller.recipeList.value!,
-                        onDelete: () => controller.onDeleteRecipeList(),
-                        onEdit: () => controller.onEditRecipeList(),
+        if (controller.recipeList.value == null) {
+          return const Center(child: Text('Erreur de chargement'));
+        }
+
+        List<Widget> cards = [];
+        for (var recipe in controller.recipeList.value?.recipes ?? []) {
+          cards.add(
+            RecipeLargeCard(
+              recipe: recipe,
+              onTap: () => controller.onRecipeTap(recipe.id),
+              onDelete: () => (controller.isMyRecipes) ? controller.removeRecipe(recipe.id) : controller.removeRecipeFromList(recipe.id),
+              onAdd: () => controller.showAddPlaylist(recipe.id),
+            ),
+          );
+        }
+
+        return SafeArea(
+          top: false,
+          child: RefreshIndicator(
+            color: AppColors.primaryOrange,
+            onRefresh: () async {
+              if (controller.isMyRecipes) {
+                await controller.loadMyRecipes();
+              } else if (controller.arguments is String) {
+                await controller.loadRecipeListDetails(controller.arguments);
+              }
+            },
+            child: CustomScrollView(
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+              RecipeHeader(
+                user: controller.recipeList.value!.author,
+                icon: LucideIcons.share2,
+                onTapAction: () => controller.onShareTap(),
+                imageUrl: controller.recipeList.value?.pictureUrl,
+                canShare: controller.qrImage != null && !controller.recipeList.value!.isFavorite && !controller.isMyRecipes,
+              ), // image + appbar + auteur (sliver)
+
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 16,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: CustomLayoutBody(
+                    spacing: 20,
+                    horizontalPadding: 0,
+                    verticalPadding: 0,
+                    children: [
+                      if (controller.recipeList.value != null)
+                        RecipeListInfo(
+                          recipeList: controller.recipeList.value!,
+                          onDelete: () => controller.onDeleteRecipeList(),
+                          onEdit: () => controller.onEditRecipeList(),
+                          isMyRecipes: controller.isMyRecipes,
+                          isFavorite: controller.recipeList.value!.isFavorite,
+                          isMyPlaylist: controller.isMyPlaylist,
+                        ),
+                      CardList(
+                        cards: cards,
+                        icon: LucideIcons.chefHat,
+                        emptyString: "Aucune recette",
                       ),
-                    CardList(
-                      cards: cards,
-                      icon: LucideIcons.chefHat,
-                      emptyString: "Aucune recette",
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        ));
+      }),
     );
   }
 }

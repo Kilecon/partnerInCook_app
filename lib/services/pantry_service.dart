@@ -1,23 +1,18 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:partner_in_cook/core/network/api_client.dart';
 import 'package:partner_in_cook/exceptions/api_exception.dart';
 import 'package:partner_in_cook/exceptions/exception_handler.dart';
 import 'package:partner_in_cook/model/api/pantry.dart';
 
 class PantryService {
-  final ApiClient _apiClient = ApiClient();
+  final ApiClient _api = Get.find<ApiClient>();
 
   /// Joindre un pantry existant via son ID
   Future<void> joined(String recipeListId) async {
     try {
-      final response = await _apiClient.post(
-        '/api/pantry/join/$recipeListId',
-      );
-
-      // Ici, si l'API renvoie un payload, tu peux le parser :
-      // final data = response.data as Map<String, dynamic>;
-
+      await _api.post('/Pantry/join/$recipeListId');
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -27,12 +22,13 @@ class PantryService {
   }
 
   /// Récupérer tous les pantries
-  Future<List<dynamic>> getAll() async {
+  Future<List<Pantry>> getAllOwned() async {
     try {
-      final response = await _apiClient.get('/api/pantry');
-
-      // Retourne la liste brute ou convertie en model
-      return response.data as List<dynamic>;
+      final response = await _api.get('/Pantry/owned');
+      final dataList = response.data['data'] as List<dynamic>;
+      return dataList
+          .map((data) => Pantry.fromJson(data as Map<String, dynamic>))
+          .toList();
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -41,10 +37,25 @@ class PantryService {
     }
   }
 
-    Future<Pantry> getById(String id) async {
+  Future<List<Pantry>> getAllJoined() async {
     try {
-      final response = await _apiClient.get('/api/recipe-list/$id');
-      return response.data;
+      final response = await _api.get('/Pantry/joined');
+      final dataList = response.data['data'] as List<dynamic>;
+      return dataList
+          .map((data) => Pantry.fromJson(data as Map<String, dynamic>))
+          .toList();
+    } on DioException catch (e) {
+      final error = handleDioException(e);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
+    }
+  }
+
+  Future<Pantry> getById(String id) async {
+    try {
+      final response = await _api.get('/Pantry/$id');
+      return Pantry.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -54,12 +65,11 @@ class PantryService {
   }
 
   /// Créer un nouveau pantry
-  Future<void> create(Map<String, dynamic> body) async {
+  Future<Pantry> create(Map<String, dynamic> body) async {
     try {
-      await _apiClient.post(
-        '/api/pantry',
-        data: json.encode(body),
-      );
+      final response = await _api.post('/Pantry', data: json.encode(body));
+
+      return Pantry.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -70,9 +80,7 @@ class PantryService {
 
   Future<void> leave(String pantryId) async {
     try {
-      await _apiClient.post(
-        '/api/pantry/leave/$pantryId',
-      );
+      await _api.post('/Pantry/leave/$pantryId');
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);

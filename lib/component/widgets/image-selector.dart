@@ -40,7 +40,6 @@ class _ImageSelectorState extends State<ImageSelector> {
     if (image != null) {
       setState(() {
         _selectedImage = image.path;
-        print('Image selected: $_selectedImage');
         widget.onImageSelect(image);
       });
     }

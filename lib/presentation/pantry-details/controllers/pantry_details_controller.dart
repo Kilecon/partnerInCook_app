@@ -1,14 +1,15 @@
 import 'package:get/get.dart';
-import 'package:partner_in_cook/component/pantry_details/pantry_share_dialog.dart';
+import 'package:partner_in_cook/component/widgets/qr_share_dialog.dart';
 import 'package:partner_in_cook/model/api/pantry.dart';
 import 'package:partner_in_cook/services/pantry_service.dart';
+import 'package:partner_in_cook/utils/qr_code.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
 class PantryDetailsController extends GetxController {
   final pantryApi = Get.find<PantryService>();
 
   late final String pantryId;
-  late Pantry? pantry;
+  var pantry = Rx<Pantry?>(null);
 
   QrImage? qrImage;
   String? fullInvitationLink;
@@ -18,37 +19,37 @@ class PantryDetailsController extends GetxController {
   void onInit() {
     super.onInit();
     pantryId = Get.arguments['id']!;
-    _loadPantry();
+    loadPantry();
   }
 
-  Future<void> _loadPantry() async {
+  Future<void> loadPantry() async {
     try {
-      pantry = await pantryApi.getById(pantryId);
-      _generateQrCode();
+      final details = await pantryApi.getById(pantryId);
+      pantry.value = details;
+      try {
+        fullInvitationLink = 'partnerincook://pantry/join/$pantryId';
+        qrImage = generateQrCode(fullInvitationLink!);
+      } catch (e) {
+        print("QR Code Error: $e");
+      }
     } catch (e) {
-      pantry = null;
-      fullInvitationLink = null;
-      Get.snackbar(
-        'Erreur',
-        'Impossible de charger le garde-manger.\nVérifiez votre connexion.',
-        snackPosition: SnackPosition.BOTTOM,
-      );
+      pantry.value = null;
     } finally {
       isLoading.value = false;
       update();
     }
   }
 
-  void _generateQrCode() {
-    fullInvitationLink = 'partnerincook://pantry/join/$pantryId';
-
-    final qrCode = QrCode(5, QrErrorCorrectLevel.H)
-      ..addData(fullInvitationLink!);
-
-    qrImage = QrImage(qrCode);
-  }
-
   void onShareTap() {
-    Get.dialog(const PantryShareDialog());
+    if (fullInvitationLink == null) return;
+
+    Get.dialog(
+      QrShareDialog(
+        title: 'Partager mon garde-manger',
+        description:
+            'Invitez vos amis en scannant ce code ou en copiant le lien ci-dessous.',
+        data: fullInvitationLink!,
+      ),
+    );
   }
 }

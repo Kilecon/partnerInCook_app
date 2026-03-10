@@ -42,7 +42,7 @@ class StepSteps extends GetView<CreateRecipeController> {
                 final s = steps[index];
 
                 return Dismissible(
-                  key: ValueKey(s.id),
+                  key: ValueKey('step_$index'),
                   direction: DismissDirection.endToStart,
                   background: Container(
                     alignment: Alignment.centerRight,
@@ -51,10 +51,7 @@ class StepSteps extends GetView<CreateRecipeController> {
                     child: const Icon(Icons.delete, color: Colors.white),
                   ),
                   onDismissed: (_) {
-                    final idx = controller.form.value.steps.indexWhere(
-                      (e) => e.id == s.id,
-                    );
-                    if (idx != -1) controller.removeStep(idx);
+                    controller.removeStep(index);
                   },
                   child: Container(
                     // important: ensure the item has intrinsic width and height

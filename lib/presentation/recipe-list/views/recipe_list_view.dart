@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 import 'package:partner_in_cook/component/fridge/card_list.dart';
 import 'package:partner_in_cook/component/recipe-list/image_cover_card.dart';
@@ -16,30 +17,6 @@ class RecipeListView extends GetView<RecipeListController> {
   const RecipeListView({super.key});
   @override
   Widget build(BuildContext context) {
-    List<Widget> cards = [];
-
-    cards.add(ImageCoverCard(
-      title: 'Mes recettes',
-      imageUrl: "assets/images/my_recipes_banner.png",
-      onTap: () => controller.onMyRecipesTap(),
-    ));
-
-    for (var recipeList in controller.recipeList) {
-      if (recipeList.isFavorite) {
-        cards.add(ImageCoverCard(
-          title: 'Favoris',
-          imageUrl: "assets/images/favorites_banner.png",
-          onTap: () => controller.onRecipeListTap(recipeList.id),
-        ));
-      }
-      cards.add(
-        RecipeListCard(
-          recipeList: recipeList,
-          onTap: () => controller.onRecipeListTap(recipeList.id),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: const CustomAppBar(),
       body: Container(
@@ -55,21 +32,63 @@ class RecipeListView extends GetView<RecipeListController> {
             ),
 
             Expanded(
-              child: CustomLayout(
-                verticalPadding: 20,
-                children: [
-                  CardList(
-                    icon: Icons.list_alt,
-                    cards: cards,
-                    emptyString: "Aucune liste de recettes disponible",
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+
+                List<Widget> cards = [];
+
+                cards.add(
+                  ImageCoverCard(
+                    title: 'Mes recettes',
+                    imageUrl: "assets/images/my_recipes_banner.png",
+                    onTap: () => controller.onMyRecipesTap(),
                   ),
-                ],
-              ),
+                );
+
+                for (var recipeList in controller.recipeList) {
+                  if (recipeList.isFavorite) {
+                    cards.add(
+                      ImageCoverCard(
+                        title: 'Favoris',
+                        imageUrl: "assets/images/favorites_banner.png",
+                        onTap: () => controller.onRecipeListTap(recipeList.id),
+                      ),
+                    );
+                    continue;
+                  }
+                  cards.add(
+                    RecipeListCard(
+                      recipeList: recipeList,
+                      onTap: () => controller.onRecipeListTap(recipeList.id),
+                    ),
+                  );
+                }
+
+                return RefreshIndicator(
+                  color: AppColors.primaryOrange,
+                  onRefresh: controller.loadRecipeList,
+                  child: CustomLayout(
+                    verticalPadding: 20,
+                    children: [
+                      CardList(
+                        icon: Icons.list_alt,
+                        cards: cards,
+                        emptyString: "Aucune liste de recettes disponible",
+                      ),
+                    ],
+                  ),
+                );
+              }),
             ),
           ],
         ),
       ),
-      floatingActionButton: AddBtn(onTap: () => controller.showCreateOptions()),
+      floatingActionButton: CustomFloatingBtn(
+        icon: LucideIcons.plus,
+        onTap: () => controller.showCreateOptions(),
+      ),
     );
   }
 }

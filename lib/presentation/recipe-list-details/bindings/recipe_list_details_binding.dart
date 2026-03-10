@@ -8,5 +8,6 @@ class RecipeListDetailsBinding extends Bindings {
     Get.lazyPut<RecipeListDetailsController>(
       () => RecipeListDetailsController(),
     );
+    
   }
 }

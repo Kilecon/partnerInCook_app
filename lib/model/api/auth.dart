@@ -11,12 +11,12 @@ class AuthRes {
     return AuthRes(
       user: User.fromJson(json['user'] as Map<String, dynamic>),
       token: json['token'] as String,
-      refreshToken: json['refreshToken'] as String,
+      refreshToken: json['refresh_token'] as String,
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'user': user.toJson(), 'token': token, 'refreshToken': refreshToken};
+    return {'user': user.toJson(), 'token': token, 'refresh_token': refreshToken};
   }
 }
 
@@ -54,7 +54,7 @@ class AuthRegister {
       email: json['email'] as String,
       password: json['password'] as String,
       username: json['username'] as String,
-      picUrl: json['picUrl'] as String?,
+      picUrl: json['pic_url'] as String?,
     );
   }
 
@@ -63,7 +63,7 @@ class AuthRegister {
       'email': email,
       'password': password,
       'username': username,
-      'picUrl': picUrl,
+      'pic_url': picUrl,
     };
   }
 }

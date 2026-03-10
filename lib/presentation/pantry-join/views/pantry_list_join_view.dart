@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:partner_in_cook/common/config/constants/app_colors.dart';
 
 import '../controllers/pantry_join_controller.dart';
 
@@ -12,7 +13,7 @@ class PantryJoinView extends GetView<PantryJoinController> {
       body: Center(
         child: Obx(() {
           if (controller.isLoading.value) {
-            return const CircularProgressIndicator();
+            return const CircularProgressIndicator( color: AppColors.primaryOrange,);
           }
 
           if (controller.error.value != null) {
