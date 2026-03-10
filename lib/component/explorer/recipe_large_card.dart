@@ -149,7 +149,7 @@ class _RecipeLargeCardState extends State<RecipeLargeCard> {
                             const Icon(LucideIcons.timer, size: 14, color: Colors.grey),
                             const SizedBox(width: 4),
                             Text(
-                              '${widget.recipe.globalTime ?? 0} min',
+                              '${widget.recipe.globalTime! ~/ 60}h${widget.recipe.globalTime! % 60} min',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],

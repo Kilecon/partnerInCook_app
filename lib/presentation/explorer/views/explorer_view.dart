@@ -86,6 +86,7 @@ class ExplorerView extends GetView<ExplorerController> {
                   cards = filtered.map((recipe) {
                     return RecipeLargeCard(
                       recipe: recipe,
+                      onAdd: () => controller.showAddPlaylist(recipe.id),
                       onTap: () => controller.onRecipeTap(recipe.id),
                     );
                   }).toList();

@@ -31,7 +31,7 @@ class LightRecipe {
       globalTime: json['global_time'] as int?,
       isFavorite: json['is_favorite'] as bool? ?? false,
       pictureUrl: json['pic_url'] as String?,
-      author: LightUser.fromJson(json['author']),
+      author: json['author'] != null ? LightUser.fromJson(json['author']) : LightUser(id: '', username: "inconnu"),
       notationsCount: json['notation_count'] as int,
       averageNotation: (json['average_notation'] as num).toDouble(),
       tags: (json['tags'] as List<dynamic>?)

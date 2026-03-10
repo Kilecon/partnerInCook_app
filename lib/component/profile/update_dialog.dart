@@ -45,59 +45,107 @@ class _EditProfileDialogState extends State<EditProfileDialog> {
       footer: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          TextButton(onPressed: () => Get.back(), child: const Text('Annuler')),
+          TextButton(
+            style: TextButton.styleFrom(foregroundColor: AppColors.black),
+            onPressed: () => Get.back(),
+            child: const Text('Annuler'),
+          ),
           const SizedBox(width: 8),
-          ElevatedButton(
-            onPressed: _isLoading ? null : () => _handleUpdate(),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryOrange,
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: AppColors.primaryOrange,
             ),
+            onPressed: _isLoading ? null : () => _handleUpdate(),
             child: _isLoading
                 ? const SizedBox(
                     width: 20,
                     height: 20,
                     child: CircularProgressIndicator(
-                      color: Colors.white,
+                      color: AppColors.primaryOrange,
                       strokeWidth: 2,
                     ),
                   )
-                : const Text(
-                    'Enregistrer',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                : const Text('Enregistrer'),
           ),
         ],
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          ImageSelector(
-            title: "Changer la photo",
-            width: 120,
-            height: 120,
-            onImageSelect: (XFile? image) {
-              if (image != null) {
-                setState(() => _newImage = File(image.path));
-              }
-            },
+      child: Theme(
+        data: Theme.of(context).copyWith(
+          textSelectionTheme: TextSelectionThemeData(
+            cursorColor: AppColors.primaryOrange,
+            selectionColor: AppColors.primaryOrange.withOpacity(0.25),
+            selectionHandleColor: AppColors.primaryOrange,
           ),
-          const SizedBox(height: 20),
-          TextFormField(
-            controller: _usernameController,
-            decoration: const InputDecoration(
-              labelText: 'Nom d\'utilisateur',
-              border: OutlineInputBorder(),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ImageSelector(
+              title: "Changer la photo",
+              width: 120,
+              height: 120,
+              onImageSelect: (XFile? image) {
+                if (image != null) {
+                  setState(() => _newImage = File(image.path));
+                }
+              },
             ),
-          ),
-          const SizedBox(height: 16),
-          TextFormField(
-            controller: _emailController,
-            decoration: const InputDecoration(
-              labelText: 'Email',
-              border: OutlineInputBorder(),
+            const SizedBox(height: 20),
+            TextFormField(
+              controller: _usernameController,
+              style: TextStyle(color: AppColors.black),
+              decoration: InputDecoration(
+                labelText: 'Nom d\'utilisateur',
+                labelStyle: TextStyle(color: AppColors.black.withOpacity(0.45)),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: AppColors.primaryOrange.withOpacity(0.18),
+                    width: 1,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: AppColors.primaryOrange,
+                    width: 1.5,
+                  ),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 16),
+            TextFormField(
+              controller: _emailController,
+              style: TextStyle(color: AppColors.black),
+              decoration: InputDecoration(
+                labelText: 'Email',
+                labelStyle: TextStyle(color: AppColors.black.withOpacity(0.45)),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: AppColors.primaryOrange.withOpacity(0.18),
+                    width: 1,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide(
+                    color: AppColors.primaryOrange,
+                    width: 1.5,
+                  ),
+                ),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 10,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

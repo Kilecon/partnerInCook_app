@@ -31,7 +31,7 @@ class RecipeList {
       name: json['name'] as String,
       description: json['description'] as String?,
       visibilityState: visibilityStateFromJson(json['state'] as String), 
-      author: LightUser.fromJson(json['author']),
+      author: json['author'] != null ? LightUser.fromJson(json['author']) : LightUser(id: '', username: "inconnu"),
       recipes: (json['recipes'] as List<dynamic>)
           .map((e) => LightRecipe.fromJson(e))
           .toList(),
