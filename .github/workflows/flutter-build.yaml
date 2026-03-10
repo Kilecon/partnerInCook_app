@@ -29,8 +29,27 @@ jobs:
         run: flutter build apk --release
 
       - name: Create Release
+        id: create_release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             build/app/outputs/bundle/release/app-release.aab
             build/app/outputs/flutter-apk/app-release.apk
+
+      - name: 🔔 Discord Success
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST -d '{
+              "content": "📱 **PartnerInCook** : New version available! [Télécharger ici](${{ steps.create_release.outputs.url }})",
+              "username": "GitHub Actions"
+            }' ${{ secrets.DISCORD_WEBHOOK }}
+
+      - name: 🚨 Discord Failure
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+            -X POST -d '{
+              "content": "❌ **PartnerInCook** : Failed to build new version ${{ github.sha }}",
+              "username": "GitHub Actions"
+            }' ${{ secrets.DISCORD_WEBHOOK }}
