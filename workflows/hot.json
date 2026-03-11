@@ -1,0 +1,32 @@
+{
+  "MongoDB": {
+    "ConnectionString": "mongodb://admin:MesCouillesFontDuSki1@kilecon.org:27017/",
+    "DatabaseName": "YourDatabase"
+  },
+  "RabbitMQ": {
+    "HostName": "kilecon.org",
+    "UserName": "user",
+    "Password": "bitnami",
+    "Port": 5672
+  },
+  "Logging": {
+    "Serilog": {
+        "MinimumLevel": "Information",
+        "WriteTo": [
+          {
+            "Name": "Console"
+          },
+          {
+            "Name": "Loki",
+            "Args": {
+              "uri": "http://kilecon.org:3100/loki/api/v1/push",
+              "batchPostingLimit": 1000,
+              "period": "00:00:02",
+              "labels": "{job=\"ocazbike_da\"}"
+            }
+          }
+        ],
+        "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ]
+      }
+    }
+  }
