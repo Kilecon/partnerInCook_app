@@ -28,7 +28,8 @@ class CreateRecipeController extends GetxController {
   final RecipeService _recipeService = RecipeService();
   final UploadService _uploadService = UploadService();
   final StepService _stepService = StepService();
-  final RecipeIngredientService _recipeIngredientService = RecipeIngredientService();
+  final RecipeIngredientService _recipeIngredientService =
+      RecipeIngredientService();
 
   // --- Observables (Données de l'API) ---
   final ingredientsLibrary = <Ingredient>[].obs;
@@ -83,14 +84,17 @@ class CreateRecipeController extends GetxController {
   // --- Navigation ---
   Future<void> next() async {
     if (!validate()) {
-      final errs = errors.entries.map((e) => FieldError(e.key, e.value)).toList();
+      final errs = errors.entries
+          .map((e) => FieldError(e.key, e.value))
+          .toList();
       Get.dialog(ErrorsModal(errors: errs));
       return;
     }
     if (currentStep.value == CreateRecipeStepPage.steps) {
       await createRecipe();
     } else {
-      currentStep.value = CreateRecipeStepPage.values[currentStep.value.index + 1];
+      currentStep.value =
+          CreateRecipeStepPage.values[currentStep.value.index + 1];
     }
   }
 
@@ -98,7 +102,8 @@ class CreateRecipeController extends GetxController {
     if (currentStep.value.index == 0) {
       Get.back();
     } else {
-      currentStep.value = CreateRecipeStepPage.values[currentStep.value.index - 1];
+      currentStep.value =
+          CreateRecipeStepPage.values[currentStep.value.index - 1];
     }
   }
 
@@ -141,7 +146,9 @@ class CreateRecipeController extends GetxController {
           quantity: qty,
         );
       } else {
-        f!.ingredients.add(CreateRecipeIngredient(ingredient: ingredient, quantity: qty));
+        f!.ingredients.add(
+          CreateRecipeIngredient(ingredient: ingredient, quantity: qty),
+        );
       }
     });
     Get.back();
@@ -206,11 +213,13 @@ class CreateRecipeController extends GetxController {
           recipeId: '', // Sera mis à jour à la création
         );
       } else {
-        f!.steps.add(StepCreateRequest(
-          description: desc,
-          order: f.steps.length + 1,
-          recipeId: '',
-        ));
+        f!.steps.add(
+          StepCreateRequest(
+            description: desc,
+            order: f.steps.length + 1,
+            recipeId: '',
+          ),
+        );
       }
     });
     Get.back();
@@ -258,10 +267,12 @@ class CreateRecipeController extends GetxController {
         }
         break;
       case CreateRecipeStepPage.ingredients:
-        if (form.value.ingredients.isEmpty) errors['ingredients'] = 'Ajoutez un ingrédient';
+        if (form.value.ingredients.isEmpty)
+          errors['ingredients'] = 'Ajoutez un ingrédient';
         break;
       case CreateRecipeStepPage.utensils:
-        if (form.value.utensils.isEmpty) errors['utensils'] = 'Ajoutez un ustensile';
+        if (form.value.utensils.isEmpty)
+          errors['utensils'] = 'Ajoutez un ustensile';
         break;
       case CreateRecipeStepPage.steps:
         if (form.value.steps.isEmpty) errors['steps'] = 'Ajoutez une étape';
@@ -274,7 +285,7 @@ class CreateRecipeController extends GetxController {
   Future<void> createRecipe() async {
     if (!validate()) return;
 
-    // try {
+    try {
       isLoading.value = true;
 
       // 1. Upload de l'image
@@ -289,21 +300,29 @@ class CreateRecipeController extends GetxController {
 
       // 3. Création des ingrédients liés
       if (form.value.ingredients.isNotEmpty) {
-        final ingredientsDto = form.value.ingredients.map((i) => RecipeIngredientCreateRequest(
-          ingredientId: i.ingredient.id,
-          quantity: i.quantity,
-          recipeId: recipe.id,
-        )).toList();
+        final ingredientsDto = form.value.ingredients
+            .map(
+              (i) => RecipeIngredientCreateRequest(
+                ingredientId: i.ingredient.id,
+                quantity: i.quantity,
+                recipeId: recipe.id,
+              ),
+            )
+            .toList();
         await _recipeIngredientService.create(ingredientsDto);
       }
 
       // 4. Création des étapes
       if (form.value.steps.isNotEmpty) {
-        final stepsDto = form.value.steps.map((s) => StepCreateRequest(
-          description: s.description,
-          order: s.order,
-          recipeId: recipe.id,
-        )).toList();
+        final stepsDto = form.value.steps
+            .map(
+              (s) => StepCreateRequest(
+                description: s.description,
+                order: s.order,
+                recipeId: recipe.id,
+              ),
+            )
+            .toList();
         await _stepService.create(stepsDto);
       }
 
@@ -311,13 +330,12 @@ class CreateRecipeController extends GetxController {
       Get.find<RecipeListController>().loadRecipeList();
       Get.back();
       Get.snackbar('Succès', 'Recette créée avec succès !');
-
-    // } catch (e) {
-    //   Get.snackbar('Erreur', 'Impossible de créer la recette');
-    //   print('Erreur création recette: $e');
-    // } finally {
-    //   isLoading.value = false;
-    // }
+    } catch (e) {
+      Get.snackbar('Erreur', 'Impossible de créer la recette');
+      print('Erreur création recette: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   @override
