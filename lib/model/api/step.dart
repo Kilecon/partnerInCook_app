@@ -31,11 +31,13 @@ class Step {
 }
 
 class StepCreateRequest {
+  String? id; // ID de l'étape (peut être null pour les nouvelles étapes)
   final String description;
   final int order;
   final String recipeId;
 
   StepCreateRequest({
+      String? id,
     required this.description,
     required this.order,
     required this.recipeId,

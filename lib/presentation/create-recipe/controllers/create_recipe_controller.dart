@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Step;
 import 'package:get/get.dart';
 import 'package:partner_in_cook/model/api/ingredient.dart';
+import 'package:partner_in_cook/model/api/recipe.dart';
 import 'package:partner_in_cook/model/api/recipe_ingredient.dart';
 import 'package:partner_in_cook/model/api/step.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
@@ -21,6 +22,11 @@ import 'package:partner_in_cook/presentation/recipe-list/controllers/recipe_list
 enum CreateRecipeStepPage { mainInfo, ingredients, utensils, steps }
 
 class CreateRecipeController extends GetxController {
+  final RxnString recipeId = RxnString();
+  List<RecipeIngredient> originalIngredients = [];
+  List<Step> originalSteps = [];
+  bool get isEditMode => recipeId.value != null;
+
   // --- Services ---
   final IngredientService _ingredientService = IngredientService();
   final UtensilService _utensilService = UtensilService();
@@ -59,7 +65,25 @@ class CreateRecipeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    if (Get.arguments != null && Get.arguments is String) {
+      recipeId.value = Get.arguments as String;
+      _loadRecipeForEdit(recipeId.value!);
+    }
     _loadLibraries();
+  }
+
+  Future<void> _loadRecipeForEdit(String id) async {
+    isLoading.value = true;
+    try {
+      final recipe = await _recipeService.getById(id);
+      originalIngredients = [...recipe.recipeIngredients];
+      originalSteps = [...recipe.steps];
+      form.value = CreateRecipeForm.fromRecipe(recipe);
+    } catch (e) {
+      Get.snackbar("Erreur", "Impossible de charger la recette à éditer");
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   // --- Chargement des données nécessaires ---
@@ -91,7 +115,7 @@ class CreateRecipeController extends GetxController {
       return;
     }
     if (currentStep.value == CreateRecipeStepPage.steps) {
-      await createRecipe();
+      await handleSaveRecipe();
     } else {
       currentStep.value =
           CreateRecipeStepPage.values[currentStep.value.index + 1];
@@ -282,19 +306,33 @@ class CreateRecipeController extends GetxController {
   }
 
   // --- CRÉATION FINALE API ---
-  Future<void> createRecipe() async {
+  Future<void> handleSaveRecipe() async {
     if (!validate()) return;
 
     try {
       isLoading.value = true;
 
-      // 1. Upload de l'image
       if (form.value.image != null) {
         final imageUrl = await _uploadService.uploadImage(form.value.image!);
         form.update((val) => val?.imageUrl = imageUrl);
       }
       print('Image uploadée: ${form.value.imageUrl}');
-      // 2. Création de la Recette (Corps principal + IDs tags/ustensiles)
+
+      if (isEditMode) {
+        await _recipeService.updateRecipeFull(
+          recipeId.value!,
+          form.value,
+          originalIngredients,
+          originalSteps,
+        );
+        print('Recette mise à jour avec ID: ${recipeId.value}');
+
+        Get.find<RecipeListController>().loadRecipeList();
+        Get.back();
+        Get.snackbar('Succès', 'Recette mise à jour avec succès !');
+        return;
+      }
+
       final recipe = await _recipeService.create(form.value);
       print('Recette créée avec ID: ${recipe.id}');
 

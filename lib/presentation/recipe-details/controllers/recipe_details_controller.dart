@@ -3,12 +3,15 @@ import 'package:partner_in_cook/component/recipe_details/rating_dialog.dart';
 import 'package:partner_in_cook/core/auth/auth_service.dart';
 import 'package:partner_in_cook/model/api/notation.dart';
 import 'package:partner_in_cook/model/api/recipe.dart';
+import 'package:partner_in_cook/model/api/user.dart';
 import 'package:partner_in_cook/presentation/explorer/controllers/explorer_controller.dart';
 import 'package:partner_in_cook/presentation/recipe-list-details/controllers/recipe_list_details_controller.dart';
 import 'package:partner_in_cook/services/notation_service.dart';
 import 'package:partner_in_cook/services/recipe_service.dart';
 
 class RecipeDetailsController extends GetxController {
+  final AuthService _authService = Get.find<AuthService>();
+
   var recipe = Rx<Recipe?>(null);
   final recipeApi = RecipeService();
   final notationApi = NotationService();
@@ -16,6 +19,8 @@ class RecipeDetailsController extends GetxController {
   final dynamic arguments = Get.arguments;
   var isLoading = true.obs;
 
+  Rx<User?> get user => _authService.user;
+  late final bool isMine;
   @override
   void onInit() {
     super.onInit();
@@ -29,6 +34,8 @@ class RecipeDetailsController extends GetxController {
       isLoading.value = true;
       final details = await recipeApi.getById(id);
       recipe.value = details;
+      isMine = recipe.value!.author.id == _authService.user.value?.userId;
+
     } catch (e) {
       print("Error loading recipe details: $e");
       recipe.value = null;
@@ -45,9 +52,8 @@ class RecipeDetailsController extends GetxController {
       await recipeApi.toggleFavorite(recipe.value!.id, newFavoriteStatus);
 
       recipe.value!.isFavorite = newFavoriteStatus;
-      recipe.refresh(); // <-- Indispensable pour rafraîchir la vue avec GetX
+      recipe.refresh(); 
 
-      // Mettre à jour la liste des recettes en arrière-plan si le contrôleur existe
       if (Get.isRegistered<RecipeListDetailsController>()) {
         final listCtrl = Get.find<RecipeListDetailsController>();
         if (listCtrl.isMyRecipes) {
@@ -64,6 +70,16 @@ class RecipeDetailsController extends GetxController {
     } catch (e) {
       print("Error toggling favorite: $e");
     }
+  }
+
+
+  Future<void> editRecipe() async {
+    if (recipe.value == null) return;
+
+    if (recipe.value!.author.id == await AuthService.getUserId()) {
+      Get.toNamed('/create-recipe', arguments: recipe.value!.id);
+    }
+    return;
   }
 
   Future<void> addNotation(int rating, String notationId) async {

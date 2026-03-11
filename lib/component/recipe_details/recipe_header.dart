@@ -8,6 +8,7 @@ class RecipeHeader extends StatelessWidget {
   final IconData icon;
   final Color? iconColor;
   final VoidCallback onTapAction;
+  final VoidCallback? onTapEdit;
   final String? imageUrl;
   final bool canShare;
 
@@ -16,6 +17,7 @@ class RecipeHeader extends StatelessWidget {
     required this.user,
     required this.icon,
     required this.onTapAction,
+    this.onTapEdit,
     this.iconColor,
     this.imageUrl,
     this.canShare = true,
@@ -23,7 +25,6 @@ class RecipeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return SliverAppBar(
       pinned: true,
       expandedHeight: 260,
@@ -45,12 +46,23 @@ class RecipeHeader extends StatelessWidget {
                   onTap: () => Navigator.of(context).pop(),
                   color: Colors.white,
                 ),
-                if (canShare)
-                  CircleIconButton(
-                    icon: icon,
-                    onTap: onTapAction,
-                    color: iconColor ?? Colors.white,
-                  ),
+                Row(
+                  spacing: 5,
+                  children: [
+                    if (onTapEdit != null)
+                      CircleIconButton(
+                        icon: Icons.edit,
+                        onTap: onTapEdit!,
+                        color: Colors.white,
+                      ),
+                    if (canShare)
+                      CircleIconButton(
+                        icon: icon,
+                        onTap: onTapAction,
+                        color: iconColor ?? Colors.white,
+                      ),
+                  ],
+                ),
               ],
             ),
           ),

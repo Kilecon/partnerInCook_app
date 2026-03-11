@@ -76,6 +76,7 @@ class RecipeDetailsView extends GetView<RecipeDetailsController> {
                     : Icons.favorite_border,
                 iconColor: recipe.isFavorite ? Colors.red : Colors.white,
                 onTapAction: () => controller.toggleFavorite(),
+                onTapEdit:  controller.isMine ? (() => controller.editRecipe()) : null,
                 imageUrl: recipe.pictureUrl,
               ),
               SliverToBoxAdapter(

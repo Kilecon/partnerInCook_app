@@ -12,7 +12,6 @@ import 'package:partner_in_cook/component/explorer/tag_list.dart';
 import 'package:partner_in_cook/component/widgets/custom_input.dart';
 import 'package:partner_in_cook/component/widgets/custom_select.dart';
 import 'package:partner_in_cook/component/widgets/image-selector.dart';
-import '';
 import 'package:partner_in_cook/presentation/create-recipe/controllers/create_recipe_controller.dart';
 
 class StepMainInfo extends GetView<CreateRecipeController> {
@@ -23,6 +22,9 @@ class StepMainInfo extends GetView<CreateRecipeController> {
     return Obx(() {
       // Forcer la lecture de la map observable
       final errors = controller.errors.value;
+
+      final nameController = TextEditingController(text: controller.form.value.name);
+      final descriptionController = TextEditingController(text: controller.form.value.description);
 
       return Column(
         spacing: 10,
@@ -59,6 +61,7 @@ class StepMainInfo extends GetView<CreateRecipeController> {
             title: 'Nom',
             hintText: 'Nom de la recette',
             initialValue: controller.form.value.name,
+            controller: nameController,
             onChanged: (v) => controller.form.value.name = v,
             validator: (_) => errors['name'],
           ),
@@ -68,6 +71,7 @@ class StepMainInfo extends GetView<CreateRecipeController> {
             title: 'Description',
             hintText: 'Description',
             initialValue: controller.form.value.description,
+            controller: descriptionController,
             onChanged: (v) => controller.form.value.description = v,
           ),
 
