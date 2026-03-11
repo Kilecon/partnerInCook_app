@@ -57,3 +57,44 @@ class RecipeList {
     };
   }
 }
+
+
+class RecipeListUpdateRequest {
+  final String? name;
+  final String? description;
+  final VisibilityStateEnum visibilityState;
+  final bool isFavorite;
+  final String? authorId;
+  String? pictureUrl;
+
+  RecipeListUpdateRequest({
+    required this.name,
+    required this.description,
+    required this.visibilityState,
+    required this.authorId,
+    required this.pictureUrl,
+    required this.isFavorite,
+  });
+
+  factory RecipeListUpdateRequest.fromJson(Map<String, dynamic> json) {
+    return RecipeListUpdateRequest(
+      name: json['name'] as String?,
+      description: json['description'] as String?,
+      visibilityState: visibilityStateFromJson(json['state'] as String), 
+      authorId: json['author_id'] as String?,
+      pictureUrl: json['pic_url'] as String?,
+      isFavorite: json['is_favorite'] as bool? ?? false,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'description': description,
+      'state': visibilityStateToJson(visibilityState),
+      'author_id': authorId,
+      'is_favorite': isFavorite,
+      'pic_url': pictureUrl,
+    };
+  }
+}

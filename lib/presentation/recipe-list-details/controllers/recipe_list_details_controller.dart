@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -11,6 +13,8 @@ import 'package:partner_in_cook/presentation/recipe-list/controllers/recipe_list
 import 'package:partner_in_cook/routes/app_pages.dart';
 import 'package:partner_in_cook/services/recipe_list_service.dart';
 import 'package:partner_in_cook/services/recipe_service.dart';
+import 'package:partner_in_cook/services/upload_service.dart';
+import 'package:partner_in_cook/component/recipe-list-detail/edit_recipe_list_dialog.dart';
 import 'package:partner_in_cook/utils/qr_code.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 
@@ -24,6 +28,7 @@ class RecipeListDetailsController extends GetxController {
   var isRecipeListLoading = false.obs;
   final recipeListApi = RecipeListService();
   final recipeApi = RecipeService();
+  final UploadService _uploadService = UploadService();
   QrImage? qrImage;
 
   // 1. Ajouter une variable pour stocker l'ID de l'utilisateur courant
@@ -147,13 +152,52 @@ class RecipeListDetailsController extends GetxController {
     );
   }
 
-  void onEditRecipeList() {
-    // Logique pour modifier la liste de recettes
-    Get.snackbar(
-      'Info',
-      'Édition de la liste à implémenter',
-      snackPosition: SnackPosition.BOTTOM,
+  void openEditDialog() {
+    final currentList = recipeList.value;
+    if (currentList == null) return;
+
+    Get.dialog(
+      EditRecipeListDialog(
+        recipeList: currentList,
+        onConfirm: (updateData, newImage) {
+          // On appelle la méthode de mise à jour avec le bon type
+          onUpdateRecipeList(currentList.id, updateData, newImage);
+        },
+      ),
     );
+  }
+
+  Future<void> onUpdateRecipeList(
+    String listId,
+    RecipeListUpdateRequest updateData,
+    File? newImage,
+  ) async {
+    try {
+      isLoading.value = true;
+
+      // Si une nouvelle image est fournie, on l'upload
+      if (newImage != null) {
+        final picUrl = await _uploadService.uploadImage(newImage);
+        updateData.pictureUrl = picUrl;
+      }
+
+      await recipeListApi.update(listId, updateData);
+
+      // Rechargement
+      await loadRecipeListDetails(listId);
+      await loadRecipeLists();
+
+      Get.back();
+    } catch (e) {
+      Get.snackbar(
+        'Erreur',
+        'Impossible de mettre à jour',
+        backgroundColor: Colors.red.withOpacity(0.9),
+        colorText: Colors.white,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   void onShareTap() {
@@ -292,8 +336,6 @@ class RecipeListDetailsController extends GetxController {
       isRecipeListLoading.value = false;
     }
   }
-
-
 
   void showAddPlaylist(String recipeId) {
     loadRecipeLists();

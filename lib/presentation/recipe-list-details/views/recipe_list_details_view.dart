@@ -32,7 +32,9 @@ class RecipeListDetailsView extends GetView<RecipeListDetailsController> {
             RecipeLargeCard(
               recipe: recipe,
               onTap: () => controller.onRecipeTap(recipe.id),
-              onDelete: () => (controller.isMyRecipes) ? controller.removeRecipe(recipe.id) : controller.removeRecipeFromList(recipe.id),
+              onDelete: () => (controller.isMyRecipes)
+                  ? controller.removeRecipe(recipe.id)
+                  : controller.removeRecipeFromList(recipe.id),
               onAdd: () => controller.showAddPlaylist(recipe.id),
             ),
           );
@@ -52,46 +54,52 @@ class RecipeListDetailsView extends GetView<RecipeListDetailsController> {
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
-              RecipeHeader(
-                user: controller.recipeList.value!.author,
-                icon: LucideIcons.share2,
-                onTapAction: () => controller.onShareTap(),
-                imageUrl: controller.recipeList.value?.pictureUrl,
-                canShare: controller.qrImage != null && !controller.recipeList.value!.isFavorite && !controller.isMyRecipes,
-              ), // image + appbar + auteur (sliver)
+                RecipeHeader(
+                  user: controller.recipeList.value!.author,
+                  icon: LucideIcons.share2,
+                  onTapAction: () => controller.onShareTap(),
+                  imageUrl: controller.recipeList.value?.pictureUrl,
+                  canShare:
+                      controller.qrImage != null &&
+                      !controller.recipeList.value!.isFavorite &&
+                      !controller.isMyRecipes,
+                ), // image + appbar + auteur (sliver)
 
-              SliverPadding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
-                ),
-                sliver: SliverToBoxAdapter(
-                  child: CustomLayoutBody(
-                    spacing: 20,
-                    horizontalPadding: 0,
-                    verticalPadding: 0,
-                    children: [
-                      if (controller.recipeList.value != null)
-                        RecipeListInfo(
-                          recipeList: controller.recipeList.value!,
-                          onDelete: () => controller.onDeleteRecipeList(),
-                          onEdit: () => controller.onEditRecipeList(),
-                          isMyRecipes: controller.isMyRecipes,
-                          isFavorite: controller.recipeList.value!.isFavorite,
-                          isMyPlaylist: controller.isMyPlaylist,
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                  sliver: SliverToBoxAdapter(
+                    child: CustomLayoutBody(
+                      spacing: 20,
+                      horizontalPadding: 0,
+                      verticalPadding: 0,
+                      children: [
+                        if (controller.recipeList.value != null)
+                          // Dans ton build, au niveau de RecipeListInfo :
+                          RecipeListInfo(
+                            recipeList: controller.recipeList.value!,
+                            onDelete: () => controller.onDeleteRecipeList(),
+                            // --- MODIFICATION ICI ---
+                            onEdit: () => controller.openEditDialog(),
+                            isMyRecipes: controller.isMyRecipes,
+                            isFavorite: controller.recipeList.value!.isFavorite,
+                            isMyPlaylist: controller.isMyPlaylist,
+                          ),
+                        CardList(
+                          cards: cards,
+                          icon: LucideIcons.chefHat,
+                          emptyString: "Aucune recette",
                         ),
-                      CardList(
-                        cards: cards,
-                        icon: LucideIcons.chefHat,
-                        emptyString: "Aucune recette",
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ));
+        );
       }),
     );
   }
