@@ -146,9 +146,9 @@ class RecipeListService {
   }
 
   /// Mettre à jour une liste de recettes
-  Future<void> update(String recipeListId, Map<String, dynamic> body) async {
+  Future<void> update(String recipeListId, RecipeListUpdateRequest body) async {
     try {
-      await _api.put('/RecipeList/$recipeListId', data: json.encode(body));
+      await _api.put('/RecipeList/$recipeListId', data: json.encode(body.toJson()));
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);

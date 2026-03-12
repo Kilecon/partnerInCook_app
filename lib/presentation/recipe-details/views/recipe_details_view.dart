@@ -21,8 +21,10 @@ class RecipeDetailsView extends GetView<RecipeDetailsController> {
       backgroundColor: AppColors.background,
       body: SafeArea(
         child: Obx(() {
-          // État chargement
-          if (controller.isLoading.value) {
+          final recipe = controller.recipe.value;
+
+          // État chargement initial
+          if (controller.isLoading.value && recipe == null) {
             return const Center(
               child: CircularProgressIndicator(
                 color: AppColors.primaryOrange,
@@ -30,8 +32,6 @@ class RecipeDetailsView extends GetView<RecipeDetailsController> {
               ),
             );
           }
-
-          final recipe = controller.recipe.value;
 
           // État erreur / introuvable
           if (recipe == null) {
@@ -63,47 +63,51 @@ class RecipeDetailsView extends GetView<RecipeDetailsController> {
             color: AppColors.primaryOrange,
             onRefresh: () async {
               if (controller.arguments is String) {
-                await controller.loadRecipeDetails(controller.arguments);
+                await controller.loadRecipeDetails(controller.arguments, turnLoad: false);
               }
             },
             child: CustomScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               slivers: [
-              RecipeHeader(
-                user: recipe.author,
-                icon: recipe.isFavorite
-                    ? Icons.favorite
-                    : Icons.favorite_border,
-                iconColor: recipe.isFavorite ? Colors.red : Colors.white,
-                onTapAction: () => controller.toggleFavorite(),
-                imageUrl: recipe.pictureUrl,
-              ),
-              SliverToBoxAdapter(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RecipeDescriptionSection(recipe: recipe),
-                    const SizedBox(height: 4),
-                    RecipeSection(
-                      title: 'Ingrédients',
-                      child: IngredientContent(
-                        ingredients: recipe.recipeIngredients,
-                      ),
-                    ),
-                    RecipeSection(
-                      title: 'Ustensiles',
-                      child: UstensilContent(utensils: recipe.utensils),
-                    ),
-                    RecipeSection(
-                      title: 'Préparation',
-                      child: StepContent(steps: recipe.steps),
-                    ),
-                    const SizedBox(height: 32),
-                  ],
+                RecipeHeader(
+                  user: recipe.author,
+                  icon: recipe.isFavorite
+                      ? Icons.favorite
+                      : Icons.favorite_border,
+                  iconColor: recipe.isFavorite ? Colors.red : Colors.white,
+                  onTapAction: () => controller.toggleFavorite(),
+                  onTapEdit: controller.isMine
+                      ? (() => controller.editRecipe())
+                      : null,
+                  imageUrl: recipe.pictureUrl,
                 ),
-              ),
-            ],
-          ));
+                SliverToBoxAdapter(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RecipeDescriptionSection(recipe: recipe),
+                      const SizedBox(height: 4),
+                      RecipeSection(
+                        title: 'Ingrédients',
+                        child: IngredientContent(
+                          ingredients: recipe.recipeIngredients,
+                        ),
+                      ),
+                      RecipeSection(
+                        title: 'Ustensiles',
+                        child: UstensilContent(utensils: recipe.utensils),
+                      ),
+                      RecipeSection(
+                        title: 'Préparation',
+                        child: StepContent(steps: recipe.steps),
+                      ),
+                      const SizedBox(height: 32),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
         }),
       ),
       floatingActionButton: CustomFloatingBtn(

@@ -1,21 +1,26 @@
-import 'dart:ffi';
-
 import 'package:get/get.dart';
 import 'package:partner_in_cook/component/recipe_details/rating_dialog.dart';
 import 'package:partner_in_cook/core/auth/auth_service.dart';
 import 'package:partner_in_cook/model/api/notation.dart';
 import 'package:partner_in_cook/model/api/recipe.dart';
+import 'package:partner_in_cook/model/api/user.dart';
+import 'package:partner_in_cook/presentation/explorer/controllers/explorer_controller.dart';
 import 'package:partner_in_cook/presentation/recipe-list-details/controllers/recipe_list_details_controller.dart';
 import 'package:partner_in_cook/services/notation_service.dart';
 import 'package:partner_in_cook/services/recipe_service.dart';
 
 class RecipeDetailsController extends GetxController {
+  final AuthService _authService = Get.find<AuthService>();
+
   var recipe = Rx<Recipe?>(null);
   final recipeApi = RecipeService();
   final notationApi = NotationService();
 
   final dynamic arguments = Get.arguments;
   var isLoading = true.obs;
+
+  Rx<User?> get user => _authService.user;
+  bool isMine = false;
 
   @override
   void onInit() {
@@ -25,11 +30,14 @@ class RecipeDetailsController extends GetxController {
     }
   }
 
-  Future<void> loadRecipeDetails(String id) async {
+  Future<void> loadRecipeDetails(String id, {bool turnLoad = true}) async {
     try {
-      isLoading.value = true;
+      if (turnLoad) {
+        isLoading.value = true;
+      }
       final details = await recipeApi.getById(id);
       recipe.value = details;
+      isMine = recipe.value!.author.id == _authService.user.value?.userId;
     } catch (e) {
       print("Error loading recipe details: $e");
       recipe.value = null;
@@ -46,9 +54,8 @@ class RecipeDetailsController extends GetxController {
       await recipeApi.toggleFavorite(recipe.value!.id, newFavoriteStatus);
 
       recipe.value!.isFavorite = newFavoriteStatus;
-      recipe.refresh(); // <-- Indispensable pour rafraîchir la vue avec GetX
+      recipe.refresh();
 
-      // Mettre à jour la liste des recettes en arrière-plan si le contrôleur existe
       if (Get.isRegistered<RecipeListDetailsController>()) {
         final listCtrl = Get.find<RecipeListDetailsController>();
         if (listCtrl.isMyRecipes) {
@@ -57,16 +64,47 @@ class RecipeDetailsController extends GetxController {
           listCtrl.loadRecipeListDetails(listCtrl.arguments);
         }
       }
+
+      if (Get.isRegistered<ExplorerController>()) {
+        final explorerCtrl = Get.find<ExplorerController>();
+        await explorerCtrl.loadData();
+      }
     } catch (e) {
       print("Error toggling favorite: $e");
     }
   }
 
-  Future<void> addNotation(int rating) async {
+  Future<void> editRecipe() async {
+    if (recipe.value == null) return;
+
+    if (recipe.value!.author.id == await AuthService.getUserId()) {
+      Get.toNamed('/create-recipe', arguments: recipe.value!.id);
+    }
+    return;
+  }
+
+  Future<void> addNotation(int rating, String notationId) async {
     try {
       isLoading.value = true;
       final currentUserId = await AuthService.getUserId();
-      await notationApi.create(NotationCreateRequest(recipeId: recipe.value!.id, userId: currentUserId!, notation: rating));
+      if (notationId.isNotEmpty) {
+        await notationApi.update(
+          NotationCreateRequest(
+            recipeId: recipe.value!.id,
+            userId: currentUserId!,
+            notation: rating,
+          ),
+          notationId,
+        );
+      } else {
+        await notationApi.create(
+          NotationCreateRequest(
+            recipeId: recipe.value!.id,
+            userId: currentUserId!,
+            notation: rating,
+          ),
+        );
+      }
     } catch (e) {
       print("Error loading recipe details: $e");
       recipe.value = null;
@@ -75,15 +113,18 @@ class RecipeDetailsController extends GetxController {
     }
   }
 
-  void showAddNotationDialog() {
+  Future<void> showAddNotationDialog() async {
     if (recipe.value == null) return;
-
+    Notation? userNotation = await notationApi.getUserNotationForRecipe(
+      recipe.value!.id,
+    );
     Get.dialog(
       RatingDialog(
+        initialRating: userNotation.notation,
         title: 'Noter la recette',
         description: 'Veuillez attribuer une note à cette recette',
         onConfirm: (rating) {
-            addNotation(rating);
+          addNotation(rating, userNotation.id);
           print("Notation attribuée : $rating étoiles");
         },
       ),

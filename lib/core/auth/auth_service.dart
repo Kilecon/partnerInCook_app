@@ -174,6 +174,11 @@ class AuthService extends GetxService {
     await pref.setString(Constants.user, jsonEncode(auth.user.toJson()));
   }
 
+  static Future<void> updateUser(User user) async {
+    final pref = await SharedPreferences.getInstance();
+    await pref.setString(Constants.user, jsonEncode(user.toJson()));
+  }
+
   static Future<void> clearAuth() async {
     final pref = await SharedPreferences.getInstance();
     await pref.remove(Constants.accessToken);

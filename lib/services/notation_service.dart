@@ -10,10 +10,36 @@ class NotationService {
   final ApiClient _api = Get.find<ApiClient>();
 
   /// Créer une nouvelle notation
-  Future<NotationCreateRequest> create(NotationCreateRequest body) async {
+  Future<Notation> create(NotationCreateRequest body) async {
     try {
       final response = await _api.post('/Notation', data: json.encode(body));
-      return NotationCreateRequest.fromJson(response.data['data'] as Map<String, dynamic>);
+      return Notation.fromJson(response.data['data'] as Map<String, dynamic>);
+    } on DioException catch (e) {
+      final error = handleDioException(e);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
+    }
+  }
+
+  /// Créer une nouvelle notation
+  Future<Notation> update(NotationCreateRequest body, String id) async {
+    try {
+      final response = await _api.put('/Notation/$id', data: json.encode(body));
+      return Notation.fromJson(response.data['data'] as Map<String, dynamic>);
+    } on DioException catch (e) {
+      final error = handleDioException(e);
+      throw ApiException(error.message, code: error.code);
+    } catch (e) {
+      throw ApiException('Erreur inattendue: $e');
+    }
+  }
+
+  // récupérer la notation de l'utilisateur connecté pour une recette donnée
+  Future<Notation> getUserNotationForRecipe(String recipeId) async {
+    try {
+      final response = await _api.get('/Notation/getMyNotation/$recipeId');
+      return Notation.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);

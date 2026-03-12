@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' hide Step;
 import 'package:get/get.dart';
 import 'package:partner_in_cook/model/api/ingredient.dart';
+import 'package:partner_in_cook/model/api/recipe.dart';
 import 'package:partner_in_cook/model/api/recipe_ingredient.dart';
 import 'package:partner_in_cook/model/api/step.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
@@ -16,11 +17,17 @@ import 'package:partner_in_cook/services/step_service.dart';
 import 'package:partner_in_cook/services/tag_service.dart';
 import 'package:partner_in_cook/services/upload_service.dart';
 import 'package:partner_in_cook/services/utensil_service.dart';
+import 'package:partner_in_cook/presentation/recipe-details/controllers/recipe_details_controller.dart';
 import 'package:partner_in_cook/presentation/recipe-list/controllers/recipe_list_controller.dart';
 
 enum CreateRecipeStepPage { mainInfo, ingredients, utensils, steps }
 
 class CreateRecipeController extends GetxController {
+  final RxnString recipeId = RxnString();
+  List<RecipeIngredient> originalIngredients = [];
+  List<Step> originalSteps = [];
+  bool get isEditMode => recipeId.value != null;
+
   // --- Services ---
   final IngredientService _ingredientService = IngredientService();
   final UtensilService _utensilService = UtensilService();
@@ -28,7 +35,8 @@ class CreateRecipeController extends GetxController {
   final RecipeService _recipeService = RecipeService();
   final UploadService _uploadService = UploadService();
   final StepService _stepService = StepService();
-  final RecipeIngredientService _recipeIngredientService = RecipeIngredientService();
+  final RecipeIngredientService _recipeIngredientService =
+      RecipeIngredientService();
 
   // --- Observables (Données de l'API) ---
   final ingredientsLibrary = <Ingredient>[].obs;
@@ -58,7 +66,25 @@ class CreateRecipeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    if (Get.arguments != null && Get.arguments is String) {
+      recipeId.value = Get.arguments as String;
+      _loadRecipeForEdit(recipeId.value!);
+    }
     _loadLibraries();
+  }
+
+  Future<void> _loadRecipeForEdit(String id) async {
+    isLoading.value = true;
+    try {
+      final recipe = await _recipeService.getById(id);
+      originalIngredients = [...recipe.recipeIngredients];
+      originalSteps = [...recipe.steps];
+      form.value = CreateRecipeForm.fromRecipe(recipe);
+    } catch (e) {
+      Get.snackbar("Erreur", "Impossible de charger la recette à éditer");
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   // --- Chargement des données nécessaires ---
@@ -83,14 +109,17 @@ class CreateRecipeController extends GetxController {
   // --- Navigation ---
   Future<void> next() async {
     if (!validate()) {
-      final errs = errors.entries.map((e) => FieldError(e.key, e.value)).toList();
+      final errs = errors.entries
+          .map((e) => FieldError(e.key, e.value))
+          .toList();
       Get.dialog(ErrorsModal(errors: errs));
       return;
     }
     if (currentStep.value == CreateRecipeStepPage.steps) {
-      await createRecipe();
+      await handleSaveRecipe();
     } else {
-      currentStep.value = CreateRecipeStepPage.values[currentStep.value.index + 1];
+      currentStep.value =
+          CreateRecipeStepPage.values[currentStep.value.index + 1];
     }
   }
 
@@ -98,7 +127,8 @@ class CreateRecipeController extends GetxController {
     if (currentStep.value.index == 0) {
       Get.back();
     } else {
-      currentStep.value = CreateRecipeStepPage.values[currentStep.value.index - 1];
+      currentStep.value =
+          CreateRecipeStepPage.values[currentStep.value.index - 1];
     }
   }
 
@@ -141,7 +171,9 @@ class CreateRecipeController extends GetxController {
           quantity: qty,
         );
       } else {
-        f!.ingredients.add(CreateRecipeIngredient(ingredient: ingredient, quantity: qty));
+        f!.ingredients.add(
+          CreateRecipeIngredient(ingredient: ingredient, quantity: qty),
+        );
       }
     });
     Get.back();
@@ -206,11 +238,13 @@ class CreateRecipeController extends GetxController {
           recipeId: '', // Sera mis à jour à la création
         );
       } else {
-        f!.steps.add(StepCreateRequest(
-          description: desc,
-          order: f.steps.length + 1,
-          recipeId: '',
-        ));
+        f!.steps.add(
+          StepCreateRequest(
+            description: desc,
+            order: f.steps.length + 1,
+            recipeId: '',
+          ),
+        );
       }
     });
     Get.back();
@@ -258,10 +292,12 @@ class CreateRecipeController extends GetxController {
         }
         break;
       case CreateRecipeStepPage.ingredients:
-        if (form.value.ingredients.isEmpty) errors['ingredients'] = 'Ajoutez un ingrédient';
+        if (form.value.ingredients.isEmpty)
+          errors['ingredients'] = 'Ajoutez un ingrédient';
         break;
       case CreateRecipeStepPage.utensils:
-        if (form.value.utensils.isEmpty) errors['utensils'] = 'Ajoutez un ustensile';
+        if (form.value.utensils.isEmpty)
+          errors['utensils'] = 'Ajoutez un ustensile';
         break;
       case CreateRecipeStepPage.steps:
         if (form.value.steps.isEmpty) errors['steps'] = 'Ajoutez une étape';
@@ -271,53 +307,84 @@ class CreateRecipeController extends GetxController {
   }
 
   // --- CRÉATION FINALE API ---
-  Future<void> createRecipe() async {
+  Future<void> handleSaveRecipe() async {
     if (!validate()) return;
 
-    // try {
+    try {
       isLoading.value = true;
 
-      // 1. Upload de l'image
       if (form.value.image != null) {
         final imageUrl = await _uploadService.uploadImage(form.value.image!);
         form.update((val) => val?.imageUrl = imageUrl);
       }
       print('Image uploadée: ${form.value.imageUrl}');
-      // 2. Création de la Recette (Corps principal + IDs tags/ustensiles)
+
+      if (isEditMode) {
+        await _recipeService.updateRecipeFull(
+          recipeId.value!,
+          form.value,
+          originalIngredients,
+          originalSteps,
+        );
+        print('Recette mise à jour avec ID: ${recipeId.value}');
+
+        if (Get.isRegistered<RecipeListController>()) {
+          Get.find<RecipeListController>().loadRecipeList();
+        }
+        if (Get.isRegistered<RecipeDetailsController>()) {
+          Get.find<RecipeDetailsController>().loadRecipeDetails(
+            recipeId.value!,
+          );
+        }
+
+        Get.back();
+        Get.snackbar('Succès', 'Recette mise à jour avec succès !');
+        return;
+      }
+
       final recipe = await _recipeService.create(form.value);
       print('Recette créée avec ID: ${recipe.id}');
 
       // 3. Création des ingrédients liés
       if (form.value.ingredients.isNotEmpty) {
-        final ingredientsDto = form.value.ingredients.map((i) => RecipeIngredientCreateRequest(
-          ingredientId: i.ingredient.id,
-          quantity: i.quantity,
-          recipeId: recipe.id,
-        )).toList();
+        final ingredientsDto = form.value.ingredients
+            .map(
+              (i) => RecipeIngredientCreateRequest(
+                ingredientId: i.ingredient.id,
+                quantity: i.quantity,
+                recipeId: recipe.id,
+              ),
+            )
+            .toList();
         await _recipeIngredientService.create(ingredientsDto);
       }
 
       // 4. Création des étapes
       if (form.value.steps.isNotEmpty) {
-        final stepsDto = form.value.steps.map((s) => StepCreateRequest(
-          description: s.description,
-          order: s.order,
-          recipeId: recipe.id,
-        )).toList();
+        final stepsDto = form.value.steps
+            .map(
+              (s) => StepCreateRequest(
+                description: s.description,
+                order: s.order,
+                recipeId: recipe.id,
+              ),
+            )
+            .toList();
         await _stepService.create(stepsDto);
       }
 
       // 5. Finalisation
-      Get.find<RecipeListController>().loadRecipeList();
+      if (Get.isRegistered<RecipeListController>()) {
+        Get.find<RecipeListController>().loadRecipeList();
+      }
       Get.back();
       Get.snackbar('Succès', 'Recette créée avec succès !');
-
-    // } catch (e) {
-    //   Get.snackbar('Erreur', 'Impossible de créer la recette');
-    //   print('Erreur création recette: $e');
-    // } finally {
-    //   isLoading.value = false;
-    // }
+    } catch (e) {
+      Get.snackbar('Erreur', 'Impossible de créer la recette');
+      print('Erreur création recette: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   @override

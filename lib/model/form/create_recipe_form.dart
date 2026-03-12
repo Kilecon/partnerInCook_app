@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:partner_in_cook/common/config/constants/visibility_state_enum.dart';
+import 'package:partner_in_cook/model/api/recipe.dart';
 import 'package:partner_in_cook/model/api/step.dart';
 import 'package:partner_in_cook/model/api/tag.dart';
 import 'package:partner_in_cook/model/api/utensil.dart';
@@ -52,4 +53,37 @@ class CreateRecipeForm {
        steps = steps ?? [],
        utensils = utensils ?? [],
        tags = tags ?? [];
+
+  factory CreateRecipeForm.fromRecipe(Recipe recipe) {
+    return CreateRecipeForm(
+      name: recipe.name,
+      description: recipe.description ?? "",
+      portions: recipe.portions,
+      visibilityState: recipe.visibilityState,
+      preparationTime: recipe.preparationTime ?? 0,
+      restTime: recipe.restTime ?? 0,
+      cookTime: recipe.cookTime ?? 0,
+      ingredients: recipe.recipeIngredients
+          .map(
+            (i) => CreateRecipeIngredient(
+              id: i.id,
+              ingredient: i.ingredient!,
+              quantity: i.quantity,
+            ),
+          )
+          .toList(),
+      steps: recipe.steps
+          .map(
+            (s) => StepCreateRequest(
+              id: s.id,
+              description: s.description,
+              order: s.order,
+              recipeId: s.recipeId,
+            ),
+          )
+          .toList(),
+      utensils: recipe.utensils,
+      tags: recipe.tags,
+    );
+  }
 }
