@@ -25,11 +25,11 @@ class StepService {
     }
   }
 
-  Future<Step> update(StepCreateRequest body,
+  Future<Step> update(StepCreateRequest body, String id
   ) async {
     try {
       final response = await _api.put(
-        '/Step',
+        '/Step/$id',
         data: json.encode(body),
       );
       return Step.fromJson(response.data['data'] as Map<String, dynamic>);
@@ -59,7 +59,7 @@ class StepService {
       if (formItem.id == null) {
         await create([StepCreateRequest.fromJson(data)]);
       } else {
-        await update(StepCreateRequest.fromJson(data));
+        await update(StepCreateRequest.fromJson(data), formItem.id!);
       }
     }
   }

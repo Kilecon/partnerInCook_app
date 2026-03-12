@@ -37,7 +37,7 @@ class StepCreateRequest {
   final String recipeId;
 
   StepCreateRequest({
-      String? id,
+    this.id,
     required this.description,
     required this.order,
     required this.recipeId,
@@ -52,10 +52,6 @@ class StepCreateRequest {
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      'description': description,
-      'order': order,
-      'recipe_id': recipeId,
-    };
+    return {'description': description, 'order': order, 'recipe_id': recipeId};
   }
 }

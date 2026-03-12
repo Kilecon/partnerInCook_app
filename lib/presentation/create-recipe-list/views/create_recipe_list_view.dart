@@ -31,12 +31,11 @@ class CreateRecipeListView extends GetView<CreateRecipeListController> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Obx(
-                    () => controller.isLoading.value
-                        ? const Center(child: CircularProgressIndicator())
-                        : CustomButton(
-                            name: 'Valider',
-                            onClick: controller.createRecipeList,
-                          ),
+                    () => CustomButton(
+                      name: 'Valider',
+                      onClick: controller.createRecipeList,
+                      isLoading: controller.isLoading.value,
+                    ),
                   ),
                 ],
               ),

@@ -6,7 +6,7 @@ class CreateRecipeIngredient {
   final double quantity;
 
   CreateRecipeIngredient({
-    String? id,
+    this.id,
     required this.ingredient,
     required this.quantity,
   });

@@ -31,15 +31,16 @@ class RecipeIngredientService {
       throw ApiException('Erreur inattendue: $e');
     }
   }
-  
-  Future<RecipeIngredient> update(RecipeIngredientCreateRequest body,
-  ) async {
+
+  Future<RecipeIngredient> update(RecipeIngredientCreateRequest body, String id) async {
     try {
       final response = await _api.put(
-        '/RecipeIngredient',
+        '/RecipeIngredient/$id',
         data: json.encode(body),
       );
-      return RecipeIngredient.fromJson(response.data['data'] as Map<String, dynamic>);
+      return RecipeIngredient.fromJson(
+        response.data['data'] as Map<String, dynamic>,
+      );
     } on DioException catch (e) {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
@@ -61,9 +62,16 @@ class RecipeIngredientService {
     }
   }
 
-  Future<void> sync(String recipeId, List<CreateRecipeIngredient> formIngredients, List<RecipeIngredient> originalIngredients) async {
+  Future<void> sync(
+    String recipeId,
+    List<CreateRecipeIngredient> formIngredients,
+    List<RecipeIngredient> originalIngredients,
+  ) async {
+    print(formIngredients.first.id);
+    print(originalIngredients.first.id);
 
     for (var oldItem in originalIngredients) {
+      print(!formIngredients.any((f) => f.id == oldItem.id));
       if (!formIngredients.any((f) => f.id == oldItem.id)) {
         await _api.delete('/RecipeIngredient/${oldItem.id}');
       }
@@ -79,7 +87,7 @@ class RecipeIngredientService {
       if (formItem.id == null) {
         await create([RecipeIngredientCreateRequest.fromJson(data)]);
       } else {
-        await _api.put('/RecipeIngredient/${formItem.id}', data: json.encode(data));
+        await update(RecipeIngredientCreateRequest.fromJson(data), formItem.id!);
       }
     }
   }

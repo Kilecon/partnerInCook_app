@@ -17,6 +17,7 @@ import 'package:partner_in_cook/services/step_service.dart';
 import 'package:partner_in_cook/services/tag_service.dart';
 import 'package:partner_in_cook/services/upload_service.dart';
 import 'package:partner_in_cook/services/utensil_service.dart';
+import 'package:partner_in_cook/presentation/recipe-details/controllers/recipe_details_controller.dart';
 import 'package:partner_in_cook/presentation/recipe-list/controllers/recipe_list_controller.dart';
 
 enum CreateRecipeStepPage { mainInfo, ingredients, utensils, steps }
@@ -327,7 +328,15 @@ class CreateRecipeController extends GetxController {
         );
         print('Recette mise à jour avec ID: ${recipeId.value}');
 
-        Get.find<RecipeListController>().loadRecipeList();
+        if (Get.isRegistered<RecipeListController>()) {
+          Get.find<RecipeListController>().loadRecipeList();
+        }
+        if (Get.isRegistered<RecipeDetailsController>()) {
+          Get.find<RecipeDetailsController>().loadRecipeDetails(
+            recipeId.value!,
+          );
+        }
+
         Get.back();
         Get.snackbar('Succès', 'Recette mise à jour avec succès !');
         return;
@@ -365,7 +374,9 @@ class CreateRecipeController extends GetxController {
       }
 
       // 5. Finalisation
-      Get.find<RecipeListController>().loadRecipeList();
+      if (Get.isRegistered<RecipeListController>()) {
+        Get.find<RecipeListController>().loadRecipeList();
+      }
       Get.back();
       Get.snackbar('Succès', 'Recette créée avec succès !');
     } catch (e) {
