@@ -15,6 +15,7 @@ Project by [__ARCAS__ Manon](https://github.com/Manon-Arc) and [__BARBOTEAU__ Ma
 - [Tech Stack](#%EF%B8%8F-tech-stack)
 - [Architecture](#-architecture)
 - [Project Structure](#-project-structure)
+- [CI/CD](#-cicd)
 - [Getting Started](#-getting-started)
 
 ---
@@ -33,7 +34,7 @@ Inspired by platforms like Marmiton, it adds a layer of collaborative management
 ### 🌟 Key Features
 
 #### User Features
-*   **🔐 Authentication**: Secure Email/Password login & onboarding.
+*   **🔐 Authentication**: Secure Email/Password login with automatic refresh token middleware & onboarding.
 *   **📖 Recipe Hub**: Create, edit, and delete rich recipes with photos, steps, ingredients, and tags.
 *   **🗄️ Inventory Management**: Manage multiple **Fridges** and **Pantries** to track ingredient quantities.
 *   **🤝 Collaboration**: Create and share recipe lists with other users for event planning or households.
@@ -43,7 +44,7 @@ Inspired by platforms like Marmiton, it adds a layer of collaborative management
 #### Technical Features
 *   **📱 Cross-Platform**: Native performance on iOS and Android (Flutter).
 *   **🧠 State Management**: Reactive state management using **GetX**.
-*   **⚡ Network Logic**: Robust HTTP client with **Dio** including **caching strategies** (`dio_cache_interceptor`) for offline resilience.
+*   **⚡ Network Logic**: Robust HTTP client with **Dio**.
 *   **🔗 Deep Linking**: Integrated `app_links` for seamless navigation from external URLs.
 *   **💾 Local Persistence**: `shared_preferences` for managing local user session and settings.
 *   **🖼️ Media Optimization**: Native image picking and splash screen integration.
@@ -109,12 +110,40 @@ lib/
 ├── component/     # Reusable UI widgets (Fridge, Recipe cards...)
 ├── core/          # Core features (Auth, DeepLink, Network)
 ├── data/          # Data sources & Repositories
+├── exceptions/    # Custom exceptions and error handling
 ├── model/         # Data Models
 ├── presentation/  # Screens & Views
 ├── routes/        # Navigation Maps
 ├── services/      # App-level services
+├── utils/         # Utility helpers and shared functions
 └── main.dart      # Entry point
 ```
+
+---
+
+### 🚀 CI/CD
+
+The project includes a GitHub Actions workflow that automatically builds an Android release when a Git tag matching `v*` is pushed.
+
+**Trigger**
+- Creating and pushing a tag like `v1.0.0` starts the workflow.
+
+**What the pipeline does**
+- Checks out the repository.
+- Installs Java 17 and Flutter stable.
+- Builds the Android artifacts in release mode:
+  - `app-release.aab`
+  - `app-release.apk`
+- Creates a GitHub Release automatically and attaches both generated files.
+- Sends a Discord notification on success or failure.
+
+**Example**
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+After the tag is pushed, GitHub creates the associated release automatically.
 
 ---
 
