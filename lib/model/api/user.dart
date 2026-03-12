@@ -33,3 +33,31 @@ class User {
     };
   }
 }
+
+class UserUpdateRequest {
+  String? username;
+  String? email;
+  String? profilePicture;
+
+  UserUpdateRequest({
+    this.username,
+    this.email,
+    this.profilePicture,
+  });
+
+  factory UserUpdateRequest.fromJson(Map<String, dynamic> json) {
+    return UserUpdateRequest(
+      username: json['username'] as String?,
+      email: json['email'] as String?,
+      profilePicture: json['pic_url'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      if (username != null) 'username': username,
+      if (email != null) 'email': email,
+      if (profilePicture != null) 'pic_url': profilePicture,
+    };
+  }
+}

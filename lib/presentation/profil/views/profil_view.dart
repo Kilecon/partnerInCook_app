@@ -44,10 +44,13 @@ class ProfilView extends GetView<ProfilController> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                CircleAvatarCustom(
-                                  name: controller.user.value?.username ?? 'U',
-                                  url: controller.user.value?.profilePicture,
-                                  radius: 30,
+                                Obx(
+                                  () => CircleAvatarCustom(
+                                    name:
+                                        controller.user.value?.username ?? 'U',
+                                    url: controller.user.value?.profilePicture,
+                                    radius: 30,
+                                  ),
                                 ),
                                 const SizedBox(width: 12),
                                 Expanded(
@@ -79,7 +82,8 @@ class ProfilView extends GetView<ProfilController> {
                                 ),
                                 IconButton(
                                   icon: const Icon(LucideIcons.pencil),
-                                  onPressed: () => (),
+                                  onPressed: () =>
+                                      (controller.openEditProfile()),
                                 ),
                               ],
                             ),

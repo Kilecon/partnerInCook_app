@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class IngredientService {
     final ApiClient _api = Get.find<ApiClient>();
 
-    Future<List<Ingredient>> getAll() async {
+  Future<List<Ingredient>> getAll() async {
     try {
       final response = await _api.get('/Ingredient/all');
       final dataList = response.data as List<dynamic>;

@@ -8,11 +8,17 @@ import 'package:partner_in_cook/exceptions/api_exception.dart';
 import 'package:partner_in_cook/exceptions/exception_handler.dart';
 import 'package:partner_in_cook/model/api/light_recipe.dart';
 import 'package:partner_in_cook/model/api/recipe.dart';
+import 'package:partner_in_cook/model/api/recipe_ingredient.dart';
+import 'package:partner_in_cook/model/api/step.dart';
 import 'package:partner_in_cook/model/form/create_recipe_form.dart';
-
+import 'package:partner_in_cook/services/recipe_ingredient_service.dart';
+import 'package:partner_in_cook/services/step_service.dart';
 
 class RecipeService {
   final ApiClient _api = Get.find<ApiClient>();
+  final RecipeIngredientService _recipeIngredientService =
+      Get.find<RecipeIngredientService>();
+  final StepService _stepService = Get.find<StepService>();
 
   Future<void> toggleFavorite(String recipeId, bool isFavorite) async {
     if (recipeId.isEmpty) {
@@ -85,7 +91,6 @@ class RecipeService {
   Future<Recipe> create(CreateRecipeForm form) async {
     try {
       final connectedUser = await AuthService.getUser();
-      print("FOOOOO");
       print(form);
 
       final body = {
@@ -97,7 +102,7 @@ class RecipeService {
         "rest_time": form.restTime,
         "cook_time": form.cookTime,
         "portions": form.portions,
-        "tags_ids": form.tags.map((t) => t.id).toList(), 
+        "tags_ids": form.tags.map((t) => t.id).toList(),
         "utensils_ids": form.utensils.map((u) => u.id).toList(),
         if (form.imageUrl != null && form.imageUrl!.isNotEmpty)
           'pic_url': form.imageUrl,
@@ -137,7 +142,7 @@ class RecipeService {
     }
   }
 
-    /// Récupérer les recettes possédées
+  /// Récupérer les recettes possédées
   Future<Recipe> getById(String recipeId) async {
     try {
       final response = await _api.get('/Recipe/$recipeId');
@@ -148,6 +153,43 @@ class RecipeService {
       throw ApiException(error.message, code: error.code);
     } catch (e) {
       throw ApiException('Erreur inattendue: $e');
+    }
+  }
+
+  Future<void> updateRecipeFull(
+    String recipeId,
+    CreateRecipeForm form,
+    List<RecipeIngredient> originalIngredients,
+    List<Step> originalSteps,
+  ) async {
+    try {
+      final connectedUser = await AuthService.getUser();
+      // 1. Mise à jour des informations principales (le "Main Info")
+      final body = {
+        'name': form.name,
+        'description': form.description,
+        'author_id': connectedUser!.userId,
+        'state': visibilityStateToJson(form.visibilityState),
+        "preparation_time": form.preparationTime,
+        "rest_time": form.restTime,
+        "cook_time": form.cookTime,
+        "portions": form.portions,
+        "tags_ids": form.tags.map((t) => t.id).toList(),
+        "utensils_ids": form.utensils.map((u) => u.id).toList(),
+        if (form.imageUrl != null) 'pic_url': form.imageUrl,
+      };
+      await update(recipeId, body);
+
+      // 2. Synchronisation des listes (les sous-services s'en chargent)
+      await _recipeIngredientService.sync(
+        recipeId,
+        form.ingredients,
+        originalIngredients,
+      );
+      await _stepService.sync(recipeId, form.steps, originalSteps);
+    
+    } catch (e) {
+      throw ApiException('Erreur lors de la mise à jour complète: $e');
     }
   }
 }

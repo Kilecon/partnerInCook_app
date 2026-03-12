@@ -6,12 +6,14 @@ class CreateRecipeFooter extends StatelessWidget {
   final VoidCallback onNext;
   final int currentStep;
   final int totalSteps;
+  final bool isLoading;
 
   const CreateRecipeFooter({
     super.key,
     required this.onNext,
     required this.currentStep,
     required this.totalSteps,
+    this.isLoading = false,
   });
 
   @override
@@ -25,7 +27,11 @@ class CreateRecipeFooter extends StatelessWidget {
           children: [
             StepIndicator(current: currentStep, total: totalSteps),
             const SizedBox(height: 12),
-            CustomButton(name: 'Suivant', onClick: onNext),
+            CustomButton(
+              name: currentStep == totalSteps - 1 ? 'Créer' : 'Suivant',
+              onClick: onNext,
+              isLoading: isLoading,
+            ),
           ],
         ),
       ),

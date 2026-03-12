@@ -18,7 +18,7 @@ class CreateRecipeView extends GetView<CreateRecipeController> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          BackHeader(title: 'Créer une recette', onBack: controller.back),
+          BackHeader(title: controller.isEditMode ? 'Modifier la recette' : 'Créer une recette', onBack: controller.back),
 
           Expanded(
             child: CustomLayout(
@@ -44,6 +44,7 @@ class CreateRecipeView extends GetView<CreateRecipeController> {
               currentStep: controller.currentStep.value.index,
               totalSteps: CreateRecipeStepPage.values.length,
               onNext: controller.next,
+              isLoading: controller.isLoading.value,
             ),
           ),
         ],
