@@ -24,9 +24,9 @@ class UserService {
   }
 
   /// Mettre à jour les informations d'un utilisateur
-  Future<User> update(UserUpdateRequest body, String userId) async {
+  Future<User> update(UserUpdateRequest body) async {
     try {
-      final response = await _api.put('/User/$userId', data: json.encode(body));
+      final response = await _api.put('/User', data: json.encode(body));
       return User.fromJson(response.data['data'] as Map<String, dynamic>);
     } on DioException catch (e) {
       final error = handleDioException(e);

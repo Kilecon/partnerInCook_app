@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:get/get.dart';
 import 'package:partner_in_cook/component/profile/update_dialog.dart';
 import 'package:partner_in_cook/model/api/user.dart';
@@ -78,8 +77,7 @@ class ProfilController extends GetxController {
               username: username,
               email: email,
               profilePicture: picUrl,
-            ),
-            user.value!.userId ?? '',
+            )
           );
 
           // Mettre à jour les propriétés locales
