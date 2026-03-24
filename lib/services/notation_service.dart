@@ -44,6 +44,14 @@ class NotationService {
       final error = handleDioException(e);
       throw ApiException(error.message, code: error.code);
     } catch (e) {
+      if (e is ApiException && e.code == 404) {
+        return Notation(
+          id: '',
+          recipeId: recipeId,
+          userId: '',
+          notation: 0,
+        );
+      }
       throw ApiException('Erreur inattendue: $e');
     }
   }

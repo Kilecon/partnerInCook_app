@@ -21,7 +21,6 @@ ErrorEntity handleDioException(DioException error) {
         return ErrorEntity(code: 401, message: ExceptionMessages.unauthorized);
       }
       if (code == 404) {
-        showSnackWarning(ExceptionMessages.notFound);
         return ErrorEntity(code: 404, message: ExceptionMessages.notFound);
       }
       if (code != null && code >= 500) {
