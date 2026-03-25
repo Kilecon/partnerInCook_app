@@ -111,12 +111,11 @@ class CreateRecipeListController extends GetxController {
       // 4. Afficher un message de succès
       Get.snackbar(
         'Succès',
-        'Liste de recettes créée avec succès',
-        snackPosition: SnackPosition.BOTTOM,
+        'Liste de recettes créée avec succès'
       );
     } catch (e) {
       print('❌ Error: $e');
-      Get.snackbar('Erreur', e.toString(), snackPosition: SnackPosition.BOTTOM);
+      Get.snackbar('Erreur', e.toString());
     } finally {
       isLoading.value = false;
     }

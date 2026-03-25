@@ -57,11 +57,7 @@ class _QrShareDialogState extends State<QrShareDialog> {
               Clipboard.setData(ClipboardData(text: widget.data));
               Get.snackbar(
                 'Succès',
-                'Copié dans le presse-papiers',
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: Colors.green.withOpacity(0.9),
-                colorText: Colors.white,
-                margin: const EdgeInsets.all(15),
+                'Copié dans le presse-papiers'
               );
             },
             child: Text(widget.copyLabel),
