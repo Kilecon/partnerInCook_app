@@ -20,7 +20,9 @@ class Ingredient {
       id: json['id'] as String,
       name: json['name'] as String,
       unit: json['unit'] as String,
-      density: (json['density'] as num).toDouble(),
+      density: json['density'] != null
+          ? (json['density'] as num).toDouble()
+          : null,
       userId: json['user_id'] == null ? null : json['user_id'] as String,
       iconPictureUrl: json['pic_url'] as String?,
     );

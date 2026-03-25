@@ -100,6 +100,8 @@ class CreateRecipeController extends GetxController {
       utensilsLibrary.value = results[1] as List<Utensil>;
       tagsLibrary.value = results[2] as List<Tag>;
     } catch (e) {
+      print('Erreur chargement bibliothèques: $e');
+      print(e.toString());
       Get.snackbar("Erreur", "Impossible de charger les bibliothèques");
     } finally {
       isLoading.value = false;
@@ -165,8 +167,9 @@ class CreateRecipeController extends GetxController {
     if (ingredient == null || qty == null || qty <= 0) return;
 
     form.update((f) {
-      if (editingIngredientIndex != null) {
-        f!.ingredients[editingIngredientIndex!] = CreateRecipeIngredient(
+      if (editingIngredientIndex != null &&
+          editingIngredientIndex! < f!.ingredients.length) {
+        f.ingredients[editingIngredientIndex!] = CreateRecipeIngredient(
           ingredient: ingredient,
           quantity: qty,
         );
@@ -176,11 +179,13 @@ class CreateRecipeController extends GetxController {
         );
       }
     });
+    editingIngredientIndex = null; // ← Réinitialiser après validation
     Get.back();
   }
 
   void removeIngredient(int index) {
     form.update((f) => f!.ingredients.removeAt(index));
+    editingIngredientIndex = null; // ← Réinitialiser après suppression
   }
 
   // --- Logique des USTENSILES (Modal) ---
@@ -199,20 +204,22 @@ class CreateRecipeController extends GetxController {
     if (utensil == null) return;
 
     form.update((f) {
-      if (editingUtensilIndex != null) {
+      if (editingUtensilIndex != null &&
+          editingUtensilIndex! < f!.utensils.length) {
         f!.utensils[editingUtensilIndex!] = utensil;
       } else {
-        // Évite les doublons
         if (!f!.utensils.any((u) => u.id == utensil.id)) {
           f.utensils.add(utensil);
         }
       }
     });
+    editingUtensilIndex = null; // ← Réinitialiser
     Get.back();
   }
 
   void removeUtensil(int index) {
     form.update((f) => f!.utensils.removeAt(index));
+    editingUtensilIndex = null; // ← Réinitialiser
   }
 
   // --- Logique des ÉTAPES ---
@@ -231,11 +238,11 @@ class CreateRecipeController extends GetxController {
     if (desc.isEmpty) return;
 
     form.update((f) {
-      if (editingStepIndex != null) {
+      if (editingStepIndex != null && editingStepIndex! < f!.steps.length) {
         f!.steps[editingStepIndex!] = StepCreateRequest(
           description: desc,
           order: editingStepIndex! + 1,
-          recipeId: '', // Sera mis à jour à la création
+          recipeId: '',
         );
       } else {
         f!.steps.add(
@@ -247,13 +254,13 @@ class CreateRecipeController extends GetxController {
         );
       }
     });
+    editingStepIndex = null; // ← Réinitialiser
     Get.back();
   }
 
   void removeStep(int index) {
     form.update((f) {
       f!.steps.removeAt(index);
-      // Réorganiser les ordres
       for (int i = 0; i < f.steps.length; i++) {
         f.steps[i] = StepCreateRequest(
           description: f.steps[i].description,
@@ -262,6 +269,7 @@ class CreateRecipeController extends GetxController {
         );
       }
     });
+    editingStepIndex = null; // ← Réinitialiser
   }
 
   void reorderSteps(int oldIndex, int newIndex) {
@@ -317,7 +325,6 @@ class CreateRecipeController extends GetxController {
         final imageUrl = await _uploadService.uploadImage(form.value.image!);
         form.update((val) => val?.imageUrl = imageUrl);
       }
-      print('Image uploadée: ${form.value.imageUrl}');
 
       if (isEditMode) {
         await _recipeService.updateRecipeFull(
@@ -326,7 +333,6 @@ class CreateRecipeController extends GetxController {
           originalIngredients,
           originalSteps,
         );
-        print('Recette mise à jour avec ID: ${recipeId.value}');
 
         if (Get.isRegistered<RecipeListController>()) {
           Get.find<RecipeListController>().loadRecipeList();
@@ -342,10 +348,9 @@ class CreateRecipeController extends GetxController {
         return;
       }
 
+      // Création nouvelle (reste inchangé)
       final recipe = await _recipeService.create(form.value);
-      print('Recette créée avec ID: ${recipe.id}');
 
-      // 3. Création des ingrédients liés
       if (form.value.ingredients.isNotEmpty) {
         final ingredientsDto = form.value.ingredients
             .map(
@@ -359,21 +364,6 @@ class CreateRecipeController extends GetxController {
         await _recipeIngredientService.create(ingredientsDto);
       }
 
-      // 4. Création des étapes
-      if (form.value.steps.isNotEmpty) {
-        final stepsDto = form.value.steps
-            .map(
-              (s) => StepCreateRequest(
-                description: s.description,
-                order: s.order,
-                recipeId: recipe.id,
-              ),
-            )
-            .toList();
-        await _stepService.create(stepsDto);
-      }
-
-      // 5. Finalisation
       if (Get.isRegistered<RecipeListController>()) {
         Get.find<RecipeListController>().loadRecipeList();
       }
